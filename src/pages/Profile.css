@@ -1,0 +1,174 @@
+.profile-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.profile-header h1 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.profile-card h2 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0 0 6px;
+}
+
+.profile-phase-desc {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  margin: 0 0 12px;
+  line-height: 1.4;
+}
+
+.profile-phase-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.profile-phase-badge {
+  font-size: 0.75rem;
+  font-weight: 600;
+  background: #eff6ff;
+  color: var(--accent-blue);
+  padding: 4px 10px;
+  border-radius: 8px;
+}
+
+.profile-btn {
+  width: 100%;
+}
+
+.profile-empty {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  margin: 0 0 12px;
+}
+
+.dose-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 12px;
+}
+
+.dose-list li {
+  padding: 10px 0;
+  border-bottom: 1px solid #f1f5f9;
+  font-size: 0.875rem;
+}
+
+.dose-type {
+  font-weight: 500;
+  display: block;
+}
+
+.dose-date {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.dose-note {
+  display: block;
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+.profile-timeline {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.phase-options {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.phase-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.9375rem;
+  cursor: pointer;
+}
+
+.phase-option input {
+  width: 18px;
+  height: 18px;
+}
+
+.phase-toggle {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.phase-opt {
+  text-align: left;
+  padding: 14px 16px;
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  background: var(--surface);
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.phase-opt.selected {
+  border-color: var(--accent-blue);
+  background: #eff6ff;
+}
+
+.phase-opt strong {
+  display: block;
+  margin-bottom: 2px;
+}
+
+.phase-opt span {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+.phase-table-card .phase-table {
+  font-size: 0.875rem;
+  margin-top: 8px;
+}
+
+.phase-table h4 {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+  margin: 12px 0 4px;
+}
+
+.phase-table h4:first-child {
+  margin-top: 0;
+}
+
+.phase-table p {
+  margin: 0 0 8px;
+  line-height: 1.45;
+  color: var(--text);
+}
+
+.phase-similar-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin: 0 0 8px;
+}
+
+.phase-similar-p {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin: 0;
+  line-height: 1.5;
+}

@@ -1,0 +1,256 @@
+.home-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header-title {
+  font-weight: 600;
+  font-size: 1.125rem;
+}
+
+.icon-btn {
+  padding: 8px;
+  color: var(--text);
+}
+
+.section-label {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  margin: 0 0 4px;
+}
+
+.glucose-card .glucose-value {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.glucose-num {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.glucose-unit {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+}
+
+.glucose-trend {
+  margin-left: 4px;
+  color: var(--text-muted);
+}
+
+.metrics-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.metric-badge .info-icon {
+  margin-left: 2px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.08);
+  font-size: 10px;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.graph-card {
+  padding-bottom: 8px;
+}
+
+.graph-wrap {
+  height: 140px;
+  margin: 0 -8px;
+}
+
+.glucose-graph {
+  width: 100%;
+  height: 100%;
+}
+
+.graph-axis {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  color: var(--text-muted);
+  margin-top: 4px;
+  padding: 0 4px;
+}
+
+.graph-time {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+  padding: 0 4px;
+}
+
+.graph-events {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.event-btn {
+  padding: 6px 10px;
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+.event-btn.add {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: white;
+  font-size: 20px;
+  line-height: 1;
+  margin-left: auto;
+}
+
+.event-icon {
+  font-size: 14px;
+}
+
+.event-icon.q {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--tir);
+  color: white;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+}
+
+.graph-source {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+.habits-card .habits-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.habits-card h2 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.pinned-badge {
+  font-size: 0.625rem;
+  font-weight: 600;
+  color: var(--glucose-mid);
+  letter-spacing: 0.05em;
+}
+
+.focus-text {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  margin: 0 0 8px;
+}
+
+.habits-summary {
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+  margin: 0 0 12px;
+}
+
+.habits-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 12px;
+}
+
+.habit-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.habit-item:last-child {
+  border-bottom: none;
+}
+
+.habit-icon {
+  font-size: 1.25rem;
+  flex-shrink: 0;
+}
+
+.habit-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.habit-label {
+  font-size: 0.875rem;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.habit-bar-wrap {
+  height: 4px;
+  background: #e2e8f0;
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.habit-bar {
+  height: 100%;
+  background: var(--accent-blue);
+  border-radius: 2px;
+  transition: width 0.2s;
+}
+
+.habit-fraction {
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+}
+
+.habit-more {
+  padding: 4px;
+  color: var(--text-muted);
+  font-size: 16px;
+  line-height: 1;
+}
+
+.habits-refresh {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin: 0 0 12px;
+}
+
+.link-btn {
+  background: none;
+  color: var(--accent-blue);
+  font-size: 0.875rem;
+  font-weight: 500;
+  padding: 0;
+}
+
+.phase-pill {
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin: 8px 16px 24px;
+}

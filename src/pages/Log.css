@@ -1,0 +1,62 @@
+.log-tabs {
+  display: flex;
+  gap: 4px;
+  padding: 12px 16px;
+  background: var(--surface);
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.log-tab {
+  flex: 1;
+  padding: 10px;
+  border-radius: 10px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  transition: background 0.2s, color 0.2s;
+}
+
+.log-tab.active {
+  background: #eff6ff;
+  color: var(--accent-blue);
+}
+
+.log-card h2 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin: 0 0 8px;
+}
+
+.log-hint,
+.log-placeholder {
+  font-size: 0.875rem;
+  color: var(--text-muted);
+  margin: 0 0 16px;
+  line-height: 1.45;
+}
+
+.log-card label {
+  display: block;
+  margin-bottom: 16px;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.log-card label input,
+.log-card label select {
+  display: block;
+  width: 100%;
+  margin-top: 6px;
+  padding: 10px 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  font-size: 1rem;
+}
+
+.log-card .btn-primary {
+  margin-top: 8px;
+}
+
+.log-card .btn-secondary {
+  margin-top: 8px;
+}
