@@ -1,15 +1,12 @@
 import { chromium } from 'playwright';
 import { readFileSync, mkdirSync, existsSync } from 'fs';
-import { join } from 'path';
+import { join, resolve } from 'path';
 
 const SCREENSHOT_DIR = '.protoflow-screens';
-const MANIFEST_PATH = 'protoflow-manifest.json';
 const HTML_PATH = 'ios/App/App/public/index.html';
 const VIEWPORT = { width: 393, height: 852 };
 
 if (!existsSync(SCREENSHOT_DIR)) mkdirSync(SCREENSHOT_DIR, { recursive: true });
-
-const manifest = JSON.parse(readFileSync(MANIFEST_PATH, 'utf-8'));
 
 const MOCK_STATE = {
   onboardingComplete: true,
@@ -27,25 +24,35 @@ const MOCK_STATE = {
   },
   weekOrder: ['baseline_cgm', 'nutrition', 'movement_cgm', 'full_system'],
   week1CheckIn: { answers: { q1: 3, q2: 2, q3: 3, q4: 2, q5: 3, q6: 2, q7: 3, q8: 2 }, completedAt: new Date().toISOString() },
+  week5CheckIn: { answers: { q1: 4, q2: 3, q3: 4, q4: 3, q5: 4, q6: 3, q7: 4, q8: 3 }, completedAt: new Date().toISOString() },
   hungerEntries: {},
   bodyScanEntries: {},
-  completedModules: { 'cgm_what_is': Date.now(), 'protein_anchor': Date.now(), 'walking_glucose': Date.now() },
-  completedGames: {},
+  completedModules: { 'cgm_basics': Date.now(), 'cgm_what_is': Date.now(), 'protein_anchor': Date.now(), 'walking_glucose': Date.now(), 'glp1_basics': Date.now() },
+  completedGames: { 'protein_guess': Date.now() },
   weeklyCheckIns: {},
   weeklyScoreHistory: [],
-  coachSessions: [],
-  strategyLog: [],
+  coachSessions: [
+    { timestamp: Date.now() - 86400000, scenario: 'still_hungry', path: ['< 30 min', 'Mostly carbs'], followUp: 'ate_intentional' },
+    { timestamp: Date.now() - 172800000, scenario: 'craving', path: ['Sweet'], followUp: 'paused' },
+    { timestamp: Date.now() - 259200000, scenario: 'still_hungry', path: ['< 30 min', 'Balanced'], followUp: 'satisfied' }
+  ],
+  strategyLog: [
+    { timestamp: Date.now() - 86400000, scenario: 'still_hungry', strategy: 'Drink a full glass of water first', helped: true },
+    { timestamp: Date.now() - 172800000, scenario: 'craving', strategy: 'Wait 10 minutes', helped: true },
+    { timestamp: Date.now() - 259200000, scenario: 'still_hungry', strategy: 'Eat protein first', helped: false }
+  ],
   focusAreas: [],
   doseEvents: [],
   preferences: {},
   dismissedBanners: {},
   maintenanceBandPct: 5,
-  weightAnchor: 165
+  weightAnchor: 165,
+  cgmOverride: null
 };
 
 function seedHungerEntries(state) {
   const today = new Date();
-  for (let i = 0; i < 7; i++) {
+  for (let i = 0; i < 10; i++) {
     const d = new Date(today);
     d.setDate(d.getDate() - i);
     const key = d.toISOString().split('T')[0];
@@ -59,183 +66,244 @@ function seedHungerEntries(state) {
 
 seedHungerEntries(MOCK_STATE);
 
+const PF = 'window.__protoflow';
+
 const SCREENS = [
+  // ─── ONBOARDING FLOW ───
   {
-    id: 'OnboardingView',
-    setup: async (page) => {
-      await page.evaluate(() => {
-        const s = JSON.parse(localStorage.getItem('signos-glp1') || '{}');
-        s.onboardingComplete = false;
-        localStorage.setItem('signos-glp1', JSON.stringify(s));
-        location.reload();
-      });
-      await page.waitForTimeout(1500);
-    }
+    id: 'Onboarding_Welcome',
+    setup: `
+      const s = JSON.parse(localStorage.getItem('signos-glp1') || '{}');
+      s.onboardingComplete = false;
+      localStorage.setItem('signos-glp1', JSON.stringify(s));
+    `,
+    reload: true
   },
   {
-    id: 'HomeView',
-    setup: async (page) => {
-      await page.evaluate(() => {
-        currentScreen = 'home';
-        render();
-      });
-      await page.waitForTimeout(800);
-    }
+    id: 'Onboarding_NameAge',
+    setup: `${PF}.setOnboardStep(1); ${PF}.navigate('onboarding');`
   },
   {
-    id: 'ToolkitView',
-    setup: async (page) => {
-      await page.evaluate(() => {
-        currentScreen = 'dailies';
-        render();
-      });
-      await page.waitForTimeout(800);
-    }
+    id: 'Onboarding_Medication',
+    setup: `${PF}.setOnboardStep(2); ${PF}.navigate('onboarding');`
   },
   {
-    id: 'LogView',
-    setup: async (page) => {
-      await page.evaluate(() => {
-        currentScreen = 'log';
-        render();
-      });
-      await page.waitForTimeout(800);
-    }
+    id: 'Onboarding_WhyOffGLP1',
+    setup: `${PF}.setOnboardStep(3); ${PF}.navigate('onboarding');`
   },
   {
-    id: 'InsightsView',
-    setup: async (page) => {
-      await page.evaluate(() => {
-        currentScreen = 'insights';
-        render();
-      });
-      await page.waitForTimeout(800);
-    }
+    id: 'Onboarding_BodyActivity',
+    setup: `${PF}.setOnboardStep(4); ${PF}.navigate('onboarding');`
   },
   {
-    id: 'SettingsView',
-    setup: async (page) => {
-      await page.evaluate(() => {
-        currentScreen = 'settings';
-        render();
-      });
-      await page.waitForTimeout(800);
-    }
+    id: 'Onboarding_Goals',
+    setup: `${PF}.setOnboardStep(5); ${PF}.navigate('onboarding');`
   },
   {
-    id: 'WeekDetailView',
-    setup: async (page) => {
-      await page.evaluate(() => {
-        openWeekNumber = 1;
-        currentScreen = 'week_detail';
-        render();
-      });
-      await page.waitForTimeout(800);
-    }
+    id: 'Onboarding_PreStruggles',
+    setup: `${PF}.setOnboardStep(6); ${PF}.navigate('onboarding');`
   },
   {
-    id: 'Post8CheckInView',
-    setup: async (page) => {
-      await page.evaluate(() => {
-        checkinWeek = 1;
-        post8Step = 0;
-        post8Answers = {};
-        currentScreen = 'post8_checkin';
-        render();
-      });
-      await page.waitForTimeout(800);
-    }
+    id: 'Onboarding_CurrentStruggles',
+    setup: `${PF}.setOnboardStep(7); ${PF}.navigate('onboarding');`
   },
   {
-    id: 'HungerCoachView',
-    setup: async (page) => {
-      await page.evaluate(() => {
-        if (typeof resetCoachState === 'function') resetCoachState();
-        currentScreen = 'hunger_coach';
-        render();
-      });
-      await page.waitForTimeout(800);
-    }
+    id: 'Onboarding_StrengthTraining',
+    setup: `${PF}.setOnboardStep(8); ${PF}.navigate('onboarding');`
   },
   {
-    id: 'HungerQuestionnaireView',
-    setup: async (page) => {
-      await page.evaluate(() => {
-        currentScreen = 'hunger_questionnaire';
-        render();
-      });
-      await page.waitForTimeout(800);
-    }
+    id: 'Onboarding_AssessmentQ1',
+    setup: `${PF}.setOnboardStep(9); ${PF}.navigate('onboarding');`
   },
   {
-    id: 'EducationModuleView',
-    setup: async (page) => {
-      await page.evaluate(() => {
-        openEducationModuleId = 'cgm_what_is';
-        currentScreen = 'education_module';
-        render();
-      });
-      await page.waitForTimeout(800);
-    }
+    id: 'Onboarding_AssessmentQ5',
+    setup: `${PF}.setOnboardStep(13); ${PF}.navigate('onboarding');`
   },
   {
-    id: 'EducationGameView',
-    setup: async (page) => {
-      await page.evaluate(() => {
-        openEducationGameType = 'protein_guess';
-        openEducationGameTitle = 'Protein Guess';
-        eduGameIndex = 0;
-        eduGameAnswered = false;
-        currentScreen = 'education_game';
-        render();
-      });
-      await page.waitForTimeout(800);
-    }
+    id: 'Onboarding_PersonalizedProgram',
+    setup: `${PF}.setOnboardStep(17); ${PF}.navigate('onboarding');`
+  },
+
+  // ─── HOME SCREEN STATES ───
+  {
+    id: 'Home_CGM_Active',
+    setup: `${PF}.setCGM(true); ${PF}.navigate('home');`
   },
   {
-    id: 'BodyScannerView',
-    setup: async (page) => {
-      await page.evaluate(() => {
-        currentScreen = 'body_scanner';
-        render();
-      });
-      await page.waitForTimeout(800);
-    }
+    id: 'Home_CGM_Off',
+    setup: `${PF}.setCGM(false); ${PF}.navigate('home');`
+  },
+
+  // ─── TOOLKIT ───
+  {
+    id: 'Toolkit_Main',
+    setup: `${PF}.navigate('dailies');`
+  },
+
+  // ─── WEEK DETAIL VIEWS ───
+  {
+    id: 'WeekDetail_Block1_Baseline',
+    setup: `${PF}.setWeek(1); ${PF}.navigate('week_detail');`
   },
   {
-    id: 'ProgramView',
-    setup: async (page) => {
-      await page.evaluate(() => {
-        currentScreen = 'program';
-        render();
-      });
-      await page.waitForTimeout(800);
-    }
+    id: 'WeekDetail_Block2_Nutrition',
+    setup: `${PF}.setWeek(2); ${PF}.navigate('week_detail');`
   },
   {
-    id: 'ToolkitModuleView',
-    setup: async (page) => {
-      await page.evaluate(() => {
-        currentToolkitModule = 0;
-        currentToolkitStep = 0;
-        currentScreen = 'toolkit_module';
-        render();
-      });
-      await page.waitForTimeout(800);
-    }
-  }
+    id: 'WeekDetail_Block3_Movement',
+    setup: `${PF}.setWeek(3); ${PF}.navigate('week_detail');`
+  },
+  {
+    id: 'WeekDetail_Block4_FullSystem',
+    setup: `${PF}.setWeek(4); ${PF}.navigate('week_detail');`
+  },
+  {
+    id: 'WeekDetail_Block5_Locked',
+    setup: `${PF}.setWeek(5); ${PF}.navigate('week_detail');`
+  },
+
+  // ─── SELF-ASSESSMENT FLOW ───
+  {
+    id: 'Assessment_Baseline_Intro',
+    setup: `${PF}.setCheckin(1); ${PF}.navigate('post8_checkin');`
+  },
+  {
+    id: 'Assessment_MidProgram_Intro',
+    setup: `${PF}.setCheckin(5); ${PF}.navigate('post8_checkin');`
+  },
+  {
+    id: 'Assessment_Post8_Intro',
+    setup: `${PF}.setCheckin(9); ${PF}.navigate('post8_checkin');`
+  },
+
+  // ─── LOG SCREEN ───
+  {
+    id: 'Log_Main',
+    setup: `${PF}.navigate('log');`
+  },
+
+  // ─── HUNGER QUESTIONNAIRE ───
+  {
+    id: 'HungerQuestionnaire',
+    setup: `${PF}.navigate('hunger_questionnaire');`
+  },
+
+  // ─── HUNGER COACH FLOW ───
+  {
+    id: 'HungerCoach_Landing',
+    setup: `${PF}.resetCoach(); ${PF}.navigate('hunger_coach');`
+  },
+  {
+    id: 'HungerCoach_Scenario_StillHungry',
+    setup: `${PF}.resetCoach(); ${PF}.setCoachScenario('still_hungry'); ${PF}.navigate('hunger_coach');`
+  },
+  {
+    id: 'HungerCoach_Scenario_Starving',
+    setup: `${PF}.resetCoach(); ${PF}.setCoachScenario('starving'); ${PF}.navigate('hunger_coach');`
+  },
+  {
+    id: 'HungerCoach_Scenario_Craving',
+    setup: `${PF}.resetCoach(); ${PF}.setCoachScenario('craving'); ${PF}.navigate('hunger_coach');`
+  },
+  {
+    id: 'HungerCoach_Scenario_NotHungry',
+    setup: `${PF}.resetCoach(); ${PF}.setCoachScenario('not_hungry'); ${PF}.navigate('hunger_coach');`
+  },
+  {
+    id: 'HungerCoach_Scenario_Unsure',
+    setup: `${PF}.resetCoach(); ${PF}.setCoachScenario('unsure'); ${PF}.navigate('hunger_coach');`
+  },
+  {
+    id: 'HungerCoach_Scenario_UnusualTime',
+    setup: `${PF}.resetCoach(); ${PF}.setCoachScenario('unusual_time'); ${PF}.navigate('hunger_coach');`
+  },
+  {
+    id: 'HungerCoach_Scenario_AboutToEat',
+    setup: `${PF}.resetCoach(); ${PF}.setCoachScenario('about_to_eat'); ${PF}.navigate('hunger_coach');`
+  },
+  {
+    id: 'HungerCoach_Scenario_PostMeal',
+    setup: `${PF}.resetCoach(); ${PF}.setCoachScenario('post_meal'); ${PF}.navigate('hunger_coach');`
+  },
+  {
+    id: 'HungerCoach_Scenario_HungerChanging',
+    setup: `${PF}.resetCoach(); ${PF}.setCoachScenario('hunger_changing'); ${PF}.navigate('hunger_coach');`
+  },
+  {
+    id: 'HungerCoach_Scenario_TeachMe',
+    setup: `${PF}.resetCoach(); ${PF}.setCoachScenario('teach_me'); ${PF}.navigate('hunger_coach');`
+  },
+
+  // ─── INSIGHTS TABS ───
+  {
+    id: 'Insights_Lifestyle',
+    setup: `${PF}.setInsightsTab('lifestyle'); ${PF}.navigate('insights');`
+  },
+  {
+    id: 'Insights_Glucose',
+    setup: `${PF}.setInsightsTab('glucose'); ${PF}.navigate('insights');`
+  },
+  {
+    id: 'Insights_Graduation',
+    setup: `${PF}.setInsightsTab('graduation'); ${PF}.navigate('insights');`
+  },
+
+  // ─── EDUCATION ───
+  {
+    id: 'Education_CGM_Basics',
+    setup: `${PF}.setEducationModule('cgm_basics'); ${PF}.navigate('education_module');`
+  },
+  {
+    id: 'Education_Protein_Anchor',
+    setup: `${PF}.setEducationModule('protein_anchor'); ${PF}.navigate('education_module');`
+  },
+  {
+    id: 'Education_Walking_Glucose',
+    setup: `${PF}.setEducationModule('walking_glucose'); ${PF}.navigate('education_module');`
+  },
+
+  // ─── EDUCATION GAMES ───
+  {
+    id: 'Game_ProteinGuess',
+    setup: `${PF}.setEducationGame('protein_guess', 'Protein Guess'); ${PF}.navigate('education_game');`
+  },
+  {
+    id: 'Game_BuildBalancedPlate',
+    setup: `${PF}.setEducationGame('build_plate', 'Build a Balanced Plate'); ${PF}.navigate('education_game');`
+  },
+
+  // ─── SETTINGS ───
+  {
+    id: 'Settings',
+    setup: `${PF}.navigate('settings');`
+  },
+
+  // ─── PROGRAM DETAILS ───
+  {
+    id: 'Program_Details',
+    setup: `${PF}.navigate('program');`
+  },
+
+  // ─── BODY SCANNER ───
+  {
+    id: 'BodyScanner',
+    setup: `${PF}.navigate('body_scanner');`
+  },
 ];
 
 async function main() {
   console.log('ProtoFlow Screenshot Capture');
   console.log('============================\n');
-  console.log(`Manifest: ${manifest.screens.length} screens`);
-  console.log(`Capturing: ${SCREENS.length} screens\n`);
+  console.log(`Capturing ${SCREENS.length} screens\n`);
+
+  const htmlFile = resolve(HTML_PATH);
+  const htmlUrl = `file://${htmlFile}`;
 
   const browser = await chromium.launch({ headless: true });
   const context = await browser.newContext({
     viewport: VIEWPORT,
-    deviceScaleFactor: 2
+    deviceScaleFactor: 2,
+    permissions: [],
   });
 
   let captured = 0;
@@ -250,27 +318,23 @@ async function main() {
         localStorage.setItem('signos-glp1', JSON.stringify(mockState));
       }, MOCK_STATE);
 
-      const htmlUrl = `file://${process.cwd()}/${HTML_PATH}`;
       await page.goto(htmlUrl, { waitUntil: 'domcontentloaded', timeout: 15000 });
       await page.waitForTimeout(1000);
 
-      if (screen.id === 'OnboardingView') {
-        await page.evaluate(() => {
-          const s = JSON.parse(localStorage.getItem('signos-glp1') || '{}');
-          s.onboardingComplete = false;
-          localStorage.setItem('signos-glp1', JSON.stringify(s));
-        });
+      if (screen.reload) {
+        await page.evaluate(screen.setup);
         await page.reload({ waitUntil: 'domcontentloaded' });
         await page.waitForTimeout(1500);
       } else {
-        await screen.setup(page);
+        await page.evaluate(screen.setup);
+        await page.waitForTimeout(600);
       }
 
       await page.screenshot({ path: filePath, fullPage: false });
       console.log(`  ✓ ${screen.id}`);
       captured++;
     } catch (err) {
-      console.log(`  ✗ ${screen.id} — ${err.message}`);
+      console.log(`  ✗ ${screen.id} — ${err.message.split('\n')[0]}`);
       failed++;
     }
 
@@ -280,15 +344,15 @@ async function main() {
   await browser.close();
 
   console.log(`\nDone: ${captured} captured, ${failed} failed`);
-  console.log(`Screenshots saved to ${SCREENSHOT_DIR}/`);
+  console.log(`Screenshots in ${SCREENSHOT_DIR}/`);
 
   if (captured === 0) {
-    console.error('\nERROR: No screenshots captured. Check the HTML file path.');
+    console.error('\nERROR: No screenshots captured.');
     process.exit(1);
   }
 }
 
 main().catch(err => {
-  console.error('Fatal error:', err);
+  console.error('Fatal:', err);
   process.exit(1);
 });

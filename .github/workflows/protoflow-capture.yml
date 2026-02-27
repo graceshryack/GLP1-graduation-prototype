@@ -37,7 +37,7 @@ jobs:
         if: always()
         run: |
           SCREENS_DIR=".protoflow-screens"
-          CAPTURED=$(ls -1 "$SCREENS_DIR"/*.png 2>/dev/null | wc -l | tr -d ' ')
+          CAPTURED=$(find "$SCREENS_DIR" -name "*.png" 2>/dev/null | wc -l | tr -d ' ')
           echo "## ProtoFlow Screenshot Capture" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "**Screenshots captured:** $CAPTURED" >> $GITHUB_STEP_SUMMARY
@@ -48,10 +48,10 @@ jobs:
             echo "" >> $GITHUB_STEP_SUMMARY
             echo "Open the ProtoFlow plugin in Figma and enter this ID to see the UX flow with real screenshots." >> $GITHUB_STEP_SUMMARY
           else
-            echo "**Upload:** Check the 'Upload to ProtoFlow' step logs for details." >> $GITHUB_STEP_SUMMARY
+            echo "**Upload:** Check the Upload to ProtoFlow step logs for details." >> $GITHUB_STEP_SUMMARY
           fi
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "### Captured Screens" >> $GITHUB_STEP_SUMMARY
-          for f in "$SCREENS_DIR"/*.png 2>/dev/null; do
-            [ -f "$f" ] && echo "- ✓ $(basename "$f" .png)" >> $GITHUB_STEP_SUMMARY
+          find "$SCREENS_DIR" -name "*.png" -exec basename {} .png \; 2>/dev/null | sort | while read name; do
+            echo "- ✓ $name" >> $GITHUB_STEP_SUMMARY
           done

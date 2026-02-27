@@ -4918,6 +4918,27 @@
 
       seedWeeklyScoreHistory(state);
       recordCurrentWeekScore(state);
+
+      window.__protoflow = {
+        navigate: function(screen) { currentScreen = screen; render(); },
+        setWeek: function(w) { openWeekNumber = w; },
+        setCGM: function(val) { cgmOverride = val; },
+        setInsightsTab: function(seg) { insightsSegment = seg; },
+        setOnboardStep: function(s) { onboardStep = s; },
+        setCheckin: function(w) { checkinWeek = w; post8Step = 0; post8Answers = {}; },
+        setCheckinStep: function(s) { post8Step = s; },
+        setEducationModule: function(id) { openEducationModuleId = id; },
+        setEducationGame: function(type, title) {
+          openEducationGameType = type;
+          openEducationGameTitle = title || type;
+          eduGameIndex = 0; eduGameAnswered = false;
+        },
+        resetCoach: function() { coachState = { scenario: null, branch: null, step: 0, path: [], haltSelected: null, scanStep: -1, followUpShown: false, timerActive: false, timerSeconds: 0, timerInterval: null, viewingLesson: null, mealTimerActive: false, mealTimerSeconds: 0, mealTimerInterval: null, strategyTracked: false }; },
+        setCoachScenario: function(sc) { coachState.scenario = sc; coachState.branch = null; coachState.step = 0; coachState.path = []; },
+        render: function() { render(); },
+        getState: function() { return state; }
+      };
+
       render();
     })();
     } catch (e) {
