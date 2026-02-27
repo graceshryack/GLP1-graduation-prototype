@@ -1,0 +1,202 @@
+{
+  "version": "1.0",
+  "projectName": "GLP1 Graduation Program",
+  "platform": "ios-capacitor-web",
+  "screens": [
+    {
+      "id": "OnboardingView",
+      "name": "Onboarding",
+      "purpose": "18-step personalized onboarding collecting profile, medication history, struggles, and baseline assessment",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": ["First screen for new users", "Generates personalized block order on completion"]
+    },
+    {
+      "id": "HomeView",
+      "name": "Home Dashboard",
+      "purpose": "Primary dashboard with glucose graph, graduation card, hunger coach, GPA strip, weight graph, habits",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": ["Default screen after onboarding", "CGM-aware: live vs average glucose display", "Hunger coach card elevated during off-CGM blocks"]
+    },
+    {
+      "id": "ToolkitView",
+      "name": "Graduation Toolkit",
+      "purpose": "Education hub with scrollable graduation timeline, core principles, block goal, education sections",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": ["Scrollable timeline with 16 week dots in 8 block containers", "Blocks 5-8 locked until check-in"]
+    },
+    {
+      "id": "LogView",
+      "name": "Log",
+      "purpose": "Central logging hub for hunger check-in, body scanner, food, exercise, water, sleep, glucose notes",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": ["Hunger check-in is primary CTA"]
+    },
+    {
+      "id": "InsightsView",
+      "name": "Insights",
+      "purpose": "Three-tab insights with Lifestyle GPA, Glucose GPA + sensor comparison, Graduation trend",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": ["Tabs: Lifestyle, Glucose, Graduation", "GPA detail modals with component drill-down", "Sensor comparison graph overlays completed CGM periods"]
+    },
+    {
+      "id": "SettingsView",
+      "name": "Settings",
+      "purpose": "User profile display, program details link, maintenance band settings, program reset",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": ["Reset button clears all data and returns to onboarding step 0"]
+    },
+    {
+      "id": "WeekDetailView",
+      "name": "Block Detail",
+      "purpose": "Full-screen view of a single block's goal, education modules, CGM status, and assessment links",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": ["Shows locked state for Blocks 5-8", "Block 1 and Block 3 have assessment cards"]
+    },
+    {
+      "id": "Post8CheckInView",
+      "name": "Self-Assessment Check-In",
+      "purpose": "4-step parameterized self-assessment flow used at baseline (Block 1), mid-program (Block 3), and post-foundation (Block 5)",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": ["Parameterized by checkinWeek (1, 5, or 9)", "Block 5 version includes focus area selection that unlocks Blocks 5-8"]
+    },
+    {
+      "id": "HungerCoachView",
+      "name": "Hunger Coach",
+      "purpose": "Interactive conversational coaching with 10 scenarios, glucose integration, strategy tracking, mini-lessons",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": ["Primary tool during off-CGM blocks", "Glucose card shows live data on-CGM, historical off-CGM", "Strategy tracking builds personal playbook"]
+    },
+    {
+      "id": "HungerQuestionnaireView",
+      "name": "Hunger Check-In",
+      "purpose": "Daily hunger/fullness rating (1-5 each) with glucose-aware post-submit feedback",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": ["Post-submit glucose insight card from getGlucoseHungerInsight()", "Links to Hunger Coach on high hunger"]
+    },
+    {
+      "id": "EducationModuleView",
+      "name": "Education Article",
+      "purpose": "Long-form education article reading view (1-3 minute reads) with completion tracking",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": ["Three tiers: Foundation, Intermediate, Advanced", "Completion feeds into Consistency GPA"]
+    },
+    {
+      "id": "EducationGameView",
+      "name": "Interactive Game",
+      "purpose": "Hands-on learning activities including quizzes, builders, camera exercises, and meditation timer",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": ["8 game types across Exercise and Stress sections"]
+    },
+    {
+      "id": "BodyScannerView",
+      "name": "Body Scanner",
+      "purpose": "Camera-based body composition scan with mock analysis (body fat %, visceral fat %, lifestyle bonus)",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": ["Uses navigator.mediaDevices.getUserMedia", "Results feed into Lifestyle GPA"]
+    },
+    {
+      "id": "ProgramView",
+      "name": "Program Details",
+      "purpose": "Detailed program metrics, dose event history, and graduation readiness score",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": ["Accessed from Settings"]
+    },
+    {
+      "id": "ToolkitModuleView",
+      "name": "Toolkit Module",
+      "purpose": "Step-by-step toolkit module with multi-step reading and activities",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": ["7 core modules covering education overview through success metrics"]
+    }
+  ],
+  "flows": [
+    {
+      "name": "First-Time User Onboarding",
+      "steps": [
+        {"screenId": "OnboardingView", "action": "Completes 18 steps", "annotation": "Profile, medication, struggles, baseline assessment"},
+        {"screenId": "HomeView", "action": "", "annotation": "User arrives at personalized dashboard"}
+      ]
+    },
+    {
+      "name": "Daily Hunger Check-In",
+      "steps": [
+        {"screenId": "HomeView", "action": "Taps hunger CTA", "annotation": "Always visible on home screen"},
+        {"screenId": "HungerQuestionnaireView", "action": "Rates hunger and fullness 1-5", "annotation": "Named scale anchors with color coding"},
+        {"screenId": "HungerQuestionnaireView", "action": "", "annotation": "Sees glucose insight card + educational feedback"}
+      ]
+    },
+    {
+      "name": "Hunger Coach Session",
+      "steps": [
+        {"screenId": "HomeView", "action": "Taps Talk to your coach", "annotation": "Coach card always visible, elevated during off-CGM"},
+        {"screenId": "HungerCoachView", "action": "Selects a scenario", "annotation": "10 scenarios in 3 categories"},
+        {"screenId": "HungerCoachView", "action": "Answers branching questions", "annotation": "Context-specific conversation flow"},
+        {"screenId": "HungerCoachView", "action": "Commits to a strategy", "annotation": "Strategy logged for effectiveness tracking"},
+        {"screenId": "HungerCoachView", "action": "Selects outcome", "annotation": "Positive reframing: paused/ate intentionally/satisfied/learn more"}
+      ]
+    },
+    {
+      "name": "Explore Graduation Timeline",
+      "steps": [
+        {"screenId": "HomeView", "action": "Taps graduation card", "annotation": "Shows progress % and criteria met"},
+        {"screenId": "ToolkitView", "action": "Scrolls timeline, taps week dot", "annotation": "16 dots in 8 block containers"},
+        {"screenId": "WeekDetailView", "action": "Reviews block goal", "annotation": "Personalized goal and education"},
+        {"screenId": "EducationModuleView", "action": "Reads article, marks complete", "annotation": "1-3 minute read with completion tracking"}
+      ]
+    },
+    {
+      "name": "Post-Block-4 Check-In and Unlock",
+      "steps": [
+        {"screenId": "ToolkitView", "action": "Taps locked Block 5", "annotation": "Lock icon visible on Blocks 5-8"},
+        {"screenId": "WeekDetailView", "action": "Taps Start your check-in", "annotation": "Locked state with check-in prompt"},
+        {"screenId": "Post8CheckInView", "action": "Reviews insights, answers quiz, selects focus", "annotation": "4-step flow: insights -> quiz -> feedback -> focus selection"},
+        {"screenId": "WeekDetailView", "action": "", "annotation": "Blocks 5-8 now unlocked with personalized content"}
+      ]
+    },
+    {
+      "name": "CGM Toggle",
+      "steps": [
+        {"screenId": "HomeView", "action": "Taps CGM badge", "annotation": "Toggles between LIVE (blue) and OFF (amber) views"}
+      ]
+    },
+    {
+      "name": "Sensor Comparison in Insights",
+      "steps": [
+        {"screenId": "HomeView", "action": "Taps GPA strip", "annotation": "Navigates to Insights"},
+        {"screenId": "InsightsView", "action": "Taps Glucose tab", "annotation": "Shows sensor comparison graph"},
+        {"screenId": "InsightsView", "action": "", "annotation": "Overlaid glucose curves across completed sensor periods"}
+      ]
+    },
+    {
+      "name": "GPA Drill-Down",
+      "steps": [
+        {"screenId": "InsightsView", "action": "Taps GPA card", "annotation": "Opens bottom-sheet modal"},
+        {"screenId": "InsightsView", "action": "Taps component", "annotation": "Component detail with 5 improvement tips"}
+      ]
+    },
+    {
+      "name": "Body Scanner",
+      "steps": [
+        {"screenId": "LogView", "action": "Taps Body Scanner", "annotation": "Camera access required"},
+        {"screenId": "BodyScannerView", "action": "Starts scan, waits 5 seconds", "annotation": "Mock analysis"},
+        {"screenId": "BodyScannerView", "action": "", "annotation": "Results: body fat %, visceral fat %, lifestyle bonus"}
+      ]
+    },
+    {
+      "name": "Program Reset",
+      "steps": [
+        {"screenId": "SettingsView", "action": "Taps Reset program", "annotation": "Red-bordered card"},
+        {"screenId": "SettingsView", "action": "Confirms in modal", "annotation": "Clears all localStorage"},
+        {"screenId": "OnboardingView", "action": "", "annotation": "Returns to step 0 with cleared nav history"}
+      ]
+    },
+    {
+      "name": "Hunger Coach Mini-Lesson",
+      "steps": [
+        {"screenId": "HungerCoachView", "action": "Selects Teach me about hunger", "annotation": "Or taps learn more in follow-up"},
+        {"screenId": "HungerCoachView", "action": "Selects a lesson", "annotation": "5 lessons: types of hunger, hunger scale, GLP-1 effects, satiation toolkit, glucose-hunger"},
+        {"screenId": "HungerCoachView", "action": "", "annotation": "Full content with key takeaway card"}
+      ]
+    }
+  ]
+}

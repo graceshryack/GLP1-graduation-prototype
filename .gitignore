@@ -6,3 +6,4 @@ dist
 .env.*
 xcuserdata/
 *.xcuserstate
+github-upload/
