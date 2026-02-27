@@ -4,22 +4,25 @@ import https from 'https';
 
 const API = 'https://protoflow-app.netlify.app';
 
-function findSnapshots(dir) {
+function findSnapshots() {
   const results = {};
-  if (!existsSync(dir)) return results;
-  const walk = (d) => {
-    for (const entry of readdirSync(d, { withFileTypes: true })) {
-      const full = join(d, entry.name);
-      if (entry.isDirectory()) walk(full);
-      else if (entry.name.endsWith('.png')) {
-        const id = basename(entry.name, '.png')
-          .replace(/^test_/, '')
-          .replace(/\.1$/, '');
-        results[id] = full;
-      }
+  const dirs = [
+    '.protoflow-screens',
+    'Tests/ProtoFlowCaptureTests/__Snapshots__/ProtoFlowCaptureTests',
+    'Tests/__Snapshots__',
+  ];
+
+  for (const dir of dirs) {
+    if (!existsSync(dir)) continue;
+    for (const entry of readdirSync(dir)) {
+      if (!entry.endsWith('.png')) continue;
+      const id = basename(entry, '.png')
+        .replace(/^test_/, '')
+        .replace(/\.1$/, '');
+      results[id] = join(dir, entry);
     }
-  };
-  walk(dir);
+  }
+
   return results;
 }
 
@@ -57,26 +60,7 @@ async function main() {
   console.log('Screens:', manifest.screens.length);
   console.log('Flows:', manifest.flows.length);
 
-  const searchDirs = [
-    'Tests', 'ProtoFlowCaptureTests', '__Snapshots__',
-    join('Tests', 'ProtoFlowCaptureTests', '__Snapshots__'),
-    join('Tests', '__Snapshots__'),
-    join('ios', 'App', 'Tests'),
-  ];
-
-  let allSnapshots = {};
-  for (const dir of searchDirs) {
-    const found = findSnapshots(dir);
-    Object.assign(allSnapshots, found);
-  }
-
-  const rootSnapshots = findSnapshots('.');
-  for (const [id, path] of Object.entries(rootSnapshots)) {
-    if (!allSnapshots[id] && path.includes('__Snapshots__')) {
-      allSnapshots[id] = path;
-    }
-  }
-
+  const allSnapshots = findSnapshots();
   console.log('\nScreenshots found:', Object.keys(allSnapshots).length);
 
   const screens = manifest.screens.map(s => {
@@ -105,16 +89,18 @@ async function main() {
       figmaPayload: payload,
     });
 
+    const genId = result.generationId || result.id || 'unknown';
     console.log('\n✓ Upload complete!');
-    console.log('  Generation ID:', result.generationId);
-    console.log('  Figma Plugin URL:', result.figmaPluginUrl);
+    console.log('  Generation ID:', genId);
+    if (result.figmaPluginUrl) console.log('  Figma Plugin URL:', result.figmaPluginUrl);
 
     writeFileSync('.protoflow/last-generation.json', JSON.stringify(result, null, 2));
     console.log('\nSaved to .protoflow/last-generation.json');
   } catch (err) {
     console.error('Upload failed:', err.message);
-    writeFileSync('.protoflow-payload.json', JSON.stringify(payload));
+    writeFileSync('.protoflow-payload.json', JSON.stringify(payload, null, 2));
     console.log('Payload saved locally to .protoflow-payload.json');
+    console.log('You can paste this into the Figma ProtoFlow plugin "Paste JSON" tab.');
     process.exit(1);
   }
 }

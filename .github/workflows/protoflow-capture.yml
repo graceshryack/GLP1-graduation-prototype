@@ -4,35 +4,31 @@ on:
   push:
     branches: [main, develop]
     paths:
-      - '**/*.swift'
-      - '**/*.html'
+      - 'ios/App/App/public/**'
       - 'protoflow-manifest.json'
+      - '.protoflow/**'
   workflow_dispatch:
 
 jobs:
   capture:
     name: Capture & Upload UX Flow
-    runs-on: macos-14
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      - name: Select Xcode
-        run: sudo xcode-select -s /Applications/Xcode_15.4.app/Contents/Developer
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
 
-      - name: Resolve packages
-        run: xcodebuild -resolvePackageDependencies -project ios/App/App.xcodeproj -scheme App
-
-      - name: Build & capture snapshots
-        env:
-          SNAPSHOT_TESTING_RECORD: all
+      - name: Install Playwright
         run: |
-          set -o pipefail
-          xcodebuild test \
-            -project ios/App/App.xcodeproj \
-            -scheme App \
-            -destination 'platform=iOS Simulator,name=iPhone 15 Pro' \
-            -only-testing:AppTests/ProtoFlowCaptureTests \
-            2>&1 | xcpretty || true
+          npm init -y --silent 2>/dev/null
+          npm install playwright@latest
+          npx playwright install chromium
+
+      - name: Capture screenshots
+        run: node .protoflow/capture-screens.mjs
 
       - name: Upload to ProtoFlow
         run: node .protoflow/ci-upload.mjs
@@ -40,11 +36,22 @@ jobs:
       - name: Summary
         if: always()
         run: |
+          SCREENS_DIR=".protoflow-screens"
+          CAPTURED=$(ls -1 "$SCREENS_DIR"/*.png 2>/dev/null | wc -l | tr -d ' ')
+          echo "## ProtoFlow Screenshot Capture" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Screenshots captured:** $CAPTURED" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
           if [ -f .protoflow/last-generation.json ]; then
-            GEN_ID=$(node -e "console.log(JSON.parse(require('fs').readFileSync('.protoflow/last-generation.json','utf-8')).generationId)")
-            echo "## ProtoFlow UX Flow Generated" >> $GITHUB_STEP_SUMMARY
-            echo "" >> $GITHUB_STEP_SUMMARY
+            GEN_ID=$(node -e "console.log(JSON.parse(require('fs').readFileSync('.protoflow/last-generation.json','utf-8')).generationId || 'unknown')")
             echo "**Generation ID:** \`$GEN_ID\`" >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY
             echo "Open the ProtoFlow plugin in Figma and enter this ID to see the UX flow with real screenshots." >> $GITHUB_STEP_SUMMARY
+          else
+            echo "**Upload:** Check the 'Upload to ProtoFlow' step logs for details." >> $GITHUB_STEP_SUMMARY
           fi
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Captured Screens" >> $GITHUB_STEP_SUMMARY
+          for f in "$SCREENS_DIR"/*.png 2>/dev/null; do
+            [ -f "$f" ] && echo "- ✓ $(basename "$f" .png)" >> $GITHUB_STEP_SUMMARY
+          done
