@@ -30,8 +30,16 @@ jobs:
       - name: Capture screenshots
         run: node .protoflow/capture-screens.mjs
 
+      - name: Upload screenshots as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: protoflow-screenshots
+          path: .protoflow-screens/
+          retention-days: 30
+
       - name: Upload to ProtoFlow
         run: node .protoflow/ci-upload.mjs
+        continue-on-error: true
 
       - name: Summary
         if: always()
