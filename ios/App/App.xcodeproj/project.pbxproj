@@ -10,13 +10,27 @@
 		A1000001 /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000002 /* App.swift */; };
 		A1000003 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A1000004 /* Assets.xcassets */; };
 		A1000005 /* public in Resources */ = {isa = PBXBuildFile; fileRef = A1000006 /* public */; };
+		B1000001 /* ProtoFlowCaptureTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B1000002 /* ProtoFlowCaptureTests.swift */; };
+		B1000003 /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = B1000004 /* SnapshotTesting */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		B1000010 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A1000015 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A1000011;
+			remoteInfo = App;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		A1000002 /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
 		A1000004 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A1000006 /* public */ = {isa = PBXFileReference; lastKnownFileType = folder; path = public; sourceTree = "<group>"; };
 		A1000007 /* App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = App.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B1000002 /* ProtoFlowCaptureTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProtoFlowCaptureTests.swift; sourceTree = "<group>"; };
+		B1000020 /* ProtoFlowCaptureTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ProtoFlowCaptureTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -27,6 +41,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		B1000008 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B1000003 /* SnapshotTesting in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -34,6 +56,7 @@
 			isa = PBXGroup;
 			children = (
 				A100000A /* App */,
+				B100000A /* Tests */,
 				A1000010 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -54,8 +77,25 @@
 			isa = PBXGroup;
 			children = (
 				A1000007 /* App.app */,
+				B1000020 /* ProtoFlowCaptureTests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		B100000A /* Tests */ = {
+			isa = PBXGroup;
+			children = (
+				B100000B /* ProtoFlowCaptureTests */,
+			);
+			path = Tests;
+			sourceTree = "<group>";
+		};
+		B100000B /* ProtoFlowCaptureTests */ = {
+			isa = PBXGroup;
+			children = (
+				B1000002 /* ProtoFlowCaptureTests.swift */,
+			);
+			path = ProtoFlowCaptureTests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -74,9 +114,32 @@
 			dependencies = (
 			);
 			name = App;
+			packageProductDependencies = (
+			);
 			productName = App;
 			productReference = A1000007 /* App.app */;
 			productType = "com.apple.product-type.application";
+		};
+		B1000011 /* ProtoFlowCaptureTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B1000012 /* Build configuration list for PBXNativeTarget "ProtoFlowCaptureTests" */;
+			buildPhases = (
+				B1000013 /* Sources */,
+				B1000008 /* Frameworks */,
+				B1000014 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				B1000015 /* PBXTargetDependency */,
+			);
+			name = ProtoFlowCaptureTests;
+			packageProductDependencies = (
+				B1000004 /* SnapshotTesting */,
+			);
+			productName = ProtoFlowCaptureTests;
+			productReference = B1000020 /* ProtoFlowCaptureTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
 
@@ -91,6 +154,10 @@
 					A1000011 = {
 						CreatedOnToolsVersion = 15.0;
 					};
+					B1000011 = {
+						CreatedOnToolsVersion = 15.0;
+						TestTargetID = A1000011;
+					};
 				};
 			};
 			buildConfigurationList = A1000016 /* Build configuration list for PBXProject "App" */;
@@ -102,11 +169,15 @@
 				Base,
 			);
 			mainGroup = A1000009;
+			packageReferences = (
+				B1000030 /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */,
+			);
 			productRefGroup = A1000010 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
 				A1000011 /* App */,
+				B1000011 /* ProtoFlowCaptureTests */,
 			);
 		};
 /* End PBXProject section */
@@ -121,6 +192,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		B1000014 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -132,7 +210,23 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		B1000013 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B1000001 /* ProtoFlowCaptureTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		B1000015 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A1000011 /* App */;
+			targetProxy = B1000010 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		A1000017 /* Debug */ = {
@@ -248,6 +342,42 @@
 			};
 			name = Release;
 		};
+		B1000019 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.signos.glp1transition.tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/App.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/App";
+			};
+			name = Debug;
+		};
+		B100001A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.signos.glp1transition.tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/App.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/App";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -269,7 +399,35 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
+		B1000012 /* Build configuration list for PBXNativeTarget "ProtoFlowCaptureTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B1000019 /* Debug */,
+				B100001A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		B1000030 /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/pointfreeco/swift-snapshot-testing";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		B1000004 /* SnapshotTesting */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B1000030 /* XCRemoteSwiftPackageReference "swift-snapshot-testing" */;
+			productName = SnapshotTesting;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = A1000015 /* Project object */;
 }

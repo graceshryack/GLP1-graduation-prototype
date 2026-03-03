@@ -16,18 +16,21 @@ The app is structured around intermittent CGM wear (4 sensor periods across 16 w
 
 ## Key Features
 
-| Feature | Description | Status |
-|---------|-------------|--------|
-| Personalized Onboarding | 18-step flow collecting profile, medication history, struggles, baseline assessment | Implemented |
-| 8-Block Program Structure | 16 weeks in 8 two-week blocks with personalized ordering of Blocks 2 & 4 | Implemented |
-| Hunger Coach | Interactive conversational coaching with 10 scenarios, glucose integration, strategy tracking | Implemented |
-| Intermittent CGM | 4 sensor periods (Blocks 1, 3, 6, 8) with live/historical toggle and sensor comparison | Implemented |
-| Weight Maintenance Band | ±3–5% band shown from day 1 with normalization messaging | Implemented |
-| Graduation Criteria | 4 criteria (Glucose GPA, Lifestyle GPA, weight in band, education completion) | Implemented |
-| Self-Assessment Flow | Parameterized check-in at Block 1 (onboarding), Block 3, and Block 5 | Implemented |
-| Education System | 6 sections, 47+ modules, 5 interactive games, progressive unlock per block | Implemented |
-| Glucose-Hunger Integration | Real-time glucose context in coach responses, check-in feedback, and landing page | Implemented |
-| Body Scanner | Camera-based body composition scan (mock) feeding into Lifestyle GPA | Implemented |
+| Feature | Description | Phase | Status |
+|---------|-------------|-------|--------|
+| Personalized Onboarding | 18-step flow collecting profile, medication history, struggles, baseline assessment | 1 | Implemented |
+| 8-Block Program Structure | 16 weeks in 8 two-week blocks with personalized ordering of Blocks 2 & 4 | 1 | Implemented |
+| Hunger Coach | Interactive conversational coaching with 10 scenarios, 57 branching paths, glucose integration, strategy tracking | 1 | Implemented |
+| Intermittent CGM | 4 sensor periods (Blocks 1, 3, 6, 8) with live/historical toggle | 1 | Implemented |
+| Weight Maintenance Band | ±3–5% band shown from day 1 with normalization messaging | 1 | Implemented |
+| Graduation Criteria | 4 criteria (Glucose GPA, Lifestyle GPA, weight in band, education completion) | 1 | Implemented |
+| Self-Assessment Flow | Parameterized check-in at Block 1 (baseline), Block 3 (mid-program), and Block 5 (post-foundation) | 1 | Implemented |
+| Education System | 6 sections, 47+ modules, 5 interactive games, progressive unlock per block | 1 | Implemented |
+| Glucose-Hunger Integration | Real-time glucose context in coach responses, check-in feedback, and landing page | 1 | Implemented |
+| Daily/Weekly Check-Ins | Hunger check-in with glucose insight + weekly mood/confidence journal | 1 | Implemented |
+| Insights Tabs | Three-tab insights: Lifestyle GPA, Glucose sensor comparison, Graduation trends | **2** | Deferred |
+| Body Scanner | Camera-based body composition scan (mock) feeding into Lifestyle GPA | 2 | Implemented |
+| Sensor Comparison Graph | Overlaid daily glucose curves across CGM periods with metrics table | **2** | Deferred |
 
 ## User Stories
 

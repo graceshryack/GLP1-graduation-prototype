@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PRD — Signos GLP-1 Graduation Program</title>
+<style>
+  body { font-family: 'Helvetica Neue', Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 40px 24px; color: #1a1a1a; line-height: 1.6; font-size: 11pt; }
+  h1 { font-size: 22pt; margin: 0 0 4px; border-bottom: 3px solid #7c3aed; padding-bottom: 8px; }
+  h2 { font-size: 16pt; margin: 36px 0 12px; border-bottom: 1px solid #ddd; padding-bottom: 6px; color: #7c3aed; }
+  h3 { font-size: 13pt; margin: 24px 0 8px; color: #333; }
+  h4 { font-size: 11pt; margin: 18px 0 6px; color: #555; }
+  p { margin: 0 0 10px; }
+  ul, ol { margin: 0 0 12px; padding-left: 24px; }
+  li { margin-bottom: 4px; }
+  strong { color: #1a1a1a; }
+  code { background: #f3f0ff; padding: 1px 5px; border-radius: 3px; font-size: 10pt; font-family: 'SF Mono', 'Menlo', monospace; color: #7c3aed; }
+  pre { background: #f8f8f8; border: 1px solid #e0e0e0; border-radius: 6px; padding: 12px 16px; font-size: 9.5pt; overflow-x: auto; font-family: 'SF Mono', 'Menlo', monospace; margin: 0 0 14px; }
+  pre code { background: none; padding: 0; color: #333; }
+  table { border-collapse: collapse; width: 100%; margin: 0 0 16px; font-size: 10pt; }
+  th { background: #f5f3ff; text-align: left; padding: 8px 10px; border: 1px solid #ddd; font-weight: 700; color: #4c1d95; }
+  td { padding: 6px 10px; border: 1px solid #ddd; vertical-align: top; }
+  tr:nth-child(even) td { background: #fafafa; }
+  hr { border: none; border-top: 1px solid #e0e0e0; margin: 28px 0; }
+  .meta { color: #666; font-size: 10pt; margin-bottom: 24px; }
+  .meta strong { color: #333; }
+</style>
+</head>
+<body>
+
+<h1>Product Requirements Document (PRD)</h1>
+<h2 style="border:none;color:#1a1a1a;font-size:18pt;margin-top:4px">Signos GLP-1 Graduation Program</h2>
+
+<div class="meta">
+<strong>Product Name:</strong> Signos GLP-1 Graduation<br>
+<strong>Platform:</strong> iOS (Capacitor-wrapped web app)<br>
+<strong>Version:</strong> 5.0<br>
+<strong>Original Date:</strong> February 11, 2026<br>
+<strong>Last Updated:</strong> March 2, 2026
+</div>
+
+<hr>
+
+<h2>1. Overview</h2>
+
+<p>The Signos GLP-1 Graduation Program is a <strong>16-week (8-block) mobile application</strong> designed to help users tapering off or recently off GLP-1 receptor agonist medications (e.g., semaglutide, tirzepatide) build durable health habits and graduate with the skills, scores, and confidence to thrive without medication.</p>
+
+<p>The application provides:</p>
+<ul>
+<li>A comprehensive, personalized onboarding that collects profile data and tailors the program to the user's struggles</li>
+<li>A 2-week block model (8 blocks of 2 weeks each) with aligned CGM sensor periods and habit-building goals</li>
+<li>An intermittent CGM schedule — 4 sensor periods across 16 weeks for targeted data collection and validation</li>
+<li>A progressive education curriculum organized by block, with personalized block ordering</li>
+<li>An interactive Hunger Coach that integrates real-time glucose context</li>
+<li>A personalized final 4 blocks (Blocks 5–8) based on user self-assessment</li>
+<li>Actionable insights powered by continuous glucose monitor (CGM) data</li>
+<li>Baseline, mid-program, and post-foundation self-assessments</li>
+</ul>
+
+<h3>Core Thesis</h3>
+<p>The window during and immediately after GLP-1 treatment is the optimal time to build lasting habits in nutrition, exercise, sleep, and stress management. The 16-week graduation program builds these habits from baseline observation to mastery across 8 two-week blocks, with intermittent CGM wear periods that validate progress with data.</p>
+
+<h3>Key Design Principles</h3>
+<ul>
+<li><strong>Single unified program</strong> — no phase switching, one continuous 16-week journey structured as 8 two-week blocks</li>
+<li><strong>Purple (#7c3aed) identity throughout</strong> — consistent, unified visual experience</li>
+<li><strong>2-week blocks align CGM and goals</strong> — each CGM sensor period (15 days) maps cleanly to one block, preventing misalignment between sensor data and habit focus</li>
+<li><strong>CGM validates, habits persist</strong> — on-CGM blocks prove habits work with data; off-CGM blocks build habits by feel</li>
+<li><strong>Hunger is a skill to develop</strong> ("Hunger awareness"), not a problem to suppress</li>
+<li><strong>Glucose explains hunger</strong> — CGM data is connected to hunger signals to teach users why they feel what they feel</li>
+<li><strong>Weight regain is biologically expected, not failure</strong> — maintenance band shown from day 1</li>
+<li><strong>Graduation is earned through criteria</strong>, not waited out</li>
+<li><strong>Personalized from day one</strong> — onboarding data reshapes block order, and the coach adapts to user history</li>
+<li><strong>Education unlocks progressively</strong> and is organized by block theme</li>
+<li><strong>Blocks 5–8 are personalized</strong> based on the user's post-block-4 check-in results</li>
+<li><strong>Past-tense GLP-1 framing</strong> — the app is designed for users coming off medication, not users on a stable dose</li>
+</ul>
+
+<hr>
+
+<h2>2. Target Users</h2>
+<ul>
+<li>Adults tapering their GLP-1 dose under clinician supervision</li>
+<li>Adults recently off GLP-1 who require maintenance and habit-building support</li>
+<li>Adults currently taking GLP-1 medications who are planning their transition</li>
+</ul>
+
+<hr>
+
+<h2>3. Program Model</h2>
+<p>The application is structured as a <strong>single 16-week GLP-1 Graduation program</strong> divided into <strong>8 two-week blocks</strong>.</p>
+
+<h3>3.1 Block Model Overview</h3>
+<p>Each block spans 2 weeks and has a single focus. CGM sensor periods align perfectly with blocks — a 15-day sensor covers one full block.</p>
+
+<table>
+<tr><th>Block</th><th>Weeks</th><th>CGM</th><th>Default Focus</th><th>Goal</th></tr>
+<tr><td>1</td><td>1–2</td><td>ON</td><td>Baseline &amp; Learn Your Glucose</td><td>Don't change anything — observe. Log meals, sleep, hunger. Build personal baseline.</td></tr>
+<tr><td>2</td><td>3–4</td><td>OFF</td><td>Protein + Fiber Foundation</td><td>Protein at every meal (25g+), add fiber. Use hunger check-ins as data source.</td></tr>
+<tr><td>3</td><td>5–6</td><td>ON</td><td>Movement &amp; CGM Proof</td><td>Post-meal walking + 2 strength sessions/wk. Compare CGM 2 to CGM 1 baseline.</td></tr>
+<tr><td>4</td><td>7–8</td><td>OFF</td><td>Satiating Meals + Sleep &amp; Stress</td><td>Build balanced meals, sleep consistency, stress tool. Full system without CGM.</td></tr>
+<tr><td>5</td><td>9–10</td><td>OFF</td><td>Personalized Focus</td><td>Complete post-block-4 check-in, choose deep-dive topic, maintain all habits.</td></tr>
+<tr><td>6</td><td>11–12</td><td>ON</td><td>Validation &amp; CGM Check</td><td>Compare CGM 3 to CGM 1 &amp; 2. Handle a real-life disruption with CGM on.</td></tr>
+<tr><td>7</td><td>13–14</td><td>OFF</td><td>Refinement &amp; Stress Test</td><td>Fix weak spots from CGM 3. Build "minimum viable day" plan.</td></tr>
+<tr><td>8</td><td>15–16</td><td>ON</td><td>Graduation</td><td>Final CGM sensor. Compare to Block 1 baseline. Meet graduation criteria.</td></tr>
+</table>
+
+<h3>3.2 CGM Sensor Schedule</h3>
+<p>4 intermittent sensor periods across the 16-week program:</p>
+
+<table>
+<tr><th>Sensor</th><th>Block</th><th>Weeks</th><th>Purpose</th></tr>
+<tr><td>CGM 1</td><td>Block 1</td><td>1–2</td><td>Learn your glucose patterns and establish baseline data</td></tr>
+<tr><td>CGM 2</td><td>Block 3</td><td>5–6</td><td>See how walking and resistance training change your glucose</td></tr>
+<tr><td>CGM 3</td><td>Block 6</td><td>11–12</td><td>Validate your full system is working</td></tr>
+<tr><td>CGM 4</td><td>Block 8</td><td>15–16</td><td>Final assessment — prove it with data</td></tr>
+</table>
+
+<h3>3.3 Foundation Blocks (1–4)</h3>
+<p>Blocks 1 and 3 are <strong>fixed</strong> (CGM blocks). Blocks 2 and 4 are <strong>dynamically reorderable</strong> based on the user's onboarding struggles via <code>buildPersonalizedWeekOrder()</code>.</p>
+<p><strong>Personalized block ordering:</strong> The <code>buildPersonalizedWeekOrder()</code> algorithm uses <code>STRUGGLE_TO_TOPIC</code> mapping to determine whether the user's biggest struggles are better addressed by the Nutrition block (protein + fiber) or the Full System block (satiating meals + sleep/stress), and orders blocks 2 and 4 accordingly.</p>
+
+<h3>3.4 Personalized Blocks (5–8)</h3>
+<p>Locked until completion of blocks 1–4 and the post-block-4 check-in.</p>
+
+<table>
+<tr><th>Block</th><th>Weeks</th><th>CGM</th><th>Theme</th><th>Description</th></tr>
+<tr><td>5</td><td>9–10</td><td>OFF</td><td>Personalized Focus</td><td>Complete check-in, choose 1–2 focus areas for deep dive</td></tr>
+<tr><td>6</td><td>11–12</td><td>ON</td><td>Validation</td><td>CGM 3 validates habits; stress-test with disruptions</td></tr>
+<tr><td>7</td><td>13–14</td><td>OFF</td><td>Refinement</td><td>Fix weak spots, create minimum viable day plan</td></tr>
+<tr><td>8</td><td>15–16</td><td>ON</td><td>Graduation</td><td>Final CGM comparison to baseline, meet criteria</td></tr>
+</table>
+
+<h3>3.5 Core Principles (static throughout program)</h3>
+<ol>
+<li>Consistency beats perfection</li>
+<li>Muscle preservation is your metabolic insurance</li>
+<li>Hunger is information — respond to it, don't fight it</li>
+<li>Small weight regain is maintenance, not failure</li>
+</ol>
+
+<h3>3.6 Graduation Criteria</h3>
+<table>
+<tr><th>Criterion</th><th>Threshold</th><th>Duration Required</th></tr>
+<tr><td>Glucose GPA ≥ 3.5</td><td>3.5 / 5.0</td><td>3 consecutive weeks</td></tr>
+<tr><td>Lifestyle GPA ≥ 3.0</td><td>3.0 / 5.0</td><td>3 consecutive weeks</td></tr>
+<tr><td>Weight within maintenance band</td><td>±3–5% of anchor</td><td>2 consecutive weeks</td></tr>
+<tr><td>Education ≥ 80% completed</td><td>80%</td><td>At any point</td></tr>
+</table>
+
+<hr>
+
+<h2>4. Information Architecture</h2>
+
+<h3>Bottom Navigation (5 Tabs)</h3>
+<table>
+<tr><th>Tab</th><th>Screen</th><th>Description</th></tr>
+<tr><td>Home</td><td>home</td><td>Dashboard with glucose graph (live or average), block goal, graduation card, habits, GPA strip, weight graph, hunger coach, CGM toggle</td></tr>
+<tr><td>Toolkit</td><td>dailies</td><td>Scrollable graduation timeline, CGM sensor schedule, core principles, block goal, education sections, readiness score</td></tr>
+<tr><td>Log (+)</td><td>log</td><td>Daily logging: hunger check-in, body scanner, food, exercise, water, sleep, glucose notes</td></tr>
+<tr><td>Insights</td><td>insights</td><td>Three tabs: Lifestyle, Glucose, Graduation — with GPA drill-downs, sensor comparisons, hunger correlations</td></tr>
+<tr><td>Settings</td><td>settings</td><td>User profile display, program details, maintenance band, preferences, program reset</td></tr>
+</table>
+
+<h3>Secondary Screens</h3>
+<table>
+<tr><th>Screen</th><th>Access From</th><th>Description</th></tr>
+<tr><td>onboarding</td><td>First launch or program reset</td><td>18-step personalized onboarding flow</td></tr>
+<tr><td>hunger_coach</td><td>Home card or hunger questionnaire</td><td>Interactive hunger coaching with glucose integration</td></tr>
+<tr><td>week_detail</td><td>Toolkit (tap any week dot)</td><td>Block-specific goal, education modules, progress, CGM status, and locking</td></tr>
+<tr><td>post8_checkin</td><td>Block 1, Block 3, or Block 5</td><td>Parameterized self-assessment flow (baseline / mid-program / post-foundation)</td></tr>
+<tr><td>program</td><td>Settings</td><td>Detailed program metrics, dose history, graduation readiness</td></tr>
+<tr><td>toolkit_module</td><td>Toolkit</td><td>Step-by-step toolkit module</td></tr>
+<tr><td>education_module</td><td>Toolkit or Week Detail</td><td>Long-form education article reading view</td></tr>
+<tr><td>education_game</td><td>Toolkit</td><td>Interactive learning activities (quizzes, builders, etc.)</td></tr>
+<tr><td>hunger_questionnaire</td><td>Log or Home</td><td>Daily hunger/fullness rating check-in with glucose-aware feedback</td></tr>
+<tr><td>body_scanner</td><td>Log</td><td>Camera-based body composition scan</td></tr>
+</table>
+
+<h3>Navigation Model</h3>
+<ul>
+<li>History-based stack (<code>navHistory</code>) enables true back-button behavior</li>
+<li><code>navigateTo()</code> pushes to stack; <code>navigateBack()</code> pops</li>
+<li>Bottom nav taps reset history (top-level navigation)</li>
+<li>Program reset clears <code>navHistory</code> and returns to onboarding step 0</li>
+</ul>
+
+<hr>
+
+<h2>5. Feature Specifications</h2>
+
+<h3>5.1 Onboarding (18-step personalized flow)</h3>
+<p>A one-question-per-page onboarding flow that collects comprehensive profile data and performs a baseline assessment. Progress bar shown throughout.</p>
+
+<table>
+<tr><th>Step</th><th>Screen</th><th>Data Collected</th></tr>
+<tr><td>0</td><td>Welcome</td><td>— (program overview)</td></tr>
+<tr><td>1</td><td>Name &amp; age</td><td>name, age</td></tr>
+<tr><td>2</td><td>Medication history</td><td>medication, duration, medStatus</td></tr>
+<tr><td>3</td><td>Why coming off GLP-1</td><td>reasonOffGlp1 (multi-select from REASON_OFF_GLP1)</td></tr>
+<tr><td>4</td><td>Body &amp; activity</td><td>weight, goalWeight, heightFt, heightIn, activityLevel</td></tr>
+<tr><td>5</td><td>Goals</td><td>goals (multi-select)</td></tr>
+<tr><td>6</td><td>Pre-GLP-1 struggles</td><td>preGlp1Struggles (multi-select from STRUGGLE_OPTIONS)</td></tr>
+<tr><td>7</td><td>Current struggles (ranked)</td><td>currentStruggles (ranked multi-select — directly shapes block order)</td></tr>
+<tr><td>8</td><td>Strength training experience</td><td>strengthTraining (never / tried / beginner / light / regular / lost)</td></tr>
+<tr><td>9–16</td><td>Baseline assessment quiz</td><td>8 questions rated 1–5, same as post-block-4 format (POST8_QUESTIONS)</td></tr>
+<tr><td>17</td><td>Your Personalized Program</td><td>Shows personalized 16-week roadmap, per-question feedback, "Start your graduation" button</td></tr>
+</table>
+
+<p>On completion:</p>
+<ul>
+<li><code>state.weekOrder</code> is generated via <code>buildPersonalizedWeekOrder(currentStruggles)</code> — returns 4-item array (block topic order)</li>
+<li><code>state.profile</code> stores all onboarding profile data</li>
+<li><code>state.week1CheckIn</code> stores baseline assessment answers</li>
+<li><code>state.weightAnchor</code> set from profile weight</li>
+</ul>
+
+<p><strong>Struggle options (12 items):</strong> Portion control, Emotional/stress eating, Late-night snacking, Low activity/exercise, Poor sleep, Sugar &amp; carb cravings, Understanding my glucose, Inconsistent meals, Not enough protein, Staying full/satisfied, Chronic stress, No strength/resistance training</p>
+
+<p><strong>Reason off GLP-1 (7 items):</strong> Cost/insurance, Side effects, Reached my goal weight, Doctor recommended, Want to try without it, Pregnancy/planning, Other</p>
+
+<h3>5.2 Home Screen</h3>
+<p>Components (in order):</p>
+<ol>
+<li><strong>Program badge</strong> — "GLP-1 Graduation — Block X (Wk Y–Z)"</li>
+<li><strong>Graduation card</strong> — Compact, tappable card showing current block, milestone, progress %, criteria met, and next CGM sensor countdown (when off-CGM). Navigates to Toolkit.</li>
+<li><strong>CGM-aware glucose display</strong> — Two modes, toggleable by tapping:
+  <ul>
+  <li><strong>CGM Active</strong> (on-sensor blocks): Live glucose graph (SVG line chart) with current reading, reference lines, meal/activity timeline. Blue-bordered card with "LIVE — tap to toggle" badge.</li>
+  <li><strong>CGM Off</strong> (off-sensor blocks): "Your Average Day" card showing a static average daily glucose SVG from the last sensor period, in amber tones. Displays key metrics (Avg mg/dL, Glucose GPA, Time in Range) and an actionable insight. "OFF — tap to toggle" badge.</li>
+  </ul>
+</li>
+<li><strong>Hunger Coach card</strong> — Always visible. Shows satiety skill level, daily tip, and "Talk to your coach" button. Elevated during off-CGM blocks with a purple "YOUR PRIMARY SIGNAL THIS WEEK" banner and dedicated insight.</li>
+<li><strong>GPA strip</strong> — Glucose GPA, Lifestyle GPA, Consistency GPA (includes education completion). Tappable to Insights.</li>
+<li><strong>Weight &amp; maintenance band graph</strong> — SVG chart with 16-week weight trend, ±3–5% band. Shown from day 1.</li>
+<li><strong>Block goal card</strong> — Current block's structural goal. For blocks 5+ when locked, shows locked state with unlock requirements.</li>
+<li><strong>Today's habits card</strong> — Daily habit checklist with progress indicators.</li>
+<li><strong>Appetite return normalization card</strong> — Contextual, dismissible card explaining that hunger returning is biologically expected during GLP-1 transition.</li>
+</ol>
+
+<p><strong>CGM Toggle:</strong> The glucose display card is clickable to toggle between CGM active and off views (controlled by <code>cgmOverride</code> state variable for demo purposes). Visual cues — colors, badges, and graph styles — make the difference obvious.</p>
+
+<h3>5.3 Hunger Coach</h3>
+<p>The Hunger Coach is an interactive conversational coaching tool for hunger understanding and management. It integrates real-time glucose context, tracks user strategy adoption, detects behavioral patterns, and progressively builds hunger literacy.</p>
+
+<h4>Architecture</h4>
+<p>The coach maintains an in-memory <code>coachState</code> object:</p>
+<table>
+<tr><th>Field</th><th>Type</th><th>Description</th></tr>
+<tr><td>scenario</td><td>string/null</td><td>Active scenario ID</td></tr>
+<tr><td>branch</td><td>string/null</td><td>Current branching sub-scenario</td></tr>
+<tr><td>step</td><td>number</td><td>Conversation step counter</td></tr>
+<tr><td>path</td><td>Array</td><td>User's path through branches (for session logging)</td></tr>
+<tr><td>haltSelected</td><td>string/null</td><td>HALT grid selection</td></tr>
+<tr><td>scanStep</td><td>number</td><td>Body scan step index (-1 = not started)</td></tr>
+<tr><td>followUpShown</td><td>boolean</td><td>Whether follow-up options have been rendered</td></tr>
+<tr><td>timerActive</td><td>boolean</td><td>10-minute pause timer active</td></tr>
+<tr><td>timerSeconds</td><td>number</td><td>Timer countdown remaining</td></tr>
+<tr><td>mealTimerActive</td><td>boolean</td><td>20-minute meal timer active</td></tr>
+<tr><td>mealTimerSeconds</td><td>number</td><td>Meal timer countdown remaining</td></tr>
+<tr><td>strategyTracked</td><td>boolean</td><td>Whether user committed to a strategy</td></tr>
+<tr><td>viewingLesson</td><td>string/null</td><td>Active mini-lesson ID</td></tr>
+</table>
+<p><code>resetCoachState()</code> resets all fields between sessions.</p>
+
+<h4>Landing Page</h4>
+<p>The landing page renders a personalized experience based on accumulated user data:</p>
+<ul>
+<li><strong>Personalized greeting</strong> — Uses <code>state.profile.name</code> (first name). Contextual message based on hunger trends:
+  <ul>
+  <li>4+ days at hunger sweet spot (3): "You've been eating at the sweet spot X out of 7 days."</li>
+  <li>Average hunger &gt; 3.5: "Your hunger has been running a bit high this week."</li>
+  <li>Average hunger &lt; 2.5: "Your hunger has been very low this week. Make sure you're eating enough."</li>
+  <li>Default: "I'm here to help you understand your hunger — not fight it."</li>
+  </ul>
+</li>
+<li><strong>Stats bar</strong> — Day streak, average hunger (color-coded green if |avg − 3| ≤ 0.5, amber otherwise), average fullness, coach chats this week</li>
+<li><strong>Glucose status card</strong> — Real-time glucose context from <code>getGlucoseContext()</code> with color-coded background (red for crash, amber for below-baseline, green for stable) and contextual note linking glucose state to current hunger patterns</li>
+<li><strong>Best strategy card</strong> — Surfaces the user's most effective strategy from <code>state.strategyLog</code> (filtered by <code>helped: true</code>)</li>
+<li><strong>Pattern detection card</strong> — After 5+ sessions, identifies the most frequently selected scenario and suggests exploring the Learn section</li>
+<li><strong>Scenario selection</strong> — 10 scenarios organized into 3 categories (see below)</li>
+<li><strong>Mini-lesson library</strong> — 5 deep-dive lessons accessible from landing page</li>
+</ul>
+
+<h4>10 Coaching Scenarios</h4>
+<p>Organized into 3 categories:</p>
+
+<p><strong>Practice a Skill (Proactive)</strong></p>
+<table>
+<tr><th>ID</th><th>Label</th><th>Description</th></tr>
+<tr><td>about_to_eat</td><td>"I'm about to eat — help me prepare"</td><td>Pre-meal coaching with hunger level assessment and 20-minute meal timer</td></tr>
+<tr><td>post_meal</td><td>"I just finished eating — let me reflect"</td><td>Post-meal debrief with fullness assessment and composition analysis</td></tr>
+</table>
+
+<p><strong>I'm Feeling Something (Reactive)</strong></p>
+<table>
+<tr><th>ID</th><th>Label</th><th>Description</th></tr>
+<tr><td>ate_still_hungry</td><td>"I just ate but I'm still hungry"</td><td>Post-meal hunger: timing → composition → stomach vs. mouth hunger</td></tr>
+<tr><td>starving</td><td>"I'm starving and need to eat now"</td><td>Intense hunger: last meal timing → contextual advice</td></tr>
+<tr><td>craving</td><td>"I'm craving something specific"</td><td>Craving type: sweet / salty / rich / specific food</td></tr>
+<tr><td>not_hungry_want_eat</td><td>"I'm not hungry but I want to eat"</td><td>HALT check (2×2 grid): Hungry / Angry-Anxious / Lonely-Bored / Tired</td></tr>
+<tr><td>unsure</td><td>"I'm not sure if I'm hungry"</td><td>4-step guided body scan with timed interoception exercises</td></tr>
+<tr><td>unusual_time</td><td>"I feel hungry at an unusual time"</td><td>Time-specific: late night / mid-afternoon / early morning / post-workout</td></tr>
+</table>
+
+<p><strong>Learn &amp; Explore</strong></p>
+<table>
+<tr><th>ID</th><th>Label</th><th>Description</th></tr>
+<tr><td>hunger_changing</td><td>"My hunger feels different lately"</td><td>Medication transition: more hungry / less hungry / unpredictable / different sensation</td></tr>
+<tr><td>learn_hunger</td><td>"Teach me about hunger"</td><td>Entry point to 5 mini-lessons</td></tr>
+</table>
+
+<h4>Branching Conversation Model</h4>
+<p>Each scenario maps to a <code>COACH_BRANCHES</code> entry containing:</p>
+<ul>
+<li><strong>question</strong> — The coach's opening question</li>
+<li><strong>options</strong> — Array of selectable responses (id, label, optional desc)</li>
+<li><strong>responses</strong> — Map of option ID to response object, which contains:
+  <ul>
+  <li><code>title</code> — Bold heading for the advice</li>
+  <li><code>body</code> — Explanatory paragraph with science-backed context</li>
+  <li><code>actions</code> — Numbered action steps ("What to do right now")</li>
+  <li><code>why</code> — "Why this works" explanation</li>
+  <li><code>followUp</code> (optional) — ID of next branching question (enables multi-step trees)</li>
+  <li><code>showTimer</code> (optional) — Shows 10-minute countdown timer</li>
+  <li><code>showMealTimer</code> (optional) — Shows 20-minute meal timer (vagus nerve pacing)</li>
+  <li><code>trackStrategy</code> (optional) — Shows strategy commitment UI</li>
+  </ul>
+</li>
+</ul>
+<p>Some scenarios have specialized UI:</p>
+<ul>
+<li><strong>HALT check</strong> (<code>isHalt: true</code>): Renders a 2×2 grid with H-A-L-T letters and descriptions</li>
+<li><strong>Body scan</strong> (<code>isBodyScan: true</code>): Renders a multi-step timed exercise with per-step countdown timers (8–10 seconds each), followed by a post-scan interpretation selection</li>
+</ul>
+
+<h4>Branching Flow Maps</h4>
+<p><strong>"Still hungry" scenario</strong> branches 3 levels deep:</p>
+<ol>
+<li>"When did you finish eating?" → &lt; 15 min / 15–30 min / &gt; 30 min</li>
+<li>(15–30 min) → "What did your meal look like?" → carb-heavy / had protein / balanced</li>
+<li>(&gt; 30 min or had protein) → "Put your hand on your stomach" → physical hunger / mouth hunger</li>
+</ol>
+
+<p><strong>"Post-meal" scenario</strong> branches into a sub-tree:</p>
+<ol>
+<li>"How do you feel?" → still hungry / just right / too full / can't tell</li>
+<li>(still hungry) → "What did your meal look like?" → low protein / small portion / ate fast / balanced meal</li>
+</ol>
+
+<p><strong>"Starving" scenario:</strong></p>
+<ol><li>"When was your last meal?" → 4+ hours / 2–4 hours / just woke up</li></ol>
+
+<p><strong>"Craving" scenario:</strong></p>
+<ol><li>"What are you craving?" → sweet / salty / rich / a specific food</li></ol>
+
+<p><strong>"Not hungry but want to eat" (HALT):</strong></p>
+<ol><li>HALT grid → Actually hungry / Angry-Anxious / Lonely-Bored / Tired</li></ol>
+
+<p><strong>"Not sure if hungry" (Body Scan):</strong></p>
+<ol>
+<li>4 timed steps → "Close eyes, breathe" (8s) → "Hand on stomach" (10s) → "Think of plain food" (8s) → "Think of indulgent food" (8s)</li>
+<li>Post-scan: "I felt physical signals" / "I'd eat plain food" / "Only want indulgent" / "Still unsure"</li>
+</ol>
+
+<p><strong>"Unusual time" scenario:</strong></p>
+<ol><li>"When is this happening?" → Late night / Mid-afternoon / Early morning / Post-workout</li></ol>
+
+<p><strong>"About to eat" scenario:</strong></p>
+<ol><li>"What's your hunger level?" → 1–2 not hungry / 3 sweet spot / 4–5 very hungry</li></ol>
+
+<p><strong>"Hunger changing" scenario:</strong></p>
+<ol><li>"What feels different?" → Hungrier / Less hungry / Comes in waves / Different sensation</li></ol>
+
+<h4>Glucose Integration in Responses</h4>
+<p>After the coach delivers its advice, a glucose context card is injected for all hunger-related scenarios (<code>ate_still_hungry</code>, <code>starving</code>, <code>craving</code>, <code>not_hungry_want_eat</code>, <code>unsure</code>, <code>post_meal</code>, <code>about_to_eat</code>, <code>hunger_changing</code>). The card includes:</p>
+<ul>
+<li>Current glucose value and trend</li>
+<li>Color-coded background (red/amber/green)</li>
+<li>Scenario-specific interpretation, e.g.:
+  <ul>
+  <li>Crash + craving: "This crash is likely driving your hunger right now."</li>
+  <li>Stable + not hungry but want to eat: "Stable glucose confirms this urge isn't physical hunger."</li>
+  <li>Stable + about to eat: "You're in a good position to eat a well-paced, balanced meal."</li>
+  <li>Crash + post-meal: "A rapid glucose drop like this can make you feel unsatisfied even after eating enough."</li>
+  <li>Below baseline + craving: "Your brain is requesting fast carbs to restore fuel."</li>
+  </ul>
+</li>
+</ul>
+
+<h4>Strategy Tracking</h4>
+<p>When <code>trackStrategy: true</code>:</p>
+<ol>
+<li>Coach displays the first 3 action items as committable strategies</li>
+<li>User taps to commit → logged to <code>state.strategyLog</code> with timestamp, scenario, strategy text (truncated to 60 chars), and <code>helped: null</code></li>
+<li>Strategy log capped at 200 entries (trimmed to last 100 on overflow)</li>
+<li>Landing page surfaces the most effective strategy by counting entries where <code>helped: true</code></li>
+</ol>
+
+<h4>Follow-Up System</h4>
+<p>Every coach response ends with 4 follow-up options:</p>
+<ol>
+<li><strong>"I paused and the feeling passed"</strong> → "Awareness win. You recognized the signal, paused, and let it pass on its own. That's not willpower — it's a skill."</li>
+<li><strong>"I ate something intentionally"</strong> → "That's a great outcome. You checked in, made a conscious decision, and chose to eat intentionally. That's the opposite of reactive eating."</li>
+<li><strong>"I ate and I feel satisfied"</strong> → "Perfect landing. You read your body's signal, responded to it, and ended up satisfied."</li>
+<li><strong>"I want to learn more about this"</strong> → "Curiosity is progress." + links to all 5 mini-lessons</li>
+</ol>
+<p>All follow-up responses are positive. Eating is never framed as failure.</p>
+
+<h4>Session Logging</h4>
+<p>On follow-up selection, a session is logged to <code>state.coachSessions</code>:</p>
+<pre><code>{
+  "timestamp": "ISO-8601",
+  "scenario": "craving",
+  "path": ["craving", "sweet"],
+  "followUp": "ate_intentional"
+}</code></pre>
+<p>Capped at 100 entries.</p>
+
+<h4>5 Mini-Lessons</h4>
+<table>
+<tr><th>ID</th><th>Title</th><th>Key Takeaway</th></tr>
+<tr><td>types</td><td>The 5 types of hunger</td><td>Only stomach hunger requires food. The others need different solutions — and recognizing which one you're feeling IS the skill.</td></tr>
+<tr><td>scale</td><td>The hunger scale explained</td><td>Eat at level 3 and stop at fullness 3–4. This "sweet spot" gets easier to find with practice.</td></tr>
+<tr><td>glp1_hunger</td><td>How GLP-1 changes your hunger</td><td>Hunger signals will change throughout the program. Each phase is normal. The goal is to build skills that work at every hunger level.</td></tr>
+<tr><td>satiation</td><td>The satiation toolkit</td><td>You don't need willpower to feel full. You need the right combination of nutrients, timing, and awareness.</td></tr>
+<tr><td>glucose_hunger</td><td>How glucose drives your hunger</td><td>Most unexplained hunger is a glucose crash in disguise. Eat protein first, add fiber, and watch your CGM.</td></tr>
+</table>
+<p>Each lesson renders with full content, a "Key takeaway" highlight card, and a "Back to coach" button.</p>
+
+<h4>Timers</h4>
+<ul>
+<li><strong>10-minute pause timer:</strong> Used in craving, boredom, and uncertainty scenarios. Circular countdown ring. Starts at 600 seconds.</li>
+<li><strong>20-minute meal timer:</strong> Used in pre-meal coaching ("About to eat" scenario). Starts at 1200 seconds. Based on vagus nerve pacing — fullness signals take 15–20 minutes to reach the brain.</li>
+<li><strong>Body scan step timers:</strong> 4 timed steps (8–10 seconds each) with per-step countdowns during interoception exercises.</li>
+</ul>
+
+<h3>5.4 Glucose-Hunger Integration Engine</h3>
+<p>The <code>getGlucoseContext()</code> function generates simulated glucose context that is threaded throughout the app — on the Hunger Coach landing, in coach responses, and in hunger check-in feedback.</p>
+
+<h4>Context Generation Logic</h4>
+<p>The function uses time-of-day, user profile (weight-adjusted baseline), and today's hunger entry to simulate one of 4 glucose states:</p>
+<table>
+<tr><th>State</th><th>Time Window</th><th>Trigger</th><th>Current Value</th><th>Trend</th><th>Color</th></tr>
+<tr><td><strong>Crash</strong></td><td>9–11, 14–16, 20–22</td><td>High hunger OR 35% random</td><td>max(68, peak − drop − 10)</td><td>"dropping"</td><td>Red (#ef4444)</td></tr>
+<tr><td><strong>Below baseline</strong></td><td>9–11, 14–16, 20–22</td><td>35–55% random</td><td>baseline − 8 to −19</td><td>"below_baseline"</td><td>Amber (#f59e0b)</td></tr>
+<tr><td><strong>Post-meal rise</strong></td><td>7–9, 12–14, 18–20</td><td>Default during meal windows</td><td>baseline + 15 to +34</td><td>"rising"</td><td>Amber (#f59e0b)</td></tr>
+<tr><td><strong>Stable</strong></td><td>All other times</td><td>Default</td><td>baseline ± ~6</td><td>"stable"</td><td>Green (#16a34a)</td></tr>
+</table>
+<p><strong>Baseline is weight-adjusted:</strong> &gt;200 lbs → 100 mg/dL, &lt;140 lbs → 88 mg/dL, otherwise 95 mg/dL.</p>
+
+<p>Each state includes:</p>
+<ul>
+<li><code>current</code> — Simulated glucose value in mg/dL</li>
+<li><code>baseline</code> — User's personal baseline</li>
+<li><code>trend</code> — Trend label (dropping / below_baseline / rising / stable)</li>
+<li><code>type</code> — State identifier</li>
+<li><code>message</code> — Full-sentence explanation of what the value means for hunger</li>
+<li><code>shortLabel</code> — Compact display string (e.g., "92 mg/dL — stable")</li>
+<li><code>icon</code> — Color-coded circle emoji (red / amber / green)</li>
+<li><code>color</code> — Hex color value</li>
+</ul>
+
+<h4>Integration Points</h4>
+<ol>
+<li><strong>Hunger Coach landing page</strong> — Glucose card with contextual note linking glucose state to the user's weekly hunger trends</li>
+<li><strong>Hunger Coach response cards</strong> — Injected after every coach advice response with scenario-specific interpretation</li>
+<li><strong>Hunger check-in feedback</strong> — <code>getGlucoseHungerInsight()</code> generates a tailored insight card after submission</li>
+</ol>
+
+<h4>getGlucoseHungerInsight(hungerVal, fullnessVal)</h4>
+<p>Combines glucose context with the user's hunger/fullness ratings to produce scenario-specific insights:</p>
+<table>
+<tr><th>Glucose State</th><th>Hunger Level</th><th>Insight Title</th><th>Summary</th></tr>
+<tr><td>Crash</td><td>≥ 4</td><td>"Your hunger matches a glucose crash"</td><td>Rapid drop is driving hunger. Eat protein to stabilize without re-triggering spike-crash cycle.</td></tr>
+<tr><td>Crash</td><td>≤ 2</td><td>"Glucose crashed but hunger is low"</td><td>Medication may be masking the signal. Eat a structured snack — low glucose affects concentration.</td></tr>
+<tr><td>Below baseline</td><td>≥ 3</td><td>"Below-baseline glucose is driving carb cravings"</td><td>Brain requesting fast carbs. Satisfy with protein + small carb (apple + peanut butter).</td></tr>
+<tr><td>Stable</td><td>= 3</td><td>"Glucose stable, hunger at sweet spot"</td><td>Ideal state. Body communicating genuine hunger without glucose interference.</td></tr>
+<tr><td>Stable</td><td>≥ 4</td><td>"Glucose is stable — this is real hunger"</td><td>Not crash-driven. Genuine physical hunger — eat a protein-forward meal.</td></tr>
+<tr><td>Post-meal</td><td>≤ 2</td><td>"Post-meal glucose rising — fullness should follow"</td><td>Fullness signals take 15–20 minutes. Wait before eating more.</td></tr>
+<tr><td>Stable</td><td>≤ 2</td><td>"Low hunger, stable glucose — medication effect"</td><td>Normal on medication. Eat by structure to protect muscle.</td></tr>
+<tr><td>Default</td><td>—</td><td>"Your glucose context"</td><td>General glucose + hunger interpretation with reading and recommendation.</td></tr>
+</table>
+
+<h3>5.5 Hunger Check-In (Glucose-Aware)</h3>
+<p>A daily hunger and fullness rating flow with glucose-integrated feedback, satiety skill tracking, and coach escalation.</p>
+
+<h4>Input Screen</h4>
+<p>Components (in order):</p>
+<ol>
+<li><strong>Satiety Skill card</strong> — Shows mastery score (0–100), level name (Beginner / Learning / Developing / Advanced), current streak, and progress bar. Color-coded: green ≥ 70, amber ≥ 40, gray &lt; 40.</li>
+<li><strong>Hunger awareness frame</strong> — Static messaging: "Hunger is a signal to respond to, not resist. Each check-in builds your ability to recognize real hunger, eat at the right time, and trust your body's signals. Satiety is a skill — and it gets stronger with practice."</li>
+<li><strong>Hunger rating</strong> — Slider (1–5) with tappable named anchors above:
+  <ul>
+  <li>1: "No signal" — Not hungry at all</li>
+  <li>2: "Mildly aware" — Slight hunger</li>
+  <li>3: "Ready to eat" — Comfortably hungry</li>
+  <li>4: "Very hungry" — Hard to focus</li>
+  <li>5: "Urgent" — Overly hungry</li>
+  </ul>
+</li>
+<li><strong>Fullness rating</strong> — Slider (1–5) with named anchors:
+  <ul>
+  <li>1: "Still hungry" — Not satisfied</li>
+  <li>2: "Slightly full" — Could eat more</li>
+  <li>3: "Satisfied" — Comfortable (ideal)</li>
+  <li>4: "Full" — Slightly too much</li>
+  <li>5: "Stuffed" — Uncomfortably full</li>
+  </ul>
+</li>
+<li><strong>Submit button</strong></li>
+</ol>
+
+<h4>Feedback Screen (post-submit)</h4>
+<p>On submission, the check-in data is saved to <code>state.hungerEntries[todayKey]</code> with <code>overallHunger</code>, <code>postMealFullness</code>, and <code>completedAt</code> timestamp. The input UI is replaced with:</p>
+<ol>
+<li><strong>Contextual feedback</strong> — Based on hunger value:
+  <ul>
+  <li>Hunger ≥ 4: "Higher hunger — your body is talking." Suggests protein-first meal, checks for sleep correlation.</li>
+  <li>Hunger ≤ 2: "Low hunger today." Encourages structured eating to protect muscle.</li>
+  <li>Hunger = 3: "Comfortably hungry — sweet spot." Confirms satiety habits are working.</li>
+  <li>Fullness modifiers: ≤ 2 adds slow-eating and fiber tips; ≥ 5 adds halfway-pause strategy.</li>
+  </ul>
+</li>
+<li><strong>Glucose insight card</strong> — Generated by <code>getGlucoseHungerInsight()</code>. Color-coded left border (red/amber/green). Shows title, interpretation, and actionable recommendation.</li>
+<li><strong>Rotating micro-tip</strong> — One of 10 randomized educational tips (e.g., "Hunger at a 3 is your sweet spot," "Poor sleep raises ghrelin by ~15–20%," "A 10-minute walk after eating improves both glucose and satiety signals.")</li>
+<li><strong>Updated Satiety Skill score</strong> — Progress bar and level after incorporating today's entry.</li>
+<li><strong>Coach escalation button</strong> — Shown conditionally when hunger ≥ 4, fullness ≥ 5, or fullness ≤ 1: "Need help with this? Talk to your coach" → navigates to Hunger Coach.</li>
+<li><strong>Done button</strong> — Returns to Log screen.</li>
+</ol>
+
+<h4>Satiety Skill Score (getHungerMasteryScore)</h4>
+<p>Composite score (0–100) calculated from the last 14 days of hunger entries:</p>
+<table>
+<tr><th>Component</th><th>Max Points</th><th>Calculation</th></tr>
+<tr><td>Logging consistency</td><td>40</td><td>min(40, daysLogged × 4) — full credit at 10 out of 14 days</td></tr>
+<tr><td>Hunger accuracy</td><td>30</td><td>max(0, 30 − |avgHunger − 3| × 15) — ideal average is 3</td></tr>
+<tr><td>Fullness accuracy</td><td>30</td><td>max(0, 30 − |avgFullness − 3.5| × 15) — ideal average is 3.5</td></tr>
+</table>
+<p>Level names: Beginner (0–19), Learning (20–49), Developing (50–79), Advanced (80–100).</p>
+<p>Streak is calculated as consecutive days with a completed hunger entry, counting backwards from today.</p>
+
+<h3>5.6 Toolkit (Graduation Toolkit)</h3>
+<p>Structure:</p>
+<ol>
+<li><strong>Scrollable graduation timeline</strong> — 16 individual week dots in a single horizontal scrollable row. Weeks are visually grouped in pairs (blocks) with shared rounded containers. CGM blocks (1, 3, 6, 8) have blue border with "CGM" badge; habit blocks (2, 4, 5, 7) have subtle gray border. Auto-scrolls to center on the current week. Weeks 9–16 show lock icons when blocks 5–8 are not yet unlocked.</li>
+<li><strong>CGM Sensor Schedule card</strong> — Grid showing all 4 sensor periods with block numbers, weeks, purpose, and active/done/upcoming status indicators</li>
+<li><strong>Core principles card</strong> — 4 static principles in a grid</li>
+<li><strong>Block goal card</strong> — Current block's goal (dynamically from <code>pBlockGoal()</code>)</li>
+<li><strong>Primary goal widget</strong> — Program-level goal with do/avoid/focus guidance</li>
+<li><strong>Graduation readiness score</strong> — Composite score with component breakdown</li>
+<li><strong>Education sections</strong> — 6 collapsible categories with progress tracking</li>
+<li><strong>Block education goal indicator</strong> — 80% completion target per block</li>
+</ol>
+
+<h3>5.7 Week Detail Screen (Block Detail)</h3>
+<p>Tapping any week dot opens a block-level detail view:</p>
+<ul>
+<li>Block number and week range (e.g., "Block 3 (Wk 5–6)")</li>
+<li>Block milestone name (personalized via <code>pBlockMilestone()</code>)</li>
+<li>Status — Completed / Current block / Upcoming, with week range</li>
+<li>CGM status badge: CGM blocks get a blue banner with sensor label and purpose; habit blocks get a gray "Habit Mode — No CGM" banner</li>
+<li>Block goal with description and target metric (from <code>pBlockGoal()</code>)</li>
+<li>Education modules assigned to the block (from <code>pBlockEdu()</code>), organized by section with progress tracking</li>
+<li>Block 1: Baseline assessment card (completed during onboarding)</li>
+<li>Block 3: Mid-program assessment card (links to post8_checkin with checkinWeek=5)</li>
+<li>Blocks 5–8 locked: Shows unlock requirements, education progress bar, and "Start your check-in" button</li>
+<li>Navigation: Previous/next block buttons for browsing between blocks</li>
+</ul>
+
+<h3>5.8 Self-Assessment Flow (Parameterized)</h3>
+<p>The <code>renderPost8CheckIn</code> function is parameterized by <code>checkinWeek</code> (1, 5, or 9), serving three purposes:</p>
+<table>
+<tr><th>Invocation</th><th>Title</th><th>Purpose</th></tr>
+<tr><td>Block 1 (onboarding)</td><td>"Baseline Check-In"</td><td>Establish starting point; stored in <code>state.week1CheckIn</code></td></tr>
+<tr><td>Block 3</td><td>"Mid-Program Check-In"</td><td>Measure progress against baseline; stored in <code>state.week5CheckIn</code></td></tr>
+<tr><td>Block 5</td><td>"Post-Block 4 Check-In"</td><td>Full check-in with focus area selection; stored in <code>state.postWeek8CheckIn</code></td></tr>
+</table>
+
+<p>All three use the same 4-step flow with customized copy per stage:</p>
+
+<p><strong>Step 1: Signos Insights</strong> — Grid of metrics (Glucose GPA, Lifestyle GPA, avg daily steps, avg protein/meal, post-meal walks/week, hunger check-in days) with data-driven observations.</p>
+
+<p><strong>Step 2: Self-Assessment Quiz</strong> — 8 questions, each rated 1–5 (Not at all → A little → Sometimes → Usually → Always):</p>
+<table>
+<tr><th>#</th><th>Question</th><th>Area</th></tr>
+<tr><td>1</td><td>I consistently eat protein at every meal.</td><td>nutrition</td></tr>
+<tr><td>2</td><td>I walk after meals most days.</td><td>exercise</td></tr>
+<tr><td>3</td><td>I can tell the difference between physical hunger and emotional hunger.</td><td>hunger</td></tr>
+<tr><td>4</td><td>I go to bed at a consistent time most nights.</td><td>sleep_stress</td></tr>
+<tr><td>5</td><td>I understand what makes my glucose spike and how to manage it.</td><td>glucose</td></tr>
+<tr><td>6</td><td>I have at least one stress management tool I use regularly.</td><td>sleep_stress</td></tr>
+<tr><td>7</td><td>I usually stop eating when satisfied, not stuffed.</td><td>hunger</td></tr>
+<tr><td>8</td><td>I understand what maintenance weight is and I'm not afraid of normal fluctuations.</td><td>weight</td></tr>
+</table>
+
+<p><strong>Step 3: Personalized Feedback</strong> — Each question receives a detailed, data-backed feedback paragraph tailored to the user's rating (Low 1–2 / Mid 3 / High 4–5). For mid-program and post-block-4 check-ins, scores are compared to baseline with delta indicators.</p>
+
+<p><strong>Step 4: Choose Your Focus</strong> (Block 5 only) — Select 1–2 topics from 6 focus areas:</p>
+<table>
+<tr><th>Focus Area</th><th>Description</th><th>Modules</th></tr>
+<tr><td>Nutrition &amp; Meal Building</td><td>Meal construction, flexible restraint, carb pairing, maintenance nutrition</td><td>4</td></tr>
+<tr><td>Hunger &amp; Satiety</td><td>Hunger signals, emotional eating, advanced satiety strategies</td><td>4</td></tr>
+<tr><td>Exercise &amp; Movement</td><td>Periodization, progressive overload, NEAT, long-term training</td><td>4</td></tr>
+<tr><td>Sleep &amp; Stress</td><td>Sleep architecture, allostatic load, HPA axis, daily stress tools</td><td>4</td></tr>
+<tr><td>Glucose &amp; CGM Mastery</td><td>Drift detection, maintenance CGM strategy, fasting glucose trends</td><td>4</td></tr>
+<tr><td>Weight &amp; Maintenance</td><td>Maintenance band, acceptable regain, scale interpretation, reset protocol</td><td>5</td></tr>
+</table>
+
+<h3>5.9 Insights Screen</h3>
+<p>Restructured into three tabs:</p>
+
+<p><strong>Lifestyle Tab:</strong> Lifestyle GPA gauge with component drill-down, Transition Readiness score (Glucose 30%, Lifestyle 30%, Hunger/Satiety 20%, Consistency 20%), hunger &amp; lifestyle correlations, 3-step stabilization plan card.</p>
+
+<p><strong>Glucose Tab:</strong> CGM status note (amber banner when off-CGM), Glucose GPA gauge with component drill-down, Sensor-by-Sensor Comparison (<code>buildSensorComparisonSVG()</code> overlays average daily glucose curves with metrics table), hunger &amp; glucose correlations.</p>
+
+<p><strong>Graduation Tab:</strong> Graduation trend SVG (weekly GPA scores over 16 weeks with CGM period shading), score summary with delta indicators, hunger &amp; program progress correlations.</p>
+
+<p><strong>GPA Detail Modals:</strong> Tappable GPA cards open a bottom-sheet modal with current score, 7-day trend, best/worst periods, clickable component list, and per-component improvement tips (5 tips per component).</p>
+
+<h3>5.10 Education System</h3>
+<p>Education is organized into <strong>6 sections</strong> with modules assigned per block:</p>
+<table>
+<tr><th>Section</th><th>Icon</th><th>Description</th></tr>
+<tr><td>Glucose &amp; CGM</td><td>📈</td><td>CGM basics, patterns, pairing, transition, drift prevention, maintenance</td></tr>
+<tr><td>Nutrition</td><td>🍴</td><td>Protein, fiber, meal structure, carb strategy, satiety, hydration</td></tr>
+<tr><td>Exercise</td><td>🏃</td><td>Walking, resistance, recovery, post-meal movement</td></tr>
+<tr><td>Hunger &amp; Satiety</td><td>🥘</td><td>Hunger signals, fullness, emotional hunger, appetite return</td></tr>
+<tr><td>Sleep &amp; Recovery</td><td>💤</td><td>Sleep consistency, sleep-glucose connection, hydration</td></tr>
+<tr><td>Stress &amp; Resilience</td><td>🧠</td><td>Stress-glucose, stress management, recovery</td></tr>
+</table>
+
+<p><strong>Block education assignments:</strong></p>
+<table>
+<tr><th>Block</th><th>Focus Sections</th><th>Module Count</th></tr>
+<tr><td>Block 1</td><td>Glucose/CGM + Hunger</td><td>8 modules</td></tr>
+<tr><td>Block 2</td><td>Nutrition + Hunger</td><td>6 modules</td></tr>
+<tr><td>Block 3</td><td>Exercise + Glucose/CGM</td><td>7 modules</td></tr>
+<tr><td>Block 4</td><td>Nutrition + Sleep + Stress + Hunger</td><td>9 modules</td></tr>
+<tr><td>Blocks 5–8</td><td>Personalized from selected focus areas</td><td>Variable</td></tr>
+</table>
+
+<p><strong>Module tiers:</strong> 🟢 Foundation, 🟡 Intermediate, 🟣 Advanced — with typical read times of 1–3 minutes.</p>
+
+<p><strong>Interactive Games (5):</strong></p>
+<table>
+<tr><th>Game</th><th>Section</th><th>Mechanic</th><th>Description</th></tr>
+<tr><td>Protein Guess</td><td>Nutrition</td><td>Multi-round quiz</td><td>Compare two foods — which has more protein?</td></tr>
+<tr><td>Build a Balanced Plate</td><td>Nutrition</td><td>3-step builder</td><td>Select protein, carb, and veggie to construct a meal and get scored</td></tr>
+<tr><td>Best Workout</td><td>Exercise</td><td>Selection quiz</td><td>Choose the best workout for a given scenario</td></tr>
+<tr><td>Form Check</td><td>Exercise</td><td>Camera recorder</td><td>Record exercise form for feedback (mock)</td></tr>
+<tr><td>Meditation Timer</td><td>Stress</td><td>Timed activity</td><td>Guided meditation with countdown timer</td></tr>
+</table>
+
+<p><strong>80% block education goal:</strong> Each block tracks module completion toward an 80% target, shown with an indicator in both the Toolkit and Week Detail screens.</p>
+
+<h3>5.11 Settings Screen</h3>
+<ul>
+<li><strong>User profile card</strong> — Displays onboarding data: name, age, medication, status, weight, activity level, strength training experience</li>
+<li><strong>Program details link</strong> — navigates to program screen</li>
+<li><strong>Maintenance band percentage setting</strong> — adjustable ±3–5%</li>
+<li><strong>Preferences toggles</strong> — user preference controls</li>
+<li><strong>Reset program</strong> — Red-bordered card with confirmation modal. Clears all localStorage, resets state, clears <code>navHistory</code>, resets <code>onboardStep</code> to 0, and navigates to the first onboarding screen.</li>
+</ul>
+
+<h3>5.12 Log Screen, Body Scanner &amp; Weight Band</h3>
+
+<h4>Log Screen</h4>
+<p>Central logging hub with 7 items:</p>
+<ol>
+<li><strong>Daily hunger check-in banner</strong> — Prominent, always visible until completed for the day. Changes state on completion.</li>
+<li><strong>Body Scanner button</strong> — Camera-based composition scan</li>
+<li><strong>Food log</strong> (placeholder)</li>
+<li><strong>Exercise log</strong> (placeholder)</li>
+<li><strong>Water log</strong> (placeholder)</li>
+<li><strong>Sleep log</strong> (placeholder)</li>
+<li><strong>Glucose notes</strong> (placeholder)</li>
+</ol>
+
+<h4>Body Scanner</h4>
+<p>Mock camera-based body composition measurement:</p>
+<ul>
+<li>Uses <code>navigator.mediaDevices.getUserMedia</code> for camera access</li>
+<li>5-second scan countdown with visual indicator</li>
+<li>Results: body fat %, visceral fat %, lifestyle bonus (0–3 points added to Lifestyle GPA)</li>
+<li>Color-coded result indicators</li>
+<li>Results saved to <code>state.bodyScanEntries</code> keyed by date</li>
+</ul>
+
+<h4>Weight &amp; Maintenance Band</h4>
+<ul>
+<li>Anchor weight set from <code>state.weightAnchor</code> (defaults to onboarding profile weight)</li>
+<li>Band percentage configurable in Settings (<code>state.maintenanceBandPct</code>, default 5%)</li>
+<li>Band range: anchor × (1 ± bandPct/100) — e.g., 165 lbs with 5% → 157–173 lbs</li>
+<li>SVG chart showing 16-week weight trend with shaded band region</li>
+<li>Shown from day 1 on the Home screen with normalization messaging</li>
+<li>Graduation criterion: current weight ≤ upper band limit for 2 consecutive weeks</li>
+<li>Messaging: "Some weight regain is biologically expected — it's your body recalibrating, not a failure"</li>
+</ul>
+
+<h3>5.13 Weekly Check-In</h3>
+<ul>
+<li>Pop-up modal on home screen (after 4 seconds, once per week)</li>
+<li>Collects: mood (1–5 emoji), confidence (1–5), biggest challenge (text)</li>
+<li>Shows education progress</li>
+<li>Saved to <code>state.weeklyCheckIns</code></li>
+</ul>
+
+<hr>
+
+<h2>6. Scoring &amp; Algorithms</h2>
+
+<h3>6.1 Score-to-GPA Mapping</h3>
+<table>
+<tr><th>Score (0–100)</th><th>Letter</th><th>GPA (1–5)</th></tr>
+<tr><td>90–100</td><td>A</td><td>~4.6–5.0</td></tr>
+<tr><td>80–89</td><td>B</td><td>~4.2–4.6</td></tr>
+<tr><td>70–79</td><td>C</td><td>~3.8–4.2</td></tr>
+<tr><td>60–69</td><td>D</td><td>~3.4–3.8</td></tr>
+<tr><td>0–59</td><td>F</td><td>~1.0–3.4</td></tr>
+</table>
+<p>Formula: <code>GPA = 1 + (score100 / 100) * 4</code></p>
+
+<h3>6.2 Transition Readiness Calculation</h3>
+<pre><code>readiness = (glucoseScore × 0.30) + (lifestyleScore × 0.30)
+          + ((100 − |hungerAvg − 3| × 15) × 0.20)
+          + (consistencyScore × 0.20)</code></pre>
+
+<h3>6.3 Consistency Score</h3>
+<p>Average of: workout consistency, macro consistency (weekly), water consistency (weekly), education module completion.</p>
+
+<h3>6.4 Hunger Mastery Score</h3>
+<table>
+<tr><th>Component</th><th>Max Points</th><th>Calculation</th></tr>
+<tr><td>Logging frequency</td><td>40</td><td>min(40, daysLogged × 4) — full at 10/14 days</td></tr>
+<tr><td>Hunger proximity to ideal</td><td>30</td><td>max(0, 30 − |avgHunger − 3| × 15)</td></tr>
+<tr><td>Fullness proximity to ideal</td><td>30</td><td>max(0, 30 − |avgFullness − 3.5| × 15)</td></tr>
+</table>
+<p>Levels: Beginner (0–19), Learning (20–49), Developing (50–79), Advanced (80–100)</p>
+
+<h3>6.5 Block/Week Conversion</h3>
+<pre><code>blockToWeeks(b) → [b * 2 - 1, b * 2]  // e.g., Block 3 → [5, 6]
+weekToBlock(w) → Math.ceil(w / 2)       // e.g., Week 6 → Block 3</code></pre>
+
+<hr>
+
+<h2>7. Data Model</h2>
+<p>All state persisted in localStorage under key <code>signos-glp1</code>.</p>
+<table>
+<tr><th>Field</th><th>Type</th><th>Description</th></tr>
+<tr><td>onboardingComplete</td><td>Boolean</td><td>Whether onboarding is done</td></tr>
+<tr><td>phaseStartAt</td><td>String (date)</td><td>When the program started</td></tr>
+<tr><td>program_enrolled_at</td><td>String (ISO)</td><td>Enrollment timestamp</td></tr>
+<tr><td>profile</td><td>Object</td><td>Full onboarding profile (name, age, medication, duration, medStatus, weight, goalWeight, heightFt, heightIn, activityLevel, strengthTraining, goals, preGlp1Struggles, currentStruggles, reasonOffGlp1)</td></tr>
+<tr><td>weekOrder</td><td>Array (4 strings)</td><td>Personalized block topic order (e.g., ['baseline_cgm', 'nutrition', 'movement_cgm', 'full_system'])</td></tr>
+<tr><td>week1CheckIn</td><td>Object</td><td>Baseline assessment answers from onboarding</td></tr>
+<tr><td>week5CheckIn</td><td>Object</td><td>Mid-program assessment answers</td></tr>
+<tr><td>postWeek8CheckIn</td><td>Object/null</td><td>Post-block-4 check-in answers, timestamp, focus areas</td></tr>
+<tr><td>focusAreas</td><td>Array</td><td>User's selected focus area keys for blocks 5–8</td></tr>
+<tr><td>doseEvents</td><td>Array</td><td>Dose change event log</td></tr>
+<tr><td>hungerEntries</td><td>Object</td><td>Keyed by date, hunger/fullness ratings + timestamps</td></tr>
+<tr><td>bodyScanEntries</td><td>Object</td><td>Keyed by date, body composition results</td></tr>
+<tr><td>completedModules</td><td>Object</td><td>Module completion timestamps</td></tr>
+<tr><td>completedGames</td><td>Object</td><td>Game completion timestamps</td></tr>
+<tr><td>weeklyCheckIns</td><td>Object</td><td>Keyed by week, check-in data</td></tr>
+<tr><td>weeklyScoreHistory</td><td>Array</td><td>Weekly GPA scores for graduation trend (still per-week for granularity)</td></tr>
+<tr><td>coachSessions</td><td>Array</td><td>Hunger Coach session logs. Capped at 100.</td></tr>
+<tr><td>strategyLog</td><td>Array</td><td>Strategy tracking. Capped at 200.</td></tr>
+<tr><td>cgmOverride</td><td>Boolean/null</td><td>Manual CGM toggle override for demo purposes</td></tr>
+<tr><td>preferences</td><td>Object</td><td>User preferences</td></tr>
+<tr><td>dismissedBanners</td><td>Object</td><td>Dismissed banner tracking</td></tr>
+<tr><td>maintenanceBandPct</td><td>Number</td><td>Maintenance band percentage (default 5%)</td></tr>
+<tr><td>weightAnchor</td><td>Number/null</td><td>Anchor weight for maintenance band</td></tr>
+</table>
+
+<hr>
+
+<h2>8. CGM Integration Model</h2>
+
+<h3>8.1 Intermittent Wear Schedule</h3>
+<p>The program uses 4 intermittent CGM sensor periods rather than continuous wear:</p>
+<pre><code>CGM_BLOCKS = { 1: true, 2: false, 3: true, 4: false, 5: false, 6: true, 7: false, 8: true }</code></pre>
+
+<h3>8.2 Helper Functions</h3>
+<table>
+<tr><th>Function</th><th>Purpose</th></tr>
+<tr><td><code>isCGMWeek(wk)</code></td><td>Returns true if a given week has CGM active</td></tr>
+<tr><td><code>isCGMBlock(b)</code></td><td>Returns true if a given block has CGM active</td></tr>
+<tr><td><code>getCGMPeriod(wk)</code></td><td>Returns the CGM period object for a given week, or null</td></tr>
+<tr><td><code>getNextCGMBlock(b)</code></td><td>Returns the next block number that has CGM, or null</td></tr>
+<tr><td><code>getLastCGMPeriod(wk)</code></td><td>Returns the most recent completed CGM period before a given week</td></tr>
+</table>
+
+<h3>8.3 Home Screen CGM Toggle</h3>
+<ul>
+<li><strong>CGM Active view:</strong> Blue-bordered card, live glucose SVG, "LIVE" badge</li>
+<li><strong>CGM Off view:</strong> Amber-themed card, static "average day" glucose SVG from last sensor, key metrics, actionable insight, "OFF" badge</li>
+<li>Toggle controlled by <code>cgmOverride</code> state variable (null = auto-detect from schedule)</li>
+<li>Visual differences are pronounced (colors, graph styles, badges) to make the toggle obvious</li>
+</ul>
+
+<h3>8.4 Off-CGM Experience</h3>
+<p>During off-CGM blocks, the app adapts:</p>
+<ul>
+<li><strong>Home screen:</strong> Average daily glucose graph replaces live CGM, hunger coach is elevated as "YOUR PRIMARY SIGNAL THIS WEEK"</li>
+<li><strong>Insights Glucose tab:</strong> Amber notice showing CGM off status and next sensor block</li>
+<li><strong>Week detail:</strong> "Habit Mode — No CGM" banner instead of CGM active banner</li>
+<li><strong>Education:</strong> Modules emphasize building habits by feel rather than relying on real-time data</li>
+</ul>
+
+<hr>
+
+<h2>9. Design &amp; UX Specifications</h2>
+
+<h3>9.1 Visual Identity</h3>
+<ul>
+<li><strong>Primary accent:</strong> Purple (#7c3aed) throughout all screens</li>
+<li><strong>Purple light:</strong> #ede9fe for backgrounds and highlight cards</li>
+<li><strong>CGM active:</strong> Blue (#2563eb) borders, backgrounds, badges</li>
+<li><strong>CGM off:</strong> Amber (#d97706) tones for average glucose display</li>
+<li><strong>Success:</strong> Green (#16a34a) for completed states</li>
+<li><strong>Locked:</strong> Gray (#94a3b8) for locked blocks</li>
+</ul>
+
+<h3>9.2 Layout &amp; Typography</h3>
+<ul>
+<li><strong>Max width:</strong> 480px (mobile-first)</li>
+<li><strong>Typography:</strong> System fonts (-apple-system, BlinkMacSystemFont, Segoe UI, Roboto)</li>
+<li><strong>Card design:</strong> 16px border radius, box shadow, 18px padding</li>
+<li><strong>Navigation:</strong> Fixed bottom nav with safe area inset support</li>
+<li><strong>Headers:</strong> Lowered positioning (44px top padding) for comfortable thumb reach</li>
+<li><strong>Modals:</strong> Bottom-sheet pattern with overlay dismiss, slide-up animation</li>
+<li><strong>Score gauges:</strong> Half-circle SVG arc with purple gradient fill</li>
+</ul>
+
+<h3>9.3 Timeline UI</h3>
+<p>The graduation timeline is a single horizontal scrollable row with:</p>
+<ul>
+<li>16 individual week dots, each 22px circles</li>
+<li>Dots grouped in pairs inside rounded block containers (20px border-radius)</li>
+<li>CGM blocks: blue border with centered "CGM" badge</li>
+<li>Habit blocks: subtle gray border</li>
+<li>6px internal connecting line between weeks in a block; 10px between blocks</li>
+<li>Right-edge fade gradient for scroll hint</li>
+<li>Auto-centers on current week on render</li>
+<li>Hidden scrollbar</li>
+</ul>
+
+<h3>9.4 Coach UI Elements</h3>
+<ul>
+<li>Speech bubbles, tappable option cards, coach avatar (🥘 emoji in purple circle)</li>
+<li>Circular countdown timer ring, 2×2 HALT grid, numbered action step cards</li>
+<li>Glucose context cards: Color-coded (red/amber/green) with left border accent, icon, value, trend label, and explanatory text</li>
+<li>Strategy tracking UI: Checkmark buttons for committing to strategies</li>
+</ul>
+
+<hr>
+
+<h2>10. Safety &amp; Compliance</h2>
+<ul>
+<li><strong>Hunger Coach tone</strong> — All follow-up responses are positive. Eating is never framed as failure. "I ate something intentionally" is celebrated as a skill. The coach never tells users not to eat.</li>
+<li><strong>No dosing advice</strong> — all dosing decisions defer to the user's clinician</li>
+<li><strong>Clinician involvement</strong> encouraged for any adverse symptoms</li>
+<li><strong>No alarmist glucose alerts</strong> — pattern-based insights only, no shaming language</li>
+<li><strong>No "good/bad" food labels</strong> — uses "more stabilizing" vs. "less stabilizing" framing</li>
+<li><strong>No detox/restriction language</strong> — reset routines framed as structured habit recommitment</li>
+<li><strong>Past-tense GLP-1 framing</strong> — app does not assume user is currently on medication</li>
+<li><strong>Normalization messaging</strong> — weight regain and appetite return are biologically expected</li>
+</ul>
+
+<hr>
+
+<h2>11. Analytics Events</h2>
+<table>
+<tr><th>Event</th><th>Properties</th><th>Trigger</th></tr>
+<tr><td>glp1_program_enrolled</td><td>goals, struggles, weekOrder</td><td>Onboarding complete</td></tr>
+<tr><td>glp1_insight_action_clicked</td><td>action_id</td><td>CTA button clicks</td></tr>
+<tr><td>glp1_dose_event_logged</td><td>type</td><td>Dose event recorded</td></tr>
+<tr><td>glp1_post8_checkin_completed</td><td>focus_areas</td><td>Post-block-4 check-in finished</td></tr>
+<tr><td>glp1_weeks_912_unlocked</td><td>focus_areas</td><td>Focus areas selected, blocks unlocked</td></tr>
+</table>
+
+<hr>
+
+<h2>12. Technical Architecture</h2>
+<ul>
+<li><strong>Runtime:</strong> Single-page application in vanilla JavaScript (no framework)</li>
+<li><strong>Packaging:</strong> iOS app via Capacitor (ios/App/)</li>
+<li><strong>State management:</strong> localStorage with migration/schema versioning (<code>migrateToProgramState()</code>)</li>
+<li><strong>Rendering:</strong> DOM manipulation via innerHTML string construction + event handler attachment</li>
+<li><strong>Routing:</strong> In-memory screen state with history stack</li>
+<li><strong>Block model:</strong> <code>TOTAL_BLOCKS = 8</code>, <code>TOTAL_WEEKS = 16</code>, with <code>blockToWeeks()</code> and <code>weekToBlock()</code> conversion functions</li>
+<li><strong>CGM data:</strong> Simulated glucose context via <code>getGlucoseContext()</code> (time-of-day, profile, and hunger-entry aware)</li>
+<li><strong>Camera access:</strong> <code>navigator.mediaDevices.getUserMedia</code> for body scanner (mock analysis)</li>
+</ul>
+
+<hr>
+
+<h2>13. Key Changes from v4.0 → v5.0</h2>
+<table>
+<tr><th>Change</th><th>Description</th></tr>
+<tr><td>16-week program</td><td>Expanded from 12 weeks to 16 weeks for more time to build and validate habits</td></tr>
+<tr><td>2-week block model</td><td>8 blocks of 2 weeks each replace individual weekly goals. Each block has a single focus spanning both weeks.</td></tr>
+<tr><td>Intermittent CGM schedule</td><td>4 sensor periods (Blocks 1, 3, 6, 8) instead of continuous wear. CGM validates; off-CGM blocks build habits by feel.</td></tr>
+<tr><td>Combined weekly topics</td><td>Protein + Fiber combined into one block (Block 2); Walking + Resistance combined (Block 3); Satiating Meals + Sleep/Stress combined (Block 4)</td></tr>
+<tr><td>Simplified personalization</td><td>Only 2 movable blocks (nutrition vs. full_system) instead of 4 individual movable weeks. Blocks 1 and 3 are fixed CGM blocks.</td></tr>
+<tr><td>18-step personalized onboarding</td><td>Comprehensive profile collection with medication history, struggles, goals, baseline assessment, and personalized program summary</td></tr>
+<tr><td>CGM toggle on home screen</td><td>Clickable glucose display switches between live CGM and average daily glucose views. Visual differences (colors, badges, graph styles) are pronounced.</td></tr>
+<tr><td>Off-CGM home experience</td><td>Average daily glucose graph from last sensor, elevated hunger coach as "primary signal," next sensor countdown in graduation card</td></tr>
+<tr><td>Insights tab restructure</td><td>Three tabs: Lifestyle, Glucose, Graduation. Sensor-by-sensor comparison graph added. "Last 7 Days" tab removed. Hunger correlations organized under each tab.</td></tr>
+<tr><td>Sensor comparison graph</td><td><code>buildSensorComparisonSVG()</code> overlays daily glucose curves for each completed CGM period with metrics table</td></tr>
+<tr><td>Scrollable timeline</td><td>16 week dots in a single horizontal scrollable row, grouped in block pairs with shared CGM/habit borders. Auto-scrolls to current week.</td></tr>
+<tr><td>Block-based education</td><td><code>BLOCK_EDUCATION</code> assigns modules per block (not per week). Education completion counted per block with deduplication.</td></tr>
+<tr><td>Updated check-in labels</td><td>"Post-block-4 check-in" replaces "post-week-8"; "Blocks 5–8 locked" replaces "Weeks 9–16 locked"</td></tr>
+<tr><td>Consistency GPA</td><td>Now includes education module completion as a component</td></tr>
+<tr><td>Parameterized self-assessment</td><td>Same 4-step check-in flow used at 3 checkpoints (Block 1 baseline, Block 3 mid-program, Block 5 post-foundation) with customized copy per stage</td></tr>
+<tr><td>User journey reframing</td><td>All copy updated for users tapering off or already off GLP-1, using past-tense or transitional language</td></tr>
+</table>
+
+<hr>
+
+<h2>14. Future Considerations</h2>
+<ul>
+<li>Real CGM data integration via Signos API (replaces <code>getGlucoseContext()</code> simulation)</li>
+<li>Real body composition analysis (computer vision or hardware integration)</li>
+<li>Push notifications for habit reminders, drift alerts, sensor reminders, and coach nudges</li>
+<li>Clinician dashboard / data sharing</li>
+<li>Apple Health / Google Fit integration for activity, sleep, HRV data</li>
+<li>Server-side state persistence and cross-device sync</li>
+<li>Personalized AI-driven insights based on accumulated user data</li>
+<li>Graduation certificate screen</li>
+<li>Social features (community, accountability partners)</li>
+<li>Hunger Coach voice mode (spoken conversation instead of taps)</li>
+<li>Strategy effectiveness analytics dashboard for product team</li>
+<li>A/B testing framework for coach response content</li>
+<li>Smart sensor reminders (notification when next CGM block is approaching)</li>
+<li>Off-CGM glucose estimation based on meal/activity patterns from on-CGM data</li>
+</ul>
+
+</body>
+</html>

@@ -1,0 +1,837 @@
+{
+  "flows": [
+    {
+      "name": "First-Time User Onboarding",
+      "steps": [
+        {
+          "action": "Taps Get Started",
+          "screenId": "Onboarding_Welcome",
+          "annotation": "Program overview"
+        },
+        {
+          "action": "Enters name and age",
+          "screenId": "Onboarding_NameAge",
+          "annotation": ""
+        },
+        {
+          "action": "Selects medication, duration, status",
+          "screenId": "Onboarding_Medication",
+          "annotation": ""
+        },
+        {
+          "action": "Multi-selects reasons",
+          "screenId": "Onboarding_WhyOffGLP1",
+          "annotation": ""
+        },
+        {
+          "action": "Enters weight, height, activity",
+          "screenId": "Onboarding_BodyActivity",
+          "annotation": ""
+        },
+        {
+          "action": "Multi-selects goals",
+          "screenId": "Onboarding_Goals",
+          "annotation": ""
+        },
+        {
+          "action": "Multi-selects pre-GLP-1 struggles",
+          "screenId": "Onboarding_PreStruggles",
+          "annotation": ""
+        },
+        {
+          "action": "Ranked multi-select current struggles",
+          "screenId": "Onboarding_CurrentStruggles",
+          "annotation": "Shapes personalized block order"
+        },
+        {
+          "action": "Selects experience level",
+          "screenId": "Onboarding_StrengthTraining",
+          "annotation": ""
+        },
+        {
+          "action": "Rates 8 questions 1-5",
+          "screenId": "Onboarding_AssessmentQ1",
+          "annotation": "Baseline assessment"
+        },
+        {
+          "action": "Reviews program, taps Start",
+          "screenId": "Onboarding_PersonalizedProgram",
+          "annotation": "Shows personalized roadmap"
+        },
+        {
+          "action": "",
+          "screenId": "Home_CGM_Active",
+          "annotation": "Arrives at personalized dashboard"
+        }
+      ]
+    },
+    {
+      "name": "Daily Hunger Check-In",
+      "steps": [
+        {
+          "action": "Taps hunger CTA",
+          "screenId": "Home_CGM_Active",
+          "annotation": "Always visible"
+        },
+        {
+          "action": "Rates hunger and fullness 1-5",
+          "screenId": "HungerQuestionnaire",
+          "annotation": "Named scale anchors"
+        },
+        {
+          "action": "Sees feedback",
+          "screenId": "HungerQuestionnaire",
+          "annotation": "Glucose insight card + educational tip"
+        }
+      ]
+    },
+    {
+      "name": "Hunger Coach — Reactive Session",
+      "steps": [
+        {
+          "action": "Taps Talk to your coach",
+          "screenId": "Home_CGM_Active",
+          "annotation": ""
+        },
+        {
+          "action": "Reviews glucose card, selects scenario",
+          "screenId": "HungerCoach_Landing",
+          "annotation": "10 scenarios in 3 categories"
+        },
+        {
+          "action": "Answers branching questions",
+          "screenId": "HungerCoach_Scenario_StillHungry",
+          "annotation": "When ate, what ate, stomach vs mouth"
+        },
+        {
+          "action": "Commits to strategy",
+          "screenId": "HungerCoach_Scenario_StillHungry",
+          "annotation": "Logged for tracking"
+        },
+        {
+          "action": "Selects outcome",
+          "screenId": "HungerCoach_Scenario_StillHungry",
+          "annotation": "Paused/ate intentionally/satisfied/learn more"
+        }
+      ]
+    },
+    {
+      "name": "Hunger Coach — Proactive Pre-Meal",
+      "steps": [
+        {
+          "action": "Selects About to eat",
+          "screenId": "HungerCoach_Landing",
+          "annotation": "Proactive scenario"
+        },
+        {
+          "action": "Assesses hunger level",
+          "screenId": "HungerCoach_Scenario_AboutToEat",
+          "annotation": "Level-specific advice"
+        },
+        {
+          "action": "Starts 20-min meal timer",
+          "screenId": "HungerCoach_Scenario_AboutToEat",
+          "annotation": "Vagus nerve pacing"
+        }
+      ]
+    },
+    {
+      "name": "Hunger Coach — HALT Check",
+      "steps": [
+        {
+          "action": "Selects Not hungry but want to eat",
+          "screenId": "HungerCoach_Landing",
+          "annotation": ""
+        },
+        {
+          "action": "HALT grid: selects emotional state",
+          "screenId": "HungerCoach_Scenario_NotHungry",
+          "annotation": "Hungry/Angry-Anxious/Lonely-Bored/Tired"
+        }
+      ]
+    },
+    {
+      "name": "Hunger Coach — Body Scan",
+      "steps": [
+        {
+          "action": "Selects Not sure if hungry",
+          "screenId": "HungerCoach_Landing",
+          "annotation": ""
+        },
+        {
+          "action": "4-step guided body scan with timers",
+          "screenId": "HungerCoach_Scenario_Unsure",
+          "annotation": "Interoception exercise"
+        }
+      ]
+    },
+    {
+      "name": "Hunger Coach — Mini Lesson",
+      "steps": [
+        {
+          "action": "Selects Teach me about hunger",
+          "screenId": "HungerCoach_Landing",
+          "annotation": ""
+        },
+        {
+          "action": "Browses 5 mini-lessons",
+          "screenId": "HungerCoach_Scenario_TeachMe",
+          "annotation": "Types of hunger, hunger scale, GLP-1 effects, satiation, glucose-hunger"
+        }
+      ]
+    },
+    {
+      "name": "Explore Graduation Timeline",
+      "steps": [
+        {
+          "action": "Taps graduation card",
+          "screenId": "Home_CGM_Active",
+          "annotation": ""
+        },
+        {
+          "action": "Scrolls timeline, taps Block 1 dot",
+          "screenId": "Toolkit_Main",
+          "annotation": "16 dots in 8 blocks"
+        },
+        {
+          "action": "Reviews goal and education",
+          "screenId": "WeekDetail_Block1_Baseline",
+          "annotation": "Baseline: observe and log"
+        },
+        {
+          "action": "Reads article",
+          "screenId": "Education_CGM_Basics",
+          "annotation": "1-3 min read"
+        }
+      ]
+    },
+    {
+      "name": "Post-Block-4 Check-In and Unlock",
+      "steps": [
+        {
+          "action": "Taps locked Block 5",
+          "screenId": "Toolkit_Main",
+          "annotation": ""
+        },
+        {
+          "action": "Taps Start your check-in",
+          "screenId": "WeekDetail_Block5_Locked",
+          "annotation": ""
+        },
+        {
+          "action": "4-step flow",
+          "screenId": "Assessment_Post8_Intro",
+          "annotation": "Insights -> quiz -> feedback -> focus"
+        },
+        {
+          "action": "",
+          "screenId": "WeekDetail_Block5_Locked",
+          "annotation": "Now unlocked with personalized content"
+        }
+      ]
+    },
+    {
+      "name": "CGM Toggle Experience",
+      "steps": [
+        {
+          "action": "Views live glucose graph",
+          "screenId": "Home_CGM_Active",
+          "annotation": "Blue border, LIVE badge"
+        },
+        {
+          "action": "Taps toggle to CGM Off",
+          "screenId": "Home_CGM_Off",
+          "annotation": "Amber, average day graph, elevated coach"
+        }
+      ]
+    },
+    {
+      "name": "Sensor Comparison in Insights",
+      "steps": [
+        {
+          "action": "Views Lifestyle GPA and correlations",
+          "screenId": "Insights_Lifestyle",
+          "annotation": ""
+        },
+        {
+          "action": "Taps Glucose tab, views sensor comparison",
+          "screenId": "Insights_Glucose",
+          "annotation": "Overlaid CGM period curves"
+        },
+        {
+          "action": "Taps Graduation tab, views trend graph",
+          "screenId": "Insights_Graduation",
+          "annotation": "Week-by-week scores"
+        }
+      ]
+    },
+    {
+      "name": "Body Scanner Flow",
+      "steps": [
+        {
+          "action": "Taps Body Scanner",
+          "screenId": "Log_Main",
+          "annotation": ""
+        },
+        {
+          "action": "Starts scan, waits 5s",
+          "screenId": "BodyScanner",
+          "annotation": "Mock analysis"
+        },
+        {
+          "action": "Views results",
+          "screenId": "BodyScanner",
+          "annotation": "Body fat, visceral fat, lifestyle bonus"
+        }
+      ]
+    },
+    {
+      "name": "Program Reset",
+      "steps": [
+        {
+          "action": "Taps Reset program",
+          "screenId": "Settings",
+          "annotation": "Red card"
+        },
+        {
+          "action": "Confirms in modal",
+          "screenId": "Settings",
+          "annotation": "Clears localStorage"
+        },
+        {
+          "action": "",
+          "screenId": "Onboarding_Welcome",
+          "annotation": "Returns to step 0"
+        }
+      ]
+    },
+    {
+      "name": "Education Game Flow",
+      "steps": [
+        {
+          "action": "Taps Exercise section",
+          "screenId": "Toolkit_Main",
+          "annotation": ""
+        },
+        {
+          "action": "Plays quiz rounds",
+          "screenId": "Game_ProteinGuess",
+          "annotation": "Compare foods"
+        },
+        {
+          "action": "Builds a meal",
+          "screenId": "Game_BuildBalancedPlate",
+          "annotation": "Protein + carb + veggie"
+        }
+      ]
+    }
+  ],
+  "screens": [
+    {
+      "id": "Onboarding_Welcome",
+      "name": "Onboarding — Welcome",
+      "purpose": "Program overview and start button",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": [
+        "First screen for new users",
+        "Step 0 of 18"
+      ],
+      "screenshotUrl": "https://qvzqpeufrpbaklncjbqu.supabase.co/storage/v1/object/public/screenshots/GLP1-Graduation-Program-1772466524120/Onboarding_Welcome.png"
+    },
+    {
+      "id": "Onboarding_NameAge",
+      "name": "Onboarding — Name & Age",
+      "purpose": "Collect user name and age",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": [
+        "Step 1 of 18"
+      ],
+      "screenshotUrl": "https://qvzqpeufrpbaklncjbqu.supabase.co/storage/v1/object/public/screenshots/GLP1-Graduation-Program-1772466524120/Onboarding_NameAge.png"
+    },
+    {
+      "id": "Onboarding_Medication",
+      "name": "Onboarding — Medication History",
+      "purpose": "Medication type, duration, and current status",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": [
+        "Step 2 of 18"
+      ],
+      "screenshotUrl": "https://qvzqpeufrpbaklncjbqu.supabase.co/storage/v1/object/public/screenshots/GLP1-Graduation-Program-1772466524120/Onboarding_Medication.png"
+    },
+    {
+      "id": "Onboarding_WhyOffGLP1",
+      "name": "Onboarding — Why Coming Off GLP-1",
+      "purpose": "Multi-select reasons for discontinuing medication",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": [
+        "Step 3 of 18"
+      ],
+      "screenshotUrl": "https://qvzqpeufrpbaklncjbqu.supabase.co/storage/v1/object/public/screenshots/GLP1-Graduation-Program-1772466524120/Onboarding_WhyOffGLP1.png"
+    },
+    {
+      "id": "Onboarding_BodyActivity",
+      "name": "Onboarding — Body & Activity",
+      "purpose": "Weight, goal weight, height, activity level",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": [
+        "Step 4 of 18"
+      ],
+      "screenshotUrl": "https://qvzqpeufrpbaklncjbqu.supabase.co/storage/v1/object/public/screenshots/GLP1-Graduation-Program-1772466524120/Onboarding_BodyActivity.png"
+    },
+    {
+      "id": "Onboarding_Goals",
+      "name": "Onboarding — Goals",
+      "purpose": "Multi-select goals for the program",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": [
+        "Step 5 of 18"
+      ],
+      "screenshotUrl": "https://qvzqpeufrpbaklncjbqu.supabase.co/storage/v1/object/public/screenshots/GLP1-Graduation-Program-1772466524120/Onboarding_Goals.png"
+    },
+    {
+      "id": "Onboarding_PreStruggles",
+      "name": "Onboarding — Pre-GLP-1 Struggles",
+      "purpose": "Multi-select struggles before medication",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": [
+        "Step 6 of 18"
+      ],
+      "screenshotUrl": "https://qvzqpeufrpbaklncjbqu.supabase.co/storage/v1/object/public/screenshots/GLP1-Graduation-Program-1772466524120/Onboarding_PreStruggles.png"
+    },
+    {
+      "id": "Onboarding_CurrentStruggles",
+      "name": "Onboarding — Current Struggles",
+      "purpose": "Ranked multi-select struggles that shape block order",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": [
+        "Step 7 of 18",
+        "Directly determines personalized block ordering"
+      ],
+      "screenshotUrl": "https://qvzqpeufrpbaklncjbqu.supabase.co/storage/v1/object/public/screenshots/GLP1-Graduation-Program-1772466524120/Onboarding_CurrentStruggles.png"
+    },
+    {
+      "id": "Onboarding_StrengthTraining",
+      "name": "Onboarding — Strength Training",
+      "purpose": "Strength training experience level (6 options)",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": [
+        "Step 8 of 18"
+      ],
+      "screenshotUrl": "https://qvzqpeufrpbaklncjbqu.supabase.co/storage/v1/object/public/screenshots/GLP1-Graduation-Program-1772466524120/Onboarding_StrengthTraining.png"
+    },
+    {
+      "id": "Onboarding_AssessmentQ1",
+      "name": "Onboarding — Assessment Question 1",
+      "purpose": "Baseline self-assessment quiz (rated 1-5)",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": [
+        "Step 9 of 18",
+        "Same questions used in mid-program and post-program check-ins"
+      ],
+      "screenshotUrl": "https://qvzqpeufrpbaklncjbqu.supabase.co/storage/v1/object/public/screenshots/GLP1-Graduation-Program-1772466524120/Onboarding_AssessmentQ1.png"
+    },
+    {
+      "id": "Onboarding_AssessmentQ5",
+      "name": "Onboarding — Assessment Question 5",
+      "purpose": "Mid-point of baseline assessment quiz",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": [
+        "Step 13 of 18"
+      ],
+      "screenshotUrl": "https://qvzqpeufrpbaklncjbqu.supabase.co/storage/v1/object/public/screenshots/GLP1-Graduation-Program-1772466524120/Onboarding_AssessmentQ5.png"
+    },
+    {
+      "id": "Onboarding_PersonalizedProgram",
+      "name": "Onboarding — Your Personalized Program",
+      "purpose": "Shows personalized 16-week roadmap and per-question feedback",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": [
+        "Step 17 of 18",
+        "Start your graduation button"
+      ],
+      "screenshotUrl": "https://qvzqpeufrpbaklncjbqu.supabase.co/storage/v1/object/public/screenshots/GLP1-Graduation-Program-1772466524120/Onboarding_PersonalizedProgram.png"
+    },
+    {
+      "id": "Home_CGM_Active",
+      "name": "Home — CGM Active",
+      "purpose": "Dashboard with live CGM graph, graduation card, hunger coach, GPA strip",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": [
+        "Blue border, LIVE badge",
+        "Primary dashboard state during CGM blocks"
+      ],
+      "screenshotUrl": "https://qvzqpeufrpbaklncjbqu.supabase.co/storage/v1/object/public/screenshots/GLP1-Graduation-Program-1772466524120/Home_CGM_Active.png"
+    },
+    {
+      "id": "Home_CGM_Off",
+      "name": "Home — CGM Off",
+      "purpose": "Dashboard with average daily glucose graph, elevated hunger coach",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": [
+        "Amber border, OFF badge",
+        "Hunger coach elevated as primary signal",
+        "Next sensor countdown shown"
+      ],
+      "screenshotUrl": "https://qvzqpeufrpbaklncjbqu.supabase.co/storage/v1/object/public/screenshots/GLP1-Graduation-Program-1772466524120/Home_CGM_Off.png"
+    },
+    {
+      "id": "Toolkit_Main",
+      "name": "Graduation Toolkit",
+      "purpose": "Education hub with scrollable timeline, core principles, block goal, education sections",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": [
+        "16 week dots in 8 block containers",
+        "CGM indicators on sensor blocks",
+        "Blocks 5-8 locked until check-in"
+      ],
+      "screenshotUrl": "https://qvzqpeufrpbaklncjbqu.supabase.co/storage/v1/object/public/screenshots/GLP1-Graduation-Program-1772466524120/Toolkit_Main.png"
+    },
+    {
+      "id": "WeekDetail_Block1_Baseline",
+      "name": "Block 1 Detail — Baseline",
+      "purpose": "Block 1 goal: Observe food responses, activity, sleep, hunger with CGM",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": [
+        "Fixed block (not reordered)",
+        "Includes baseline assessment card"
+      ],
+      "screenshotUrl": "https://qvzqpeufrpbaklncjbqu.supabase.co/storage/v1/object/public/screenshots/GLP1-Graduation-Program-1772466524120/WeekDetail_Block1_Baseline.png"
+    },
+    {
+      "id": "WeekDetail_Block2_Nutrition",
+      "name": "Block 2 Detail — Nutrition",
+      "purpose": "Nutrition-focused block: protein and fiber goals",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": [
+        "Personalized order based on struggles",
+        "Off-CGM block"
+      ],
+      "screenshotUrl": "https://qvzqpeufrpbaklncjbqu.supabase.co/storage/v1/object/public/screenshots/GLP1-Graduation-Program-1772466524120/WeekDetail_Block2_Nutrition.png"
+    },
+    {
+      "id": "WeekDetail_Block3_Movement",
+      "name": "Block 3 Detail — Movement",
+      "purpose": "Movement block: walking, steps, resistance training with CGM",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": [
+        "Fixed block (not reordered)",
+        "Includes mid-program assessment card",
+        "CGM validates movement impact on glucose"
+      ],
+      "screenshotUrl": "https://qvzqpeufrpbaklncjbqu.supabase.co/storage/v1/object/public/screenshots/GLP1-Graduation-Program-1772466524120/WeekDetail_Block3_Movement.png"
+    },
+    {
+      "id": "WeekDetail_Block4_FullSystem",
+      "name": "Block 4 Detail — Full System",
+      "purpose": "Satiating meals, sleep, and stress with all habits maintained",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": [
+        "Personalized order based on struggles",
+        "Off-CGM block"
+      ],
+      "screenshotUrl": "https://qvzqpeufrpbaklncjbqu.supabase.co/storage/v1/object/public/screenshots/GLP1-Graduation-Program-1772466524120/WeekDetail_Block4_FullSystem.png"
+    },
+    {
+      "id": "WeekDetail_Block5_Locked",
+      "name": "Block 5 Detail — Locked",
+      "purpose": "Locked state showing check-in prompt for Blocks 5-8",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": [
+        "Start your check-in button",
+        "Unlocks after post-Block-4 assessment"
+      ],
+      "screenshotUrl": "https://qvzqpeufrpbaklncjbqu.supabase.co/storage/v1/object/public/screenshots/GLP1-Graduation-Program-1772466524120/WeekDetail_Block5_Locked.png"
+    },
+    {
+      "id": "Assessment_Baseline_Intro",
+      "name": "Assessment — Baseline (Block 1)",
+      "purpose": "Baseline self-assessment establishing starting point",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": [
+        "Integrated into onboarding",
+        "Same 4-step flow as mid and post"
+      ],
+      "screenshotUrl": "https://qvzqpeufrpbaklncjbqu.supabase.co/storage/v1/object/public/screenshots/GLP1-Graduation-Program-1772466524120/Assessment_Baseline_Intro.png"
+    },
+    {
+      "id": "Assessment_MidProgram_Intro",
+      "name": "Assessment — Mid-Program (Block 3)",
+      "purpose": "Mid-program check-in measuring progress against baseline",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": [
+        "Compares to Block 1 scores"
+      ],
+      "screenshotUrl": "https://qvzqpeufrpbaklncjbqu.supabase.co/storage/v1/object/public/screenshots/GLP1-Graduation-Program-1772466524120/Assessment_MidProgram_Intro.png"
+    },
+    {
+      "id": "Assessment_Post8_Intro",
+      "name": "Assessment — Post-Foundation (Block 5)",
+      "purpose": "Full check-in with focus area selection unlocking Blocks 5-8",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": [
+        "4-step flow: insights -> quiz -> feedback -> focus selection",
+        "Unlocks personalized Blocks 5-8"
+      ],
+      "screenshotUrl": "https://qvzqpeufrpbaklncjbqu.supabase.co/storage/v1/object/public/screenshots/GLP1-Graduation-Program-1772466524120/Assessment_Post8_Intro.png"
+    },
+    {
+      "id": "Log_Main",
+      "name": "Log",
+      "purpose": "Central logging hub: hunger, body scanner, food, exercise, water, sleep, glucose",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": [
+        "Hunger check-in is primary CTA"
+      ],
+      "screenshotUrl": "https://qvzqpeufrpbaklncjbqu.supabase.co/storage/v1/object/public/screenshots/GLP1-Graduation-Program-1772466524120/Log_Main.png"
+    },
+    {
+      "id": "HungerQuestionnaire",
+      "name": "Hunger Check-In",
+      "purpose": "Daily hunger/fullness rating (1-5) with glucose-aware feedback",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": [
+        "Post-submit glucose insight card",
+        "Links to Hunger Coach on high hunger"
+      ],
+      "screenshotUrl": "https://qvzqpeufrpbaklncjbqu.supabase.co/storage/v1/object/public/screenshots/GLP1-Graduation-Program-1772466524120/HungerQuestionnaire.png"
+    },
+    {
+      "id": "HungerCoach_Landing",
+      "name": "Hunger Coach — Landing",
+      "purpose": "Personalized greeting, glucose card, stats, strategy card, scenario selection",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": [
+        "Adapts greeting based on hunger trends",
+        "Surfaces best strategy from history"
+      ],
+      "screenshotUrl": "https://qvzqpeufrpbaklncjbqu.supabase.co/storage/v1/object/public/screenshots/GLP1-Graduation-Program-1772466524120/HungerCoach_Landing.png"
+    },
+    {
+      "id": "HungerCoach_Scenario_StillHungry",
+      "name": "Hunger Coach — Still Hungry",
+      "purpose": "Post-meal hunger scenario with timing and composition questions",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": [
+        "Reactive scenario",
+        "Branches: When did you eat? -> What did you eat? -> Stomach vs mouth"
+      ],
+      "screenshotUrl": "https://qvzqpeufrpbaklncjbqu.supabase.co/storage/v1/object/public/screenshots/GLP1-Graduation-Program-1772466524120/HungerCoach_Scenario_StillHungry.png"
+    },
+    {
+      "id": "HungerCoach_Scenario_Starving",
+      "name": "Hunger Coach — Starving",
+      "purpose": "Intense hunger scenario with meal timing assessment",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": [
+        "Reactive scenario",
+        "When was your last meal? -> Contextual advice"
+      ],
+      "screenshotUrl": "https://qvzqpeufrpbaklncjbqu.supabase.co/storage/v1/object/public/screenshots/GLP1-Graduation-Program-1772466524120/HungerCoach_Scenario_Starving.png"
+    },
+    {
+      "id": "HungerCoach_Scenario_Craving",
+      "name": "Hunger Coach — Craving",
+      "purpose": "Craving scenario with biochemical explanations and strategies",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": [
+        "Reactive scenario",
+        "Sweet/salty/rich/specific food branches"
+      ],
+      "screenshotUrl": "https://qvzqpeufrpbaklncjbqu.supabase.co/storage/v1/object/public/screenshots/GLP1-Graduation-Program-1772466524120/HungerCoach_Scenario_Craving.png"
+    },
+    {
+      "id": "HungerCoach_Scenario_NotHungry",
+      "name": "Hunger Coach — Not Hungry But Want to Eat",
+      "purpose": "Non-hunger eating with HALT check",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": [
+        "Reactive scenario",
+        "2x2 HALT grid: Hungry/Angry-Anxious/Lonely-Bored/Tired"
+      ],
+      "screenshotUrl": "https://qvzqpeufrpbaklncjbqu.supabase.co/storage/v1/object/public/screenshots/GLP1-Graduation-Program-1772466524120/HungerCoach_Scenario_NotHungry.png"
+    },
+    {
+      "id": "HungerCoach_Scenario_Unsure",
+      "name": "Hunger Coach — Not Sure If Hungry",
+      "purpose": "Guided body scan with timed steps",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": [
+        "Reactive scenario",
+        "4-step body scan with timers"
+      ],
+      "screenshotUrl": "https://qvzqpeufrpbaklncjbqu.supabase.co/storage/v1/object/public/screenshots/GLP1-Graduation-Program-1772466524120/HungerCoach_Scenario_Unsure.png"
+    },
+    {
+      "id": "HungerCoach_Scenario_UnusualTime",
+      "name": "Hunger Coach — Unusual Time Hunger",
+      "purpose": "Off-schedule hunger with timing-specific advice",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": [
+        "Reactive scenario",
+        "Late night/afternoon/early morning/post-workout"
+      ],
+      "screenshotUrl": "https://qvzqpeufrpbaklncjbqu.supabase.co/storage/v1/object/public/screenshots/GLP1-Graduation-Program-1772466524120/HungerCoach_Scenario_UnusualTime.png"
+    },
+    {
+      "id": "HungerCoach_Scenario_AboutToEat",
+      "name": "Hunger Coach — About to Eat",
+      "purpose": "Pre-meal coaching with hunger assessment and meal timer",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": [
+        "Proactive scenario",
+        "20-minute meal timer"
+      ],
+      "screenshotUrl": "https://qvzqpeufrpbaklncjbqu.supabase.co/storage/v1/object/public/screenshots/GLP1-Graduation-Program-1772466524120/HungerCoach_Scenario_AboutToEat.png"
+    },
+    {
+      "id": "HungerCoach_Scenario_PostMeal",
+      "name": "Hunger Coach — Post-Meal Reflection",
+      "purpose": "Post-meal debrief with fullness assessment",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": [
+        "Proactive scenario",
+        "Still hungry -> meal composition drill-down"
+      ],
+      "screenshotUrl": "https://qvzqpeufrpbaklncjbqu.supabase.co/storage/v1/object/public/screenshots/GLP1-Graduation-Program-1772466524120/HungerCoach_Scenario_PostMeal.png"
+    },
+    {
+      "id": "HungerCoach_Scenario_HungerChanging",
+      "name": "Hunger Coach — Hunger Changing",
+      "purpose": "Medication transition hunger education",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": [
+        "Learn scenario",
+        "More/less/unpredictable/different sensation branches"
+      ],
+      "screenshotUrl": "https://qvzqpeufrpbaklncjbqu.supabase.co/storage/v1/object/public/screenshots/GLP1-Graduation-Program-1772466524120/HungerCoach_Scenario_HungerChanging.png"
+    },
+    {
+      "id": "HungerCoach_Scenario_TeachMe",
+      "name": "Hunger Coach — Teach Me About Hunger",
+      "purpose": "Educational entry point to mini-lesson library",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": [
+        "Learn scenario",
+        "5 mini-lessons accessible"
+      ],
+      "screenshotUrl": "https://qvzqpeufrpbaklncjbqu.supabase.co/storage/v1/object/public/screenshots/GLP1-Graduation-Program-1772466524120/HungerCoach_Scenario_TeachMe.png"
+    },
+    {
+      "id": "Insights_Lifestyle",
+      "name": "Insights — Lifestyle Tab",
+      "purpose": "Lifestyle GPA, Transition Readiness, hunger-lifestyle correlations",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": [
+        "GPA detail modals with component drill-down"
+      ],
+      "screenshotUrl": "https://qvzqpeufrpbaklncjbqu.supabase.co/storage/v1/object/public/screenshots/GLP1-Graduation-Program-1772466524120/Insights_Lifestyle.png"
+    },
+    {
+      "id": "Insights_Glucose",
+      "name": "Insights — Glucose Tab",
+      "purpose": "Glucose GPA, sensor comparison graph, hunger-glucose correlations",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": [
+        "Overlaid glucose curves across sensor periods",
+        "CGM Off note during non-sensor weeks"
+      ],
+      "screenshotUrl": "https://qvzqpeufrpbaklncjbqu.supabase.co/storage/v1/object/public/screenshots/GLP1-Graduation-Program-1772466524120/Insights_Glucose.png"
+    },
+    {
+      "id": "Insights_Graduation",
+      "name": "Insights — Graduation Tab",
+      "purpose": "Graduation trend graph, score summary, hunger-progress correlations",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": [
+        "Week-by-week GPA scores with delta tracking"
+      ],
+      "screenshotUrl": "https://qvzqpeufrpbaklncjbqu.supabase.co/storage/v1/object/public/screenshots/GLP1-Graduation-Program-1772466524120/Insights_Graduation.png"
+    },
+    {
+      "id": "Education_CGM_Basics",
+      "name": "Education — CGM Basics",
+      "purpose": "Foundation module: What is a CGM?",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": [
+        "Glucose & CGM section",
+        "1-3 minute read"
+      ],
+      "screenshotUrl": "https://qvzqpeufrpbaklncjbqu.supabase.co/storage/v1/object/public/screenshots/GLP1-Graduation-Program-1772466524120/Education_CGM_Basics.png"
+    },
+    {
+      "id": "Education_Protein_Anchor",
+      "name": "Education — Protein Anchor",
+      "purpose": "Foundation module: Protein as your anchor",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": [
+        "Nutrition section",
+        "1-3 minute read"
+      ],
+      "screenshotUrl": "https://qvzqpeufrpbaklncjbqu.supabase.co/storage/v1/object/public/screenshots/GLP1-Graduation-Program-1772466524120/Education_Protein_Anchor.png"
+    },
+    {
+      "id": "Education_Walking_Glucose",
+      "name": "Education — Walking & Glucose",
+      "purpose": "Foundation module: Post-meal walking for glucose management",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": [
+        "Exercise section",
+        "1-3 minute read"
+      ],
+      "screenshotUrl": "https://qvzqpeufrpbaklncjbqu.supabase.co/storage/v1/object/public/screenshots/GLP1-Graduation-Program-1772466524120/Education_Walking_Glucose.png"
+    },
+    {
+      "id": "Game_ProteinGuess",
+      "name": "Game — Protein Guess",
+      "purpose": "Quiz: Compare two foods, which has more protein?",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": [
+        "Multi-round with immediate feedback"
+      ],
+      "screenshotUrl": "https://qvzqpeufrpbaklncjbqu.supabase.co/storage/v1/object/public/screenshots/GLP1-Graduation-Program-1772466524120/Game_ProteinGuess.png"
+    },
+    {
+      "id": "Game_BuildBalancedPlate",
+      "name": "Game — Build a Balanced Plate",
+      "purpose": "Builder: Select protein, carb, and veggie to construct a meal",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": [
+        "Three-step selection with scoring"
+      ],
+      "screenshotUrl": "https://qvzqpeufrpbaklncjbqu.supabase.co/storage/v1/object/public/screenshots/GLP1-Graduation-Program-1772466524120/Game_BuildBalancedPlate.png"
+    },
+    {
+      "id": "Settings",
+      "name": "Settings",
+      "purpose": "User profile display, program details, reset program",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": [
+        "Reset button clears all data",
+        "Shows onboarding profile data"
+      ],
+      "screenshotUrl": "https://qvzqpeufrpbaklncjbqu.supabase.co/storage/v1/object/public/screenshots/GLP1-Graduation-Program-1772466524120/Settings.png"
+    },
+    {
+      "id": "Program_Details",
+      "name": "Program Details",
+      "purpose": "Detailed program metrics, dose history, graduation readiness",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": [
+        "Accessed from Settings"
+      ],
+      "screenshotUrl": "https://qvzqpeufrpbaklncjbqu.supabase.co/storage/v1/object/public/screenshots/GLP1-Graduation-Program-1772466524120/Program_Details.png"
+    },
+    {
+      "id": "BodyScanner",
+      "name": "Body Scanner",
+      "purpose": "Camera-based body composition scan (mock)",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": [
+        "Results: body fat %, visceral fat %, lifestyle bonus"
+      ],
+      "screenshotUrl": "https://qvzqpeufrpbaklncjbqu.supabase.co/storage/v1/object/public/screenshots/GLP1-Graduation-Program-1772466524120/BodyScanner.png"
+    }
+  ],
+  "projectName": "GLP1 Graduation Program",
+  "projectDescription": ""
+}

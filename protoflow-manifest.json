@@ -1,6 +1,7 @@
 {
-  "version": "1.0",
+  "version": "2.0",
   "projectName": "GLP1 Graduation Program",
+  "projectDescription": "A 16-week guided program helping users transition off GLP-1 medications through personalized hunger coaching, CGM-based glucose insights, and progressive lifestyle habit building.",
   "platform": "ios-capacitor-web",
   "screens": [
     {
@@ -8,451 +9,2246 @@
       "name": "Onboarding — Welcome",
       "purpose": "Program overview and start button",
       "sourceFile": "ios/App/App/public/index.html",
-      "annotations": ["First screen for new users", "Step 0 of 18"]
+      "annotations": [
+        "First screen for new users",
+        "Step 0 of 18"
+      ]
     },
     {
       "id": "Onboarding_NameAge",
       "name": "Onboarding — Name & Age",
       "purpose": "Collect user name and age",
       "sourceFile": "ios/App/App/public/index.html",
-      "annotations": ["Step 1 of 18"]
+      "annotations": [
+        "Step 1 of 18"
+      ]
     },
     {
       "id": "Onboarding_Medication",
       "name": "Onboarding — Medication History",
       "purpose": "Medication type, duration, and current status",
       "sourceFile": "ios/App/App/public/index.html",
-      "annotations": ["Step 2 of 18"]
+      "annotations": [
+        "Step 2 of 18"
+      ]
     },
     {
       "id": "Onboarding_WhyOffGLP1",
       "name": "Onboarding — Why Coming Off GLP-1",
       "purpose": "Multi-select reasons for discontinuing medication",
       "sourceFile": "ios/App/App/public/index.html",
-      "annotations": ["Step 3 of 18"]
+      "annotations": [
+        "Step 3 of 18"
+      ]
     },
     {
       "id": "Onboarding_BodyActivity",
       "name": "Onboarding — Body & Activity",
       "purpose": "Weight, goal weight, height, activity level",
       "sourceFile": "ios/App/App/public/index.html",
-      "annotations": ["Step 4 of 18"]
+      "annotations": [
+        "Step 4 of 18"
+      ]
     },
     {
       "id": "Onboarding_Goals",
       "name": "Onboarding — Goals",
       "purpose": "Multi-select goals for the program",
       "sourceFile": "ios/App/App/public/index.html",
-      "annotations": ["Step 5 of 18"]
+      "annotations": [
+        "Step 5 of 18"
+      ]
     },
     {
       "id": "Onboarding_PreStruggles",
       "name": "Onboarding — Pre-GLP-1 Struggles",
       "purpose": "Multi-select struggles before medication",
       "sourceFile": "ios/App/App/public/index.html",
-      "annotations": ["Step 6 of 18"]
+      "annotations": [
+        "Step 6 of 18"
+      ]
     },
     {
       "id": "Onboarding_CurrentStruggles",
       "name": "Onboarding — Current Struggles",
       "purpose": "Ranked multi-select struggles that shape block order",
       "sourceFile": "ios/App/App/public/index.html",
-      "annotations": ["Step 7 of 18", "Directly determines personalized block ordering"]
+      "annotations": [
+        "Step 7 of 18",
+        "Directly determines personalized block ordering"
+      ]
     },
     {
       "id": "Onboarding_StrengthTraining",
       "name": "Onboarding — Strength Training",
       "purpose": "Strength training experience level (6 options)",
       "sourceFile": "ios/App/App/public/index.html",
-      "annotations": ["Step 8 of 18"]
+      "annotations": [
+        "Step 8 of 18"
+      ]
     },
     {
       "id": "Onboarding_AssessmentQ1",
       "name": "Onboarding — Assessment Question 1",
       "purpose": "Baseline self-assessment quiz (rated 1-5)",
       "sourceFile": "ios/App/App/public/index.html",
-      "annotations": ["Step 9 of 18", "Same questions used in mid-program and post-program check-ins"]
+      "annotations": [
+        "Step 9 of 18"
+      ]
     },
     {
       "id": "Onboarding_AssessmentQ5",
       "name": "Onboarding — Assessment Question 5",
       "purpose": "Mid-point of baseline assessment quiz",
       "sourceFile": "ios/App/App/public/index.html",
-      "annotations": ["Step 13 of 18"]
+      "annotations": [
+        "Step 13 of 18"
+      ]
     },
     {
       "id": "Onboarding_PersonalizedProgram",
       "name": "Onboarding — Your Personalized Program",
       "purpose": "Shows personalized 16-week roadmap and per-question feedback",
       "sourceFile": "ios/App/App/public/index.html",
-      "annotations": ["Step 17 of 18", "Start your graduation button"]
+      "annotations": [
+        "Step 17 of 18",
+        "Start your graduation button"
+      ]
     },
     {
       "id": "Home_CGM_Active",
       "name": "Home — CGM Active",
       "purpose": "Dashboard with live CGM graph, graduation card, hunger coach, GPA strip",
       "sourceFile": "ios/App/App/public/index.html",
-      "annotations": ["Blue border, LIVE badge", "Primary dashboard state during CGM blocks"]
+      "annotations": [
+        "Blue border, LIVE badge"
+      ]
     },
     {
       "id": "Home_CGM_Off",
       "name": "Home — CGM Off",
-      "purpose": "Dashboard with average daily glucose graph, elevated hunger coach",
+      "purpose": "During off-sensor blocks, the dashboard shifts from live glucose to an average-day glucose graph from the last sensor period. The Hunger Coach is elevated as the user's primary biofeedback tool, teaching them to read internal hunger signals without relying on CGM data — the core skill needed for life after graduation.",
       "sourceFile": "ios/App/App/public/index.html",
-      "annotations": ["Amber border, OFF badge", "Hunger coach elevated as primary signal", "Next sensor countdown shown"]
+      "annotations": [
+        "Amber border, OFF badge",
+        "Hunger Coach elevated as PRIMARY SIGNAL THIS WEEK",
+        "Shows avg glucose, GPA, time-in-range from last sensor",
+        "Builds independence from real-time data"
+      ]
     },
     {
       "id": "Toolkit_Main",
       "name": "Graduation Toolkit",
       "purpose": "Education hub with scrollable timeline, core principles, block goal, education sections",
       "sourceFile": "ios/App/App/public/index.html",
-      "annotations": ["16 week dots in 8 block containers", "CGM indicators on sensor blocks", "Blocks 5-8 locked until check-in"]
+      "annotations": [
+        "16 week dots in 8 block containers"
+      ]
     },
     {
       "id": "WeekDetail_Block1_Baseline",
-      "name": "Block 1 Detail — Baseline",
+      "name": "Block 1 — Baseline",
       "purpose": "Block 1 goal: Observe food responses, activity, sleep, hunger with CGM",
       "sourceFile": "ios/App/App/public/index.html",
-      "annotations": ["Fixed block (not reordered)", "Includes baseline assessment card"]
+      "annotations": [
+        "Fixed block",
+        "Baseline assessment card"
+      ]
     },
     {
       "id": "WeekDetail_Block2_Nutrition",
-      "name": "Block 2 Detail — Nutrition",
+      "name": "Block 2 — Nutrition",
       "purpose": "Nutrition-focused block: protein and fiber goals",
       "sourceFile": "ios/App/App/public/index.html",
-      "annotations": ["Personalized order based on struggles", "Off-CGM block"]
+      "annotations": [
+        "Personalized order",
+        "Off-CGM block"
+      ]
     },
     {
       "id": "WeekDetail_Block3_Movement",
-      "name": "Block 3 Detail — Movement",
+      "name": "Block 3 — Movement",
       "purpose": "Movement block: walking, steps, resistance training with CGM",
       "sourceFile": "ios/App/App/public/index.html",
-      "annotations": ["Fixed block (not reordered)", "Includes mid-program assessment card", "CGM validates movement impact on glucose"]
+      "annotations": [
+        "Fixed block",
+        "Mid-program assessment card"
+      ]
     },
     {
       "id": "WeekDetail_Block4_FullSystem",
-      "name": "Block 4 Detail — Full System",
+      "name": "Block 4 — Full System",
       "purpose": "Satiating meals, sleep, and stress with all habits maintained",
       "sourceFile": "ios/App/App/public/index.html",
-      "annotations": ["Personalized order based on struggles", "Off-CGM block"]
+      "annotations": [
+        "Personalized order",
+        "Off-CGM block"
+      ]
     },
     {
       "id": "WeekDetail_Block5_Locked",
-      "name": "Block 5 Detail — Locked",
+      "name": "Block 5 — Locked",
       "purpose": "Locked state showing check-in prompt for Blocks 5-8",
       "sourceFile": "ios/App/App/public/index.html",
-      "annotations": ["Start your check-in button", "Unlocks after post-Block-4 assessment"]
+      "annotations": [
+        "Start your check-in button"
+      ]
     },
     {
       "id": "Assessment_Baseline_Intro",
-      "name": "Assessment — Baseline (Block 1)",
-      "purpose": "Baseline self-assessment establishing starting point",
+      "name": "Assessment — Baseline",
+      "purpose": "Baseline self-assessment with starting numbers and insights",
       "sourceFile": "ios/App/App/public/index.html",
-      "annotations": ["Integrated into onboarding", "Same 4-step flow as mid and post"]
+      "annotations": [
+        "Step 1 of 4-step check-in flow"
+      ]
     },
     {
       "id": "Assessment_MidProgram_Intro",
-      "name": "Assessment — Mid-Program (Block 3)",
+      "name": "Assessment — Mid-Program",
       "purpose": "Mid-program check-in measuring progress against baseline",
       "sourceFile": "ios/App/App/public/index.html",
-      "annotations": ["Compares to Block 1 scores"]
+      "annotations": [
+        "Compares to Block 1 scores"
+      ]
     },
     {
       "id": "Assessment_Post8_Intro",
-      "name": "Assessment — Post-Foundation (Block 5)",
-      "purpose": "Full check-in with focus area selection unlocking Blocks 5-8",
+      "name": "Assessment — Post-Foundation",
+      "purpose": "Full check-in with progress insights unlocking Blocks 5-8",
       "sourceFile": "ios/App/App/public/index.html",
-      "annotations": ["4-step flow: insights -> quiz -> feedback -> focus selection", "Unlocks personalized Blocks 5-8"]
+      "annotations": [
+        "Step 1: Your Numbers + What Signos Noticed"
+      ]
+    },
+    {
+      "id": "CheckIn_SelfAssessment",
+      "name": "Check-In — Self-Assessment Quiz",
+      "purpose": "8-question self-assessment rated 1-5 across hunger, nutrition, exercise, sleep, glucose, weight, stress, muscle",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": [
+        "Step 2 of 4"
+      ]
+    },
+    {
+      "id": "CheckIn_Feedback",
+      "name": "Check-In — Personalized Feedback",
+      "purpose": "Per-question feedback with progress bars, ranked area summary",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": [
+        "Step 3 of 4",
+        "Color-coded red/yellow/green"
+      ]
+    },
+    {
+      "id": "CheckIn_FocusSelection",
+      "name": "Check-In — Choose Your Focus",
+      "purpose": "User selects 1-2 focus areas for Blocks 5-8",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": [
+        "Step 4 of 4",
+        "Unlocks weeks 9-16"
+      ]
     },
     {
       "id": "Log_Main",
       "name": "Log",
       "purpose": "Central logging hub: hunger, body scanner, food, exercise, water, sleep, glucose",
       "sourceFile": "ios/App/App/public/index.html",
-      "annotations": ["Hunger check-in is primary CTA"]
+      "annotations": [
+        "Hunger check-in is primary CTA"
+      ]
     },
     {
       "id": "HungerQuestionnaire",
       "name": "Hunger Check-In",
       "purpose": "Daily hunger/fullness rating (1-5) with glucose-aware feedback",
       "sourceFile": "ios/App/App/public/index.html",
-      "annotations": ["Post-submit glucose insight card", "Links to Hunger Coach on high hunger"]
+      "annotations": [
+        "Post-submit glucose insight card"
+      ]
     },
     {
       "id": "HungerCoach_Landing",
       "name": "Hunger Coach — Landing",
       "purpose": "Personalized greeting, glucose card, stats, strategy card, scenario selection",
       "sourceFile": "ios/App/App/public/index.html",
-      "annotations": ["Adapts greeting based on hunger trends", "Surfaces best strategy from history"]
+      "annotations": [
+        "10 scenarios in 3 categories"
+      ]
     },
     {
       "id": "HungerCoach_Scenario_StillHungry",
-      "name": "Hunger Coach — Still Hungry",
-      "purpose": "Post-meal hunger scenario with timing and composition questions",
+      "name": "Still Hungry — When Did You Eat?",
+      "purpose": "Post-meal hunger: timing assessment with 3 options",
       "sourceFile": "ios/App/App/public/index.html",
-      "annotations": ["Reactive scenario", "Branches: When did you eat? -> What did you eat? -> Stomach vs mouth"]
+      "annotations": [
+        "<15 min, 15-30 min, >30 min"
+      ]
+    },
+    {
+      "id": "HungerCoach_StillHungry_Under15",
+      "name": "Still Hungry — Give Your Brain Time",
+      "purpose": "Fullness signals haven't arrived yet — 10-min wait",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": [
+        "10-minute timer",
+        "Vagus nerve explanation"
+      ]
+    },
+    {
+      "id": "HungerCoach_StillHungry_WhatAte",
+      "name": "Still Hungry — What Did You Eat?",
+      "purpose": "Meal composition assessment for 15-30 min post-meal hunger",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": [
+        "carb heavy / had protein / balanced"
+      ]
+    },
+    {
+      "id": "HungerCoach_StillHungry_CarbHeavy",
+      "name": "Still Hungry — Glucose Spike-Crash",
+      "purpose": "Reactive hypoglycemia from carb-heavy meals",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": [
+        "Protein-first strategy"
+      ]
+    },
+    {
+      "id": "HungerCoach_StillHungry_Balanced",
+      "name": "Still Hungry — Portion Adjustment",
+      "purpose": "Balanced meal but still hungry — may need larger portions",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": [
+        "Under-eating risk"
+      ]
+    },
+    {
+      "id": "HungerCoach_StillHungry_StomachVsMouth",
+      "name": "Still Hungry — Stomach or Mouth?",
+      "purpose": "Physical vs hedonic hunger differentiation",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": [
+        "2 options: physical vs mouth/brain"
+      ]
+    },
+    {
+      "id": "HungerCoach_StillHungry_Physical",
+      "name": "Still Hungry — Real Hunger",
+      "purpose": "Physical hunger confirmed — protein-forward snack",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": [
+        "Trust the signal"
+      ]
+    },
+    {
+      "id": "HungerCoach_StillHungry_MouthHunger",
+      "name": "Still Hungry — Hedonic Hunger",
+      "purpose": "Mouth/brain hunger — flavor reset and environment change",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": [
+        "10-minute timer"
+      ]
     },
     {
       "id": "HungerCoach_Scenario_Starving",
-      "name": "Hunger Coach — Starving",
-      "purpose": "Intense hunger scenario with meal timing assessment",
+      "name": "Starving — When Was Your Last Meal?",
+      "purpose": "Intense hunger timing assessment",
       "sourceFile": "ios/App/App/public/index.html",
-      "annotations": ["Reactive scenario", "When was your last meal? -> Contextual advice"]
+      "annotations": [
+        "4+ hrs, 2-4 hrs, just woke up"
+      ]
+    },
+    {
+      "id": "HungerCoach_Starving_LongAgo",
+      "name": "Starving — Waited Too Long",
+      "purpose": "Urgent refuel: eat now, lead with protein",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": [
+        "Meal alarm for tomorrow"
+      ]
+    },
+    {
+      "id": "HungerCoach_Starving_Recent",
+      "name": "Starving — Recent Meal Issue",
+      "purpose": "Intense hunger 2-4 hrs after — meal composition problem",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": [
+        "Protein bridge snack"
+      ]
+    },
+    {
+      "id": "HungerCoach_Starving_Morning",
+      "name": "Starving — Morning Hunger",
+      "purpose": "Morning hunger as metabolic recovery sign post-GLP-1",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": [
+        "Positive framing"
+      ]
     },
     {
       "id": "HungerCoach_Scenario_Craving",
-      "name": "Hunger Coach — Craving",
-      "purpose": "Craving scenario with biochemical explanations and strategies",
+      "name": "Craving — What Are You Craving?",
+      "purpose": "Craving type identification",
       "sourceFile": "ios/App/App/public/index.html",
-      "annotations": ["Reactive scenario", "Sweet/salty/rich/specific food branches"]
+      "annotations": [
+        "sweet / salty / rich / specific"
+      ]
+    },
+    {
+      "id": "HungerCoach_Craving_Sweet",
+      "name": "Craving — Sweet",
+      "purpose": "Glucose dip signal — protein-paired alternatives",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": [
+        "CGM correlation"
+      ]
+    },
+    {
+      "id": "HungerCoach_Craving_Salty",
+      "name": "Craving — Salty",
+      "purpose": "Dehydration/stress signal — water first, crunchy alternatives",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": [
+        "Jaw tension explanation"
+      ]
+    },
+    {
+      "id": "HungerCoach_Craving_Rich",
+      "name": "Craving — Rich/Fatty",
+      "purpose": "Dietary fat deficiency — healthy fat integration",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": [
+        "Gastric emptying"
+      ]
+    },
+    {
+      "id": "HungerCoach_Craving_Specific",
+      "name": "Craving — Specific Food",
+      "purpose": "Hedonic reward fixation — 10-minute rule",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": [
+        "10-minute timer",
+        "80/20 approach"
+      ]
     },
     {
       "id": "HungerCoach_Scenario_NotHungry",
-      "name": "Hunger Coach — Not Hungry But Want to Eat",
-      "purpose": "Non-hunger eating with HALT check",
+      "name": "HALT Check — Grid",
+      "purpose": "Not hungry but want to eat — HALT grid",
       "sourceFile": "ios/App/App/public/index.html",
-      "annotations": ["Reactive scenario", "2x2 HALT grid: Hungry/Angry-Anxious/Lonely-Bored/Tired"]
+      "annotations": [
+        "2x2 grid: H-A-L-T"
+      ]
+    },
+    {
+      "id": "HungerCoach_HALT_Hungry",
+      "name": "HALT — Actually Hungry (H)",
+      "purpose": "Low-level physical hunger post-GLP-1",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": [
+        "Trust recalibrating signals"
+      ]
+    },
+    {
+      "id": "HungerCoach_HALT_Angry",
+      "name": "HALT — Angry/Stressed (A)",
+      "purpose": "Cortisol-driven stress eating — box breathing",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": [
+        "10-minute timer",
+        "Parasympathetic activation"
+      ]
+    },
+    {
+      "id": "HungerCoach_HALT_Lonely",
+      "name": "HALT — Lonely/Bored (L)",
+      "purpose": "Dopamine-seeking boredom eating — social connection",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": [
+        "10-minute timer",
+        "35% stat"
+      ]
+    },
+    {
+      "id": "HungerCoach_HALT_Tired",
+      "name": "HALT — Tired (T)",
+      "purpose": "Fatigue-mimicked hunger — ghrelin/leptin disruption",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": [
+        "20-min nap",
+        "300 calorie stat"
+      ]
     },
     {
       "id": "HungerCoach_Scenario_Unsure",
-      "name": "Hunger Coach — Not Sure If Hungry",
-      "purpose": "Guided body scan with timed steps",
+      "name": "Body Scan — Start",
+      "purpose": "Guided body scan initiation for unsure users",
       "sourceFile": "ios/App/App/public/index.html",
-      "annotations": ["Reactive scenario", "4-step body scan with timers"]
+      "annotations": [
+        "4-step timed body scan"
+      ]
+    },
+    {
+      "id": "HungerCoach_BodyScan_Results",
+      "name": "Body Scan — How Do You Feel?",
+      "purpose": "Post-scan assessment with 4 options",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": [
+        "physical / boring food / indulgent / still unsure"
+      ]
+    },
+    {
+      "id": "HungerCoach_BodyScan_Physical",
+      "name": "Body Scan — Real Hunger Confirmed",
+      "purpose": "Physical signals confirmed — eat with protein",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": [
+        "Gut and hypothalamus"
+      ]
+    },
+    {
+      "id": "HungerCoach_BodyScan_BoringFood",
+      "name": "Body Scan — Likely Real Hunger",
+      "purpose": "Boring food test passed — body needs fuel",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": [
+        "Hedonic vs physical distinction"
+      ]
+    },
+    {
+      "id": "HungerCoach_BodyScan_Craving",
+      "name": "Body Scan — Craving Identified",
+      "purpose": "Only wants indulgent food — 10-15 min wait",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": [
+        "10-minute timer",
+        "5-7 min peak"
+      ]
+    },
+    {
+      "id": "HungerCoach_BodyScan_StillUnsure",
+      "name": "Body Scan — Still Unsure",
+      "purpose": "Uncertainty persists — wait 15 min then eat if still thinking about food",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": [
+        "15-minute timer",
+        "Interoception skill building"
+      ]
     },
     {
       "id": "HungerCoach_Scenario_UnusualTime",
-      "name": "Hunger Coach — Unusual Time Hunger",
-      "purpose": "Off-schedule hunger with timing-specific advice",
+      "name": "Unusual Time — When?",
+      "purpose": "Off-schedule hunger timing identification",
       "sourceFile": "ios/App/App/public/index.html",
-      "annotations": ["Reactive scenario", "Late night/afternoon/early morning/post-workout"]
+      "annotations": [
+        "late night / afternoon / early morning / post-workout"
+      ]
+    },
+    {
+      "id": "HungerCoach_UnusualTime_LateNight",
+      "name": "Unusual Time — Late Night",
+      "purpose": "Nighttime eating usually habit/fatigue — kitchen closes rule",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": [
+        "Overnight glucose impact"
+      ]
+    },
+    {
+      "id": "HungerCoach_UnusualTime_Afternoon",
+      "name": "Unusual Time — Afternoon Slump",
+      "purpose": "Circadian 2-4pm dip — preventive protein snack",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": [
+        "Suprachiasmatic nucleus"
+      ]
+    },
+    {
+      "id": "HungerCoach_UnusualTime_EarlyMorning",
+      "name": "Unusual Time — Early Morning",
+      "purpose": "Early hunger as metabolic recovery — eat protein-heavy",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": [
+        "Positive framing"
+      ]
+    },
+    {
+      "id": "HungerCoach_UnusualTime_PostWorkout",
+      "name": "Unusual Time — Post-Workout",
+      "purpose": "Legitimate recovery hunger — 30-60 min window",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": [
+        "Anabolic window",
+        "20-30g protein"
+      ]
     },
     {
       "id": "HungerCoach_Scenario_AboutToEat",
-      "name": "Hunger Coach — About to Eat",
-      "purpose": "Pre-meal coaching with hunger assessment and meal timer",
+      "name": "About to Eat — Hunger Level?",
+      "purpose": "Pre-meal hunger level assessment",
       "sourceFile": "ios/App/App/public/index.html",
-      "annotations": ["Proactive scenario", "20-minute meal timer"]
+      "annotations": [
+        "3 levels: 1-2, 3, 4-5"
+      ]
+    },
+    {
+      "id": "HungerCoach_AboutToEat_Low",
+      "name": "About to Eat — Not Hungry (1-2)",
+      "purpose": "Eating by schedule — protein-dense, don't skip",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": [
+        "20-min meal timer"
+      ]
+    },
+    {
+      "id": "HungerCoach_AboutToEat_SweetSpot",
+      "name": "About to Eat — Perfect Level (3)",
+      "purpose": "Ideal hunger — protein first, 20-min pace",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": [
+        "20-min meal timer"
+      ]
+    },
+    {
+      "id": "HungerCoach_AboutToEat_High",
+      "name": "About to Eat — Very Hungry (4-5)",
+      "purpose": "High hunger management — water first, fork-down",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": [
+        "20-min meal timer"
+      ]
     },
     {
       "id": "HungerCoach_Scenario_PostMeal",
-      "name": "Hunger Coach — Post-Meal Reflection",
-      "purpose": "Post-meal debrief with fullness assessment",
+      "name": "Post-Meal — How Do You Feel?",
+      "purpose": "Post-meal fullness assessment",
       "sourceFile": "ios/App/App/public/index.html",
-      "annotations": ["Proactive scenario", "Still hungry -> meal composition drill-down"]
+      "annotations": [
+        "still hungry / just right / too full / can't tell"
+      ]
+    },
+    {
+      "id": "HungerCoach_PostMeal_JustRight",
+      "name": "Post-Meal — Satisfied",
+      "purpose": "Celebrates landing at satisfied — template meal concept",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": [
+        "Strategy tracking"
+      ]
+    },
+    {
+      "id": "HungerCoach_PostMeal_TooFull",
+      "name": "Post-Meal — Too Full",
+      "purpose": "Overshoot as data — don't skip next meal",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": [
+        "Anti-restrict-binge cycle"
+      ]
+    },
+    {
+      "id": "HungerCoach_PostMeal_NotSure",
+      "name": "Post-Meal — Can't Tell Yet",
+      "purpose": "Vagus nerve fullness delay — 15-min wait",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": [
+        "15-minute timer"
+      ]
+    },
+    {
+      "id": "HungerCoach_PostMeal_StillHungry",
+      "name": "Post-Meal Hungry — What Did You Eat?",
+      "purpose": "Still hungry after meal — meal composition drill-down",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": [
+        "4 options: low protein / small / fast / balanced"
+      ]
+    },
+    {
+      "id": "HungerCoach_PostMealHungry_LowProtein",
+      "name": "Post-Meal Hungry — Missing Protein",
+      "purpose": "Carb-heavy meal missing satiety anchor",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": [
+        "CCK/PYY hormone science"
+      ]
+    },
+    {
+      "id": "HungerCoach_PostMealHungry_SmallPortion",
+      "name": "Post-Meal Hungry — Under-Eating",
+      "purpose": "Portions too small during transition",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": [
+        "Metabolic rate protection"
+      ]
+    },
+    {
+      "id": "HungerCoach_PostMealHungry_AteFast",
+      "name": "Post-Meal Hungry — Ate Too Fast",
+      "purpose": "Brain catch-up — 15-min wait, slower next meal",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": [
+        "15-minute timer"
+      ]
+    },
+    {
+      "id": "HungerCoach_PostMealHungry_BalancedMeal",
+      "name": "Post-Meal Hungry — Body Needs More",
+      "purpose": "Genuine hunger after balanced meal — trust signal",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": [
+        "Intuitive eating foundation"
+      ]
     },
     {
       "id": "HungerCoach_Scenario_HungerChanging",
-      "name": "Hunger Coach — Hunger Changing",
-      "purpose": "Medication transition hunger education",
+      "name": "Hunger Changing — What's Different?",
+      "purpose": "Medication transition hunger assessment",
       "sourceFile": "ios/App/App/public/index.html",
-      "annotations": ["Learn scenario", "More/less/unpredictable/different sensation branches"]
+      "annotations": [
+        "more / less / unpredictable / different type"
+      ]
+    },
+    {
+      "id": "HungerCoach_HungerChanging_MoreHungry",
+      "name": "Hunger Changing — Increasing Appetite",
+      "purpose": "Ghrelin rebound — temporary, protein + fiber defense",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": [
+        "4-8 week timeline"
+      ]
+    },
+    {
+      "id": "HungerCoach_HungerChanging_LessHungry",
+      "name": "Hunger Changing — Very Low Appetite",
+      "purpose": "Protect muscle with structured protein meals",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": [
+        "1.2-1.6g/kg protein"
+      ]
+    },
+    {
+      "id": "HungerCoach_HungerChanging_Unpredictable",
+      "name": "Hunger Changing — Waves",
+      "purpose": "Fluctuating hunger as recalibration — consistent timing",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": [
+        "3-6 week smoothing"
+      ]
+    },
+    {
+      "id": "HungerCoach_HungerChanging_DifferentType",
+      "name": "Hunger Changing — Different Sensation",
+      "purpose": "Developing hunger literacy — 5 types framework",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": [
+        "Stomach/mouth/eye/heart/habit"
+      ]
     },
     {
       "id": "HungerCoach_Scenario_TeachMe",
-      "name": "Hunger Coach — Teach Me About Hunger",
-      "purpose": "Educational entry point to mini-lesson library",
+      "name": "Teach Me About Hunger",
+      "purpose": "Mini-lesson library entry point",
       "sourceFile": "ios/App/App/public/index.html",
-      "annotations": ["Learn scenario", "5 mini-lessons accessible"]
+      "annotations": [
+        "5 mini-lessons"
+      ]
+    },
+    {
+      "id": "HungerCoach_Outcome_Paused",
+      "name": "Coach Outcome — Paused",
+      "purpose": "Urge passed on its own — awareness skill reinforcement",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": [
+        "Green success card"
+      ]
+    },
+    {
+      "id": "HungerCoach_Outcome_AteIntentional",
+      "name": "Coach Outcome — Ate Intentionally",
+      "purpose": "Conscious eating decision — celebrates deliberate choice",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": [
+        "Green success card"
+      ]
+    },
+    {
+      "id": "HungerCoach_Outcome_Satisfied",
+      "name": "Coach Outcome — Satisfied",
+      "purpose": "Ate and feels satisfied — perfect hunger-response cycle",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": [
+        "Green success card",
+        "Reference point"
+      ]
+    },
+    {
+      "id": "HungerCoach_Outcome_LearnMore",
+      "name": "Coach Outcome — Learn More",
+      "purpose": "Curiosity outcome — surfaces mini-lesson library for deeper learning",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": [
+        "Accent card",
+        "Mini-lesson buttons"
+      ]
+    },
+    {
+      "id": "WeeklyCheckin",
+      "name": "Weekly Check-In",
+      "purpose": "Weekly mood, confidence, challenge journal, education progress",
+      "sourceFile": "ios/App/App/public/index.html",
+      "annotations": [
+        "5-emoji mood scale",
+        "1-5 confidence"
+      ]
     },
     {
       "id": "Insights_Lifestyle",
-      "name": "Insights — Lifestyle Tab",
-      "purpose": "Lifestyle GPA, Transition Readiness, hunger-lifestyle correlations",
+      "name": "Insights — Lifestyle",
+      "purpose": "Lifestyle GPA, Transition Readiness, correlations",
       "sourceFile": "ios/App/App/public/index.html",
-      "annotations": ["GPA detail modals with component drill-down"]
+      "annotations": [
+        "Phase 2",
+        "GPA detail modals",
+        "Team debate: may pull Lifestyle GPA into Phase 1 for movement tracking"
+      ]
     },
     {
       "id": "Insights_Glucose",
-      "name": "Insights — Glucose Tab",
-      "purpose": "Glucose GPA, sensor comparison graph, hunger-glucose correlations",
+      "name": "Insights — Glucose",
+      "purpose": "Glucose GPA, sensor comparison graph, correlations",
       "sourceFile": "ios/App/App/public/index.html",
-      "annotations": ["Overlaid glucose curves across sensor periods", "CGM Off note during non-sensor weeks"]
+      "annotations": [
+        "Phase 2",
+        "Overlaid CGM curves"
+      ]
     },
     {
       "id": "Insights_Graduation",
-      "name": "Insights — Graduation Tab",
-      "purpose": "Graduation trend graph, score summary, hunger-progress correlations",
+      "name": "Insights — Graduation",
+      "purpose": "Graduation trend graph, score summary, correlations",
       "sourceFile": "ios/App/App/public/index.html",
-      "annotations": ["Week-by-week GPA scores with delta tracking"]
+      "annotations": [
+        "Phase 2",
+        "Week-by-week delta tracking"
+      ]
     },
     {
       "id": "Education_CGM_Basics",
       "name": "Education — CGM Basics",
       "purpose": "Foundation module: What is a CGM?",
       "sourceFile": "ios/App/App/public/index.html",
-      "annotations": ["Glucose & CGM section", "1-3 minute read"]
+      "annotations": [
+        "1-3 minute read"
+      ]
     },
     {
       "id": "Education_Protein_Anchor",
       "name": "Education — Protein Anchor",
       "purpose": "Foundation module: Protein as your anchor",
       "sourceFile": "ios/App/App/public/index.html",
-      "annotations": ["Nutrition section", "1-3 minute read"]
+      "annotations": [
+        "1-3 minute read"
+      ]
     },
     {
       "id": "Education_Walking_Glucose",
       "name": "Education — Walking & Glucose",
-      "purpose": "Foundation module: Post-meal walking for glucose management",
+      "purpose": "Foundation module: Post-meal walking for glucose",
       "sourceFile": "ios/App/App/public/index.html",
-      "annotations": ["Exercise section", "1-3 minute read"]
+      "annotations": [
+        "1-3 minute read"
+      ]
     },
     {
       "id": "Game_ProteinGuess",
       "name": "Game — Protein Guess",
       "purpose": "Quiz: Compare two foods, which has more protein?",
       "sourceFile": "ios/App/App/public/index.html",
-      "annotations": ["Multi-round with immediate feedback"]
+      "annotations": [
+        "Multi-round feedback"
+      ]
     },
     {
       "id": "Game_BuildBalancedPlate",
       "name": "Game — Build a Balanced Plate",
-      "purpose": "Builder: Select protein, carb, and veggie to construct a meal",
+      "purpose": "Builder: Select protein, carb, veggie to construct a meal",
       "sourceFile": "ios/App/App/public/index.html",
-      "annotations": ["Three-step selection with scoring"]
+      "annotations": [
+        "Three-step selection"
+      ]
     },
     {
       "id": "Settings",
       "name": "Settings",
-      "purpose": "User profile display, program details, reset program",
+      "purpose": "User profile, program details, reset program",
       "sourceFile": "ios/App/App/public/index.html",
-      "annotations": ["Reset button clears all data", "Shows onboarding profile data"]
+      "annotations": [
+        "Reset clears all data"
+      ]
     },
     {
       "id": "Program_Details",
       "name": "Program Details",
-      "purpose": "Detailed program metrics, dose history, graduation readiness",
+      "purpose": "Detailed metrics, dose history, graduation readiness",
       "sourceFile": "ios/App/App/public/index.html",
-      "annotations": ["Accessed from Settings"]
+      "annotations": [
+        "Accessed from Settings"
+      ]
     },
     {
       "id": "BodyScanner",
       "name": "Body Scanner",
       "purpose": "Camera-based body composition scan (mock)",
       "sourceFile": "ios/App/App/public/index.html",
-      "annotations": ["Results: body fat %, visceral fat %, lifestyle bonus"]
+      "annotations": [
+        "Body fat %, visceral fat %"
+      ]
     }
   ],
   "flows": [
     {
       "name": "First-Time User Onboarding",
+      "description": "New user completes 18-step onboarding: profile, health history, goals, baseline self-assessment quiz, and personalized 16-week roadmap generation.",
+      "personas": [
+        "New User"
+      ],
+      "phase": 1,
       "steps": [
-        {"screenId": "Onboarding_Welcome", "action": "Taps Get Started", "annotation": "Program overview"},
-        {"screenId": "Onboarding_NameAge", "action": "Enters name and age", "annotation": ""},
-        {"screenId": "Onboarding_Medication", "action": "Selects medication, duration, status", "annotation": ""},
-        {"screenId": "Onboarding_WhyOffGLP1", "action": "Multi-selects reasons", "annotation": ""},
-        {"screenId": "Onboarding_BodyActivity", "action": "Enters weight, height, activity", "annotation": ""},
-        {"screenId": "Onboarding_Goals", "action": "Multi-selects goals", "annotation": ""},
-        {"screenId": "Onboarding_PreStruggles", "action": "Multi-selects pre-GLP-1 struggles", "annotation": ""},
-        {"screenId": "Onboarding_CurrentStruggles", "action": "Ranked multi-select current struggles", "annotation": "Shapes personalized block order"},
-        {"screenId": "Onboarding_StrengthTraining", "action": "Selects experience level", "annotation": ""},
-        {"screenId": "Onboarding_AssessmentQ1", "action": "Rates 8 questions 1-5", "annotation": "Baseline assessment"},
-        {"screenId": "Onboarding_PersonalizedProgram", "action": "Reviews program, taps Start", "annotation": "Shows personalized roadmap"},
-        {"screenId": "Home_CGM_Active", "action": "", "annotation": "Arrives at personalized dashboard"}
+        {
+          "screenId": "Onboarding_Welcome",
+          "action": "Taps Get Started"
+        },
+        {
+          "screenId": "Onboarding_NameAge",
+          "action": "Enters name and age"
+        },
+        {
+          "screenId": "Onboarding_Medication",
+          "action": "Selects medication, duration, status"
+        },
+        {
+          "screenId": "Onboarding_WhyOffGLP1",
+          "action": "Multi-selects reasons for coming off GLP-1"
+        },
+        {
+          "screenId": "Onboarding_BodyActivity",
+          "action": "Enters weight, goal weight, height, activity level"
+        },
+        {
+          "screenId": "Onboarding_Goals",
+          "action": "Multi-selects program goals"
+        },
+        {
+          "screenId": "Onboarding_PreStruggles",
+          "action": "Multi-selects pre-GLP-1 struggles"
+        },
+        {
+          "screenId": "Onboarding_CurrentStruggles",
+          "action": "Ranked multi-select current struggles",
+          "annotation": "Directly shapes personalized block order"
+        },
+        {
+          "screenId": "Onboarding_StrengthTraining",
+          "action": "Selects strength training experience level"
+        },
+        {
+          "screenId": "Onboarding_AssessmentQ1",
+          "action": "Begins 8-question baseline self-assessment (rated 1-5)",
+          "annotation": "Step 9 of 18"
+        },
+        {
+          "screenId": "Onboarding_AssessmentQ5",
+          "action": "Continues assessment — midway through quiz",
+          "annotation": "Step 13 of 18"
+        },
+        {
+          "screenId": "Onboarding_PersonalizedProgram",
+          "action": "Reviews personalized 16-week roadmap and per-question feedback, taps Start",
+          "annotation": "Step 17 of 18"
+        },
+        {
+          "screenId": "Home_CGM_Active",
+          "action": "",
+          "annotation": "Arrives at dashboard"
+        }
       ]
     },
     {
       "name": "Daily Hunger Check-In",
+      "description": "User logs daily hunger/fullness (1-5) from the Log tab or Home screen. Gets glucose-aware insight card. High hunger or extreme fullness triggers coach escalation.",
+      "personas": [
+        "Active User"
+      ],
+      "phase": 1,
       "steps": [
-        {"screenId": "Home_CGM_Active", "action": "Taps hunger CTA", "annotation": "Always visible"},
-        {"screenId": "HungerQuestionnaire", "action": "Rates hunger and fullness 1-5", "annotation": "Named scale anchors"},
-        {"screenId": "HungerQuestionnaire", "action": "Sees feedback", "annotation": "Glucose insight card + educational tip"}
+        {
+          "screenId": "Log_Main",
+          "action": "Taps daily hunger check-in banner",
+          "annotation": "Also accessible from Home hunger CTA"
+        },
+        {
+          "screenId": "HungerQuestionnaire",
+          "action": "Rates hunger and fullness 1-5, submits"
+        },
+        {
+          "screenId": "HungerQuestionnaire",
+          "action": "Sees glucose insight card, micro-tip, updated satiety skill score",
+          "annotation": "Coach escalation button if hunger >= 4 or fullness extreme"
+        },
+        {
+          "screenId": "HungerCoach_Landing",
+          "action": "Taps 'Need help? Talk to your coach'",
+          "annotation": "Triggered when hunger >= 4 or fullness <= 1 or >= 5 | Subflow: Coach Escalation (High Hunger)"
+        }
+      ],
+      "subflows": [
+        {
+          "name": "Coach Escalation (High Hunger)",
+          "steps": [
+            {
+              "screenId": "HungerCoach_Landing",
+              "action": "Taps 'Need help? Talk to your coach'",
+              "annotation": "Triggered when hunger >= 4 or fullness <= 1 or >= 5"
+            }
+          ]
+        }
       ]
     },
     {
-      "name": "Hunger Coach — Reactive Session",
+      "name": "Hunger Coach — Still Hungry After Eating",
+      "description": "User ate but is still hungry. Coach assesses timing, drills into meal composition, and differentiates physical vs hedonic hunger through branching questions.",
+      "personas": [
+        "Active User"
+      ],
+      "phase": 1,
       "steps": [
-        {"screenId": "Home_CGM_Active", "action": "Taps Talk to your coach", "annotation": ""},
-        {"screenId": "HungerCoach_Landing", "action": "Reviews glucose card, selects scenario", "annotation": "10 scenarios in 3 categories"},
-        {"screenId": "HungerCoach_Scenario_StillHungry", "action": "Answers branching questions", "annotation": "When ate, what ate, stomach vs mouth"},
-        {"screenId": "HungerCoach_Scenario_StillHungry", "action": "Commits to strategy", "annotation": "Logged for tracking"},
-        {"screenId": "HungerCoach_Scenario_StillHungry", "action": "Selects outcome", "annotation": "Paused/ate intentionally/satisfied/learn more"}
+        {
+          "screenId": "HungerCoach_Landing",
+          "action": "Selects 'Just ate, still hungry'"
+        },
+        {
+          "screenId": "HungerCoach_Scenario_StillHungry",
+          "action": "Sees timing question: When did you eat?"
+        },
+        {
+          "screenId": "HungerCoach_StillHungry_Under15",
+          "action": "Taps '<15 min'",
+          "annotation": "Vagus nerve delay + 10-min timer | Subflow: Under 15 Minutes — Wait for Signals"
+        },
+        {
+          "screenId": "HungerCoach_StillHungry_WhatAte",
+          "action": "Taps '15-30 min' → What did you eat?",
+          "annotation": "Subflow: 15-30 Min → Carb-Heavy Meal"
+        },
+        {
+          "screenId": "HungerCoach_StillHungry_CarbHeavy",
+          "action": "Taps 'Mostly carbs'",
+          "annotation": "Spike-crash cycle explanation | Subflow: 15-30 Min → Carb-Heavy Meal"
+        },
+        {
+          "screenId": "HungerCoach_StillHungry_StomachVsMouth",
+          "action": "Taps 'Had protein' → Stomach or mouth?",
+          "annotation": "Subflow: 15-30 Min → Had Protein → Physical Hunger"
+        },
+        {
+          "screenId": "HungerCoach_StillHungry_Physical",
+          "action": "Taps 'Physical hunger'",
+          "annotation": "Trust the signal | Subflow: 15-30 Min → Had Protein → Physical Hunger"
+        },
+        {
+          "screenId": "HungerCoach_StillHungry_MouthHunger",
+          "action": "Taps 'Mouth/brain hunger'",
+          "annotation": "Flavor reset | Subflow: 15-30 Min → Had Protein → Mouth Hunger"
+        },
+        {
+          "screenId": "HungerCoach_StillHungry_Balanced",
+          "action": "Taps 'Balanced meal'",
+          "annotation": "May need larger portions | Subflow: 15-30 Min → Balanced Meal"
+        }
+      ],
+      "subflows": [
+        {
+          "name": "Under 15 Minutes — Wait for Signals",
+          "steps": [
+            {
+              "screenId": "HungerCoach_StillHungry_Under15",
+              "action": "Taps '<15 min'",
+              "annotation": "Vagus nerve delay + 10-min timer"
+            }
+          ]
+        },
+        {
+          "name": "15-30 Min → Carb-Heavy Meal",
+          "steps": [
+            {
+              "screenId": "HungerCoach_StillHungry_WhatAte",
+              "action": "Taps '15-30 min' → What did you eat?"
+            },
+            {
+              "screenId": "HungerCoach_StillHungry_CarbHeavy",
+              "action": "Taps 'Mostly carbs'",
+              "annotation": "Spike-crash cycle explanation"
+            }
+          ]
+        },
+        {
+          "name": "15-30 Min → Had Protein → Physical Hunger",
+          "steps": [
+            {
+              "screenId": "HungerCoach_StillHungry_WhatAte",
+              "action": "Taps '15-30 min'"
+            },
+            {
+              "screenId": "HungerCoach_StillHungry_StomachVsMouth",
+              "action": "Taps 'Had protein' → Stomach or mouth?"
+            },
+            {
+              "screenId": "HungerCoach_StillHungry_Physical",
+              "action": "Taps 'Physical hunger'",
+              "annotation": "Trust the signal"
+            }
+          ]
+        },
+        {
+          "name": "15-30 Min → Had Protein → Mouth Hunger",
+          "steps": [
+            {
+              "screenId": "HungerCoach_StillHungry_WhatAte",
+              "action": "Taps '15-30 min'"
+            },
+            {
+              "screenId": "HungerCoach_StillHungry_StomachVsMouth",
+              "action": "Taps 'Had protein'"
+            },
+            {
+              "screenId": "HungerCoach_StillHungry_MouthHunger",
+              "action": "Taps 'Mouth/brain hunger'",
+              "annotation": "Flavor reset"
+            }
+          ]
+        },
+        {
+          "name": "15-30 Min → Balanced Meal",
+          "steps": [
+            {
+              "screenId": "HungerCoach_StillHungry_WhatAte",
+              "action": "Taps '15-30 min'"
+            },
+            {
+              "screenId": "HungerCoach_StillHungry_Balanced",
+              "action": "Taps 'Balanced meal'",
+              "annotation": "May need larger portions"
+            }
+          ]
+        },
+        {
+          "name": ">30 Min → Physical Hunger",
+          "steps": [
+            {
+              "screenId": "HungerCoach_StillHungry_StomachVsMouth",
+              "action": "Taps '>30 min' → Stomach or mouth?"
+            },
+            {
+              "screenId": "HungerCoach_StillHungry_Physical",
+              "action": "Taps 'Physical hunger'"
+            }
+          ]
+        },
+        {
+          "name": ">30 Min → Mouth Hunger",
+          "steps": [
+            {
+              "screenId": "HungerCoach_StillHungry_StomachVsMouth",
+              "action": "Taps '>30 min'"
+            },
+            {
+              "screenId": "HungerCoach_StillHungry_MouthHunger",
+              "action": "Taps 'Mouth/brain hunger'"
+            }
+          ]
+        }
       ]
     },
     {
-      "name": "Hunger Coach — Proactive Pre-Meal",
+      "name": "Hunger Coach — Starving",
+      "description": "User is starving. Coach assesses last meal timing and provides urgency-appropriate guidance.",
+      "personas": [
+        "Active User"
+      ],
+      "phase": 1,
       "steps": [
-        {"screenId": "HungerCoach_Landing", "action": "Selects About to eat", "annotation": "Proactive scenario"},
-        {"screenId": "HungerCoach_Scenario_AboutToEat", "action": "Assesses hunger level", "annotation": "Level-specific advice"},
-        {"screenId": "HungerCoach_Scenario_AboutToEat", "action": "Starts 20-min meal timer", "annotation": "Vagus nerve pacing"}
+        {
+          "screenId": "HungerCoach_Landing",
+          "action": "Selects 'I'm starving'"
+        },
+        {
+          "screenId": "HungerCoach_Scenario_Starving",
+          "action": "When was your last meal?"
+        },
+        {
+          "screenId": "HungerCoach_Starving_LongAgo",
+          "action": "Taps '4+ hours'",
+          "annotation": "Eat now, protein first, set alarm for tomorrow | Subflow: 4+ Hours Ago — Emergency Refuel"
+        },
+        {
+          "screenId": "HungerCoach_Starving_Recent",
+          "action": "Taps '2-4 hours'",
+          "annotation": "Protein bridge snack + CGM check | Subflow: 2-4 Hours Ago — Meal Composition Issue"
+        },
+        {
+          "screenId": "HungerCoach_Starving_Morning",
+          "action": "Taps 'Just woke up'",
+          "annotation": "Metabolic recovery — positive sign | Subflow: Just Woke Up — Morning Recovery"
+        }
+      ],
+      "subflows": [
+        {
+          "name": "4+ Hours Ago — Emergency Refuel",
+          "steps": [
+            {
+              "screenId": "HungerCoach_Starving_LongAgo",
+              "action": "Taps '4+ hours'",
+              "annotation": "Eat now, protein first, set alarm for tomorrow"
+            }
+          ]
+        },
+        {
+          "name": "2-4 Hours Ago — Meal Composition Issue",
+          "steps": [
+            {
+              "screenId": "HungerCoach_Starving_Recent",
+              "action": "Taps '2-4 hours'",
+              "annotation": "Protein bridge snack + CGM check"
+            }
+          ]
+        },
+        {
+          "name": "Just Woke Up — Morning Recovery",
+          "steps": [
+            {
+              "screenId": "HungerCoach_Starving_Morning",
+              "action": "Taps 'Just woke up'",
+              "annotation": "Metabolic recovery — positive sign"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Hunger Coach — Craving",
+      "description": "User has a craving. Coach identifies the type (sweet/salty/rich/specific) and provides biochemically-informed strategies.",
+      "personas": [
+        "Active User"
+      ],
+      "phase": 1,
+      "steps": [
+        {
+          "screenId": "HungerCoach_Landing",
+          "action": "Selects 'Having a craving'"
+        },
+        {
+          "screenId": "HungerCoach_Scenario_Craving",
+          "action": "What are you craving?"
+        },
+        {
+          "screenId": "HungerCoach_Craving_Sweet",
+          "action": "Taps 'Sweet'",
+          "annotation": "Berries + yogurt, dark chocolate alternatives | Subflow: Sweet — Glucose Dip"
+        },
+        {
+          "screenId": "HungerCoach_Craving_Salty",
+          "action": "Taps 'Salty'",
+          "annotation": "Water first, crunchy alternatives | Subflow: Salty — Dehydration/Stress"
+        },
+        {
+          "screenId": "HungerCoach_Craving_Rich",
+          "action": "Taps 'Rich'",
+          "annotation": "Healthy fat integration | Subflow: Rich/Fatty — Fat Deficiency"
+        },
+        {
+          "screenId": "HungerCoach_Craving_Specific",
+          "action": "Taps 'Specific food'",
+          "annotation": "Timer + flexible restraint | Subflow: Specific Food — 10-Minute Rule"
+        }
+      ],
+      "subflows": [
+        {
+          "name": "Sweet — Glucose Dip",
+          "steps": [
+            {
+              "screenId": "HungerCoach_Craving_Sweet",
+              "action": "Taps 'Sweet'",
+              "annotation": "Berries + yogurt, dark chocolate alternatives"
+            }
+          ]
+        },
+        {
+          "name": "Salty — Dehydration/Stress",
+          "steps": [
+            {
+              "screenId": "HungerCoach_Craving_Salty",
+              "action": "Taps 'Salty'",
+              "annotation": "Water first, crunchy alternatives"
+            }
+          ]
+        },
+        {
+          "name": "Rich/Fatty — Fat Deficiency",
+          "steps": [
+            {
+              "screenId": "HungerCoach_Craving_Rich",
+              "action": "Taps 'Rich'",
+              "annotation": "Healthy fat integration"
+            }
+          ]
+        },
+        {
+          "name": "Specific Food — 10-Minute Rule",
+          "steps": [
+            {
+              "screenId": "HungerCoach_Craving_Specific",
+              "action": "Taps 'Specific food'",
+              "annotation": "Timer + flexible restraint"
+            }
+          ]
+        }
       ]
     },
     {
       "name": "Hunger Coach — HALT Check",
+      "description": "User isn't hungry but wants to eat. HALT grid identifies emotional driver: Hungry, Angry/Anxious, Lonely/Bored, or Tired. Each leads to targeted non-food coping strategies.",
+      "personas": [
+        "Active User"
+      ],
+      "phase": 1,
       "steps": [
-        {"screenId": "HungerCoach_Landing", "action": "Selects Not hungry but want to eat", "annotation": ""},
-        {"screenId": "HungerCoach_Scenario_NotHungry", "action": "HALT grid: selects emotional state", "annotation": "Hungry/Angry-Anxious/Lonely-Bored/Tired"}
+        {
+          "screenId": "HungerCoach_Landing",
+          "action": "Selects 'Not hungry but want to eat'"
+        },
+        {
+          "screenId": "HungerCoach_Scenario_NotHungry",
+          "action": "Sees HALT grid"
+        },
+        {
+          "screenId": "HungerCoach_HALT_Hungry",
+          "action": "Taps H",
+          "annotation": "Low-level hunger hard to detect post-GLP-1 | Subflow: H — Actually Hungry"
+        },
+        {
+          "screenId": "HungerCoach_HALT_Angry",
+          "action": "Taps A",
+          "annotation": "Box breathing 4-4-4-4 + 10-min timer | Subflow: A — Angry/Anxious/Stressed"
+        },
+        {
+          "screenId": "HungerCoach_HALT_Lonely",
+          "action": "Taps L",
+          "annotation": "Social connection, environment change | Subflow: L — Lonely/Bored"
+        },
+        {
+          "screenId": "HungerCoach_HALT_Tired",
+          "action": "Taps T",
+          "annotation": "20-min nap > eating, sleep debt cycle | Subflow: T — Tired/Exhausted"
+        }
+      ],
+      "subflows": [
+        {
+          "name": "H — Actually Hungry",
+          "steps": [
+            {
+              "screenId": "HungerCoach_HALT_Hungry",
+              "action": "Taps H",
+              "annotation": "Low-level hunger hard to detect post-GLP-1"
+            }
+          ]
+        },
+        {
+          "name": "A — Angry/Anxious/Stressed",
+          "steps": [
+            {
+              "screenId": "HungerCoach_HALT_Angry",
+              "action": "Taps A",
+              "annotation": "Box breathing 4-4-4-4 + 10-min timer"
+            }
+          ]
+        },
+        {
+          "name": "L — Lonely/Bored",
+          "steps": [
+            {
+              "screenId": "HungerCoach_HALT_Lonely",
+              "action": "Taps L",
+              "annotation": "Social connection, environment change"
+            }
+          ]
+        },
+        {
+          "name": "T — Tired/Exhausted",
+          "steps": [
+            {
+              "screenId": "HungerCoach_HALT_Tired",
+              "action": "Taps T",
+              "annotation": "20-min nap > eating, sleep debt cycle"
+            }
+          ]
+        }
       ]
     },
     {
-      "name": "Hunger Coach — Body Scan",
+      "name": "Hunger Coach — Body Scan (Unsure)",
+      "description": "User isn't sure if hungry. Coach guides 4-step timed body scan for interoception. After scan, user identifies their state from 4 options, each with targeted advice.",
+      "personas": [
+        "Active User"
+      ],
+      "phase": 1,
       "steps": [
-        {"screenId": "HungerCoach_Landing", "action": "Selects Not sure if hungry", "annotation": ""},
-        {"screenId": "HungerCoach_Scenario_Unsure", "action": "4-step guided body scan with timers", "annotation": "Interoception exercise"}
+        {
+          "screenId": "HungerCoach_Landing",
+          "action": "Selects 'Not sure if I'm hungry'"
+        },
+        {
+          "screenId": "HungerCoach_Scenario_Unsure",
+          "action": "Starts 4-step body scan"
+        },
+        {
+          "screenId": "HungerCoach_BodyScan_Results",
+          "action": "Completes scan, sees 4 assessment options"
+        },
+        {
+          "screenId": "HungerCoach_BodyScan_Physical",
+          "action": "Taps 'Felt physical signals'",
+          "annotation": "Eat with protein | Subflow: Physical Signals — Real Hunger"
+        },
+        {
+          "screenId": "HungerCoach_BodyScan_BoringFood",
+          "action": "Taps 'Would eat plain food'",
+          "annotation": "Body needs fuel | Subflow: Boring Food Test — Likely Hungry"
+        },
+        {
+          "screenId": "HungerCoach_BodyScan_Craving",
+          "action": "Taps 'Only want indulgent'",
+          "annotation": "10-min wait, craving peaks at 5-7 min | Subflow: Only Indulgent — Craving"
+        },
+        {
+          "screenId": "HungerCoach_BodyScan_StillUnsure",
+          "action": "Taps 'Still not sure'",
+          "annotation": "15-min timer + water | Subflow: Still Unsure — Wait and Check"
+        }
+      ],
+      "subflows": [
+        {
+          "name": "Physical Signals — Real Hunger",
+          "steps": [
+            {
+              "screenId": "HungerCoach_BodyScan_Physical",
+              "action": "Taps 'Felt physical signals'",
+              "annotation": "Eat with protein"
+            }
+          ]
+        },
+        {
+          "name": "Boring Food Test — Likely Hungry",
+          "steps": [
+            {
+              "screenId": "HungerCoach_BodyScan_BoringFood",
+              "action": "Taps 'Would eat plain food'",
+              "annotation": "Body needs fuel"
+            }
+          ]
+        },
+        {
+          "name": "Only Indulgent — Craving",
+          "steps": [
+            {
+              "screenId": "HungerCoach_BodyScan_Craving",
+              "action": "Taps 'Only want indulgent'",
+              "annotation": "10-min wait, craving peaks at 5-7 min"
+            }
+          ]
+        },
+        {
+          "name": "Still Unsure — Wait and Check",
+          "steps": [
+            {
+              "screenId": "HungerCoach_BodyScan_StillUnsure",
+              "action": "Taps 'Still not sure'",
+              "annotation": "15-min timer + water"
+            }
+          ]
+        }
       ]
     },
     {
-      "name": "Hunger Coach — Mini Lesson",
+      "name": "Hunger Coach — Unusual Time Hunger",
+      "description": "User is hungry at an unusual time. Coach identifies the timing pattern and provides circadian/physiological explanations.",
+      "personas": [
+        "Active User"
+      ],
+      "phase": 1,
       "steps": [
-        {"screenId": "HungerCoach_Landing", "action": "Selects Teach me about hunger", "annotation": ""},
-        {"screenId": "HungerCoach_Scenario_TeachMe", "action": "Browses 5 mini-lessons", "annotation": "Types of hunger, hunger scale, GLP-1 effects, satiation, glucose-hunger"}
+        {
+          "screenId": "HungerCoach_Landing",
+          "action": "Selects 'Hungry at an unusual time'"
+        },
+        {
+          "screenId": "HungerCoach_Scenario_UnusualTime",
+          "action": "When is this happening?"
+        },
+        {
+          "screenId": "HungerCoach_UnusualTime_LateNight",
+          "action": "Taps 'Late night'",
+          "annotation": "Kitchen closes at 8pm rule | Subflow: Late Night — Habit/Fatigue"
+        },
+        {
+          "screenId": "HungerCoach_UnusualTime_Afternoon",
+          "action": "Taps 'Mid-afternoon'",
+          "annotation": "Preventive protein snack at 2:30pm | Subflow: Afternoon — Circadian Dip"
+        },
+        {
+          "screenId": "HungerCoach_UnusualTime_EarlyMorning",
+          "action": "Taps 'Early morning'",
+          "annotation": "Positive sign, protein-heavy breakfast | Subflow: Early Morning — Metabolic Recovery"
+        },
+        {
+          "screenId": "HungerCoach_UnusualTime_PostWorkout",
+          "action": "Taps 'After exercising'",
+          "annotation": "30-60 min anabolic window | Subflow: Post-Workout — Legitimate Refuel"
+        }
+      ],
+      "subflows": [
+        {
+          "name": "Late Night — Habit/Fatigue",
+          "steps": [
+            {
+              "screenId": "HungerCoach_UnusualTime_LateNight",
+              "action": "Taps 'Late night'",
+              "annotation": "Kitchen closes at 8pm rule"
+            }
+          ]
+        },
+        {
+          "name": "Afternoon — Circadian Dip",
+          "steps": [
+            {
+              "screenId": "HungerCoach_UnusualTime_Afternoon",
+              "action": "Taps 'Mid-afternoon'",
+              "annotation": "Preventive protein snack at 2:30pm"
+            }
+          ]
+        },
+        {
+          "name": "Early Morning — Metabolic Recovery",
+          "steps": [
+            {
+              "screenId": "HungerCoach_UnusualTime_EarlyMorning",
+              "action": "Taps 'Early morning'",
+              "annotation": "Positive sign, protein-heavy breakfast"
+            }
+          ]
+        },
+        {
+          "name": "Post-Workout — Legitimate Refuel",
+          "steps": [
+            {
+              "screenId": "HungerCoach_UnusualTime_PostWorkout",
+              "action": "Taps 'After exercising'",
+              "annotation": "30-60 min anabolic window"
+            }
+          ]
+        }
       ]
     },
     {
-      "name": "Explore Graduation Timeline",
+      "name": "Hunger Coach — About to Eat",
+      "description": "User is about to eat and checks in. Coach assesses hunger level and provides level-specific meal pacing advice with a 20-minute timer.",
+      "personas": [
+        "Active User"
+      ],
+      "phase": 1,
       "steps": [
-        {"screenId": "Home_CGM_Active", "action": "Taps graduation card", "annotation": ""},
-        {"screenId": "Toolkit_Main", "action": "Scrolls timeline, taps Block 1 dot", "annotation": "16 dots in 8 blocks"},
-        {"screenId": "WeekDetail_Block1_Baseline", "action": "Reviews goal and education", "annotation": "Baseline: observe and log"},
-        {"screenId": "Education_CGM_Basics", "action": "Reads article", "annotation": "1-3 min read"}
+        {
+          "screenId": "HungerCoach_Landing",
+          "action": "Selects 'About to eat'"
+        },
+        {
+          "screenId": "HungerCoach_Scenario_AboutToEat",
+          "action": "What's your hunger level?"
+        },
+        {
+          "screenId": "HungerCoach_AboutToEat_Low",
+          "action": "Taps '1-2: Not hungry'",
+          "annotation": "Protein-dense smaller meal + 20-min timer | Subflow: Level 1-2 — Not Really Hungry"
+        },
+        {
+          "screenId": "HungerCoach_AboutToEat_SweetSpot",
+          "action": "Taps '3: Comfortably hungry'",
+          "annotation": "Protein first, stop at fullness 3-4 + 20-min timer | Subflow: Level 3 — Perfect Hunger"
+        },
+        {
+          "screenId": "HungerCoach_AboutToEat_High",
+          "action": "Taps '4-5: Very hungry'",
+          "annotation": "Water first, protein first, fork-down + 20-min timer | Subflow: Level 4-5 — Very Hungry"
+        }
+      ],
+      "subflows": [
+        {
+          "name": "Level 1-2 — Not Really Hungry",
+          "steps": [
+            {
+              "screenId": "HungerCoach_AboutToEat_Low",
+              "action": "Taps '1-2: Not hungry'",
+              "annotation": "Protein-dense smaller meal + 20-min timer"
+            }
+          ]
+        },
+        {
+          "name": "Level 3 — Perfect Hunger",
+          "steps": [
+            {
+              "screenId": "HungerCoach_AboutToEat_SweetSpot",
+              "action": "Taps '3: Comfortably hungry'",
+              "annotation": "Protein first, stop at fullness 3-4 + 20-min timer"
+            }
+          ]
+        },
+        {
+          "name": "Level 4-5 — Very Hungry",
+          "steps": [
+            {
+              "screenId": "HungerCoach_AboutToEat_High",
+              "action": "Taps '4-5: Very hungry'",
+              "annotation": "Water first, protein first, fork-down + 20-min timer"
+            }
+          ]
+        }
       ]
     },
     {
-      "name": "Post-Block-4 Check-In and Unlock",
+      "name": "Hunger Coach — Post-Meal Reflection",
+      "description": "After eating, user reflects on fullness. Direct outcomes (just right, too full, can't tell) get targeted advice. 'Still hungry' branches into a deeper meal composition drill-down.",
+      "personas": [
+        "Active User"
+      ],
+      "phase": 1,
       "steps": [
-        {"screenId": "Toolkit_Main", "action": "Taps locked Block 5", "annotation": ""},
-        {"screenId": "WeekDetail_Block5_Locked", "action": "Taps Start your check-in", "annotation": ""},
-        {"screenId": "Assessment_Post8_Intro", "action": "4-step flow", "annotation": "Insights -> quiz -> feedback -> focus"},
-        {"screenId": "WeekDetail_Block5_Locked", "action": "", "annotation": "Now unlocked with personalized content"}
+        {
+          "screenId": "HungerCoach_Landing",
+          "action": "Selects 'Just finished eating'"
+        },
+        {
+          "screenId": "HungerCoach_Scenario_PostMeal",
+          "action": "How do you feel after eating?"
+        },
+        {
+          "screenId": "HungerCoach_PostMeal_JustRight",
+          "action": "Taps 'Satisfied'",
+          "annotation": "Note the meal, template concept | Subflow: Just Right — Satisfied"
+        },
+        {
+          "screenId": "HungerCoach_PostMeal_TooFull",
+          "action": "Taps 'Too full'",
+          "annotation": "Data not failure, don't skip next meal | Subflow: Too Full — Overshoot"
+        },
+        {
+          "screenId": "HungerCoach_PostMeal_NotSure",
+          "action": "Taps 'Can't tell'",
+          "annotation": "15-min timer, vagus nerve delay | Subflow: Can't Tell — Wait for Signals"
+        },
+        {
+          "screenId": "HungerCoach_PostMeal_StillHungry",
+          "action": "Taps 'Still hungry' → What did you eat?",
+          "annotation": "Subflow: Still Hungry → Low Protein"
+        },
+        {
+          "screenId": "HungerCoach_PostMealHungry_LowProtein",
+          "action": "Taps 'Mostly carbs'",
+          "annotation": "Protein anchor strategy | Subflow: Still Hungry → Low Protein"
+        },
+        {
+          "screenId": "HungerCoach_PostMealHungry_SmallPortion",
+          "action": "Taps 'Small meal'",
+          "annotation": "Increase without guilt | Subflow: Still Hungry → Small Portion"
+        },
+        {
+          "screenId": "HungerCoach_PostMealHungry_AteFast",
+          "action": "Taps 'Ate fast'",
+          "annotation": "15-min wait + slower next meal | Subflow: Still Hungry → Ate Too Fast"
+        },
+        {
+          "screenId": "HungerCoach_PostMealHungry_BalancedMeal",
+          "action": "Taps 'Balanced meal'",
+          "annotation": "Body genuinely needs more | Subflow: Still Hungry → Balanced Meal"
+        }
+      ],
+      "subflows": [
+        {
+          "name": "Just Right — Satisfied",
+          "steps": [
+            {
+              "screenId": "HungerCoach_PostMeal_JustRight",
+              "action": "Taps 'Satisfied'",
+              "annotation": "Note the meal, template concept"
+            }
+          ]
+        },
+        {
+          "name": "Too Full — Overshoot",
+          "steps": [
+            {
+              "screenId": "HungerCoach_PostMeal_TooFull",
+              "action": "Taps 'Too full'",
+              "annotation": "Data not failure, don't skip next meal"
+            }
+          ]
+        },
+        {
+          "name": "Can't Tell — Wait for Signals",
+          "steps": [
+            {
+              "screenId": "HungerCoach_PostMeal_NotSure",
+              "action": "Taps 'Can't tell'",
+              "annotation": "15-min timer, vagus nerve delay"
+            }
+          ]
+        },
+        {
+          "name": "Still Hungry → Low Protein",
+          "steps": [
+            {
+              "screenId": "HungerCoach_PostMeal_StillHungry",
+              "action": "Taps 'Still hungry' → What did you eat?"
+            },
+            {
+              "screenId": "HungerCoach_PostMealHungry_LowProtein",
+              "action": "Taps 'Mostly carbs'",
+              "annotation": "Protein anchor strategy"
+            }
+          ]
+        },
+        {
+          "name": "Still Hungry → Small Portion",
+          "steps": [
+            {
+              "screenId": "HungerCoach_PostMeal_StillHungry",
+              "action": "Taps 'Still hungry'"
+            },
+            {
+              "screenId": "HungerCoach_PostMealHungry_SmallPortion",
+              "action": "Taps 'Small meal'",
+              "annotation": "Increase without guilt"
+            }
+          ]
+        },
+        {
+          "name": "Still Hungry → Ate Too Fast",
+          "steps": [
+            {
+              "screenId": "HungerCoach_PostMeal_StillHungry",
+              "action": "Taps 'Still hungry'"
+            },
+            {
+              "screenId": "HungerCoach_PostMealHungry_AteFast",
+              "action": "Taps 'Ate fast'",
+              "annotation": "15-min wait + slower next meal"
+            }
+          ]
+        },
+        {
+          "name": "Still Hungry → Balanced Meal",
+          "steps": [
+            {
+              "screenId": "HungerCoach_PostMeal_StillHungry",
+              "action": "Taps 'Still hungry'"
+            },
+            {
+              "screenId": "HungerCoach_PostMealHungry_BalancedMeal",
+              "action": "Taps 'Balanced meal'",
+              "annotation": "Body genuinely needs more"
+            }
+          ]
+        }
       ]
     },
     {
-      "name": "CGM Toggle Experience",
+      "name": "Hunger Coach — Hunger Changing",
+      "description": "User's hunger patterns are shifting during GLP-1 transition. Coach identifies the type of change and provides reassurance with timelines for normalization.",
+      "personas": [
+        "Active User"
+      ],
+      "phase": 1,
       "steps": [
-        {"screenId": "Home_CGM_Active", "action": "Views live glucose graph", "annotation": "Blue border, LIVE badge"},
-        {"screenId": "Home_CGM_Off", "action": "Taps toggle to CGM Off", "annotation": "Amber, average day graph, elevated coach"}
+        {
+          "screenId": "HungerCoach_Landing",
+          "action": "Selects 'My hunger is changing'"
+        },
+        {
+          "screenId": "HungerCoach_Scenario_HungerChanging",
+          "action": "What feels different?"
+        },
+        {
+          "screenId": "HungerCoach_HungerChanging_MoreHungry",
+          "action": "Taps 'Hungrier'",
+          "annotation": "4-8 week normalization, not losing control | Subflow: More Hungry — Ghrelin Rebound"
+        },
+        {
+          "screenId": "HungerCoach_HungerChanging_LessHungry",
+          "action": "Taps 'Less hungry'",
+          "annotation": "Structured meals, protein shakes | Subflow: Less Hungry — Protect Muscle"
+        },
+        {
+          "screenId": "HungerCoach_HungerChanging_Unpredictable",
+          "action": "Taps 'Comes and goes'",
+          "annotation": "Consistent schedule anchors rhythm | Subflow: Unpredictable — Waves"
+        },
+        {
+          "screenId": "HungerCoach_HungerChanging_DifferentType",
+          "action": "Taps 'Feels different'",
+          "annotation": "5 types of hunger framework | Subflow: Different Sensation — Hunger Literacy"
+        }
+      ],
+      "subflows": [
+        {
+          "name": "More Hungry — Ghrelin Rebound",
+          "steps": [
+            {
+              "screenId": "HungerCoach_HungerChanging_MoreHungry",
+              "action": "Taps 'Hungrier'",
+              "annotation": "4-8 week normalization, not losing control"
+            }
+          ]
+        },
+        {
+          "name": "Less Hungry — Protect Muscle",
+          "steps": [
+            {
+              "screenId": "HungerCoach_HungerChanging_LessHungry",
+              "action": "Taps 'Less hungry'",
+              "annotation": "Structured meals, protein shakes"
+            }
+          ]
+        },
+        {
+          "name": "Unpredictable — Waves",
+          "steps": [
+            {
+              "screenId": "HungerCoach_HungerChanging_Unpredictable",
+              "action": "Taps 'Comes and goes'",
+              "annotation": "Consistent schedule anchors rhythm"
+            }
+          ]
+        },
+        {
+          "name": "Different Sensation — Hunger Literacy",
+          "steps": [
+            {
+              "screenId": "HungerCoach_HungerChanging_DifferentType",
+              "action": "Taps 'Feels different'",
+              "annotation": "5 types of hunger framework"
+            }
+          ]
+        }
       ]
     },
     {
-      "name": "Sensor Comparison in Insights",
+      "name": "Hunger Coach — Teach Me About Hunger",
+      "description": "User wants to learn about hunger science. Coach presents 5 mini-lessons: types of hunger, hunger scale, GLP-1 effects, satiation, glucose-hunger.",
+      "personas": [
+        "Active User",
+        "Curious Learner"
+      ],
+      "phase": 1,
       "steps": [
-        {"screenId": "Insights_Lifestyle", "action": "Views Lifestyle GPA and correlations", "annotation": ""},
-        {"screenId": "Insights_Glucose", "action": "Taps Glucose tab, views sensor comparison", "annotation": "Overlaid CGM period curves"},
-        {"screenId": "Insights_Graduation", "action": "Taps Graduation tab, views trend graph", "annotation": "Week-by-week scores"}
+        {
+          "screenId": "HungerCoach_Landing",
+          "action": "Selects 'Teach me about hunger'"
+        },
+        {
+          "screenId": "HungerCoach_Scenario_TeachMe",
+          "action": "Browses 5 mini-lessons"
+        }
       ]
     },
     {
-      "name": "Body Scanner Flow",
+      "name": "Coach Follow-Up Outcome",
+      "description": "After any coach response, user reports what happened. Coach provides positive reinforcement regardless of outcome — building a feedback loop where every action is progress.",
+      "personas": [
+        "Active User"
+      ],
+      "phase": 1,
       "steps": [
-        {"screenId": "Log_Main", "action": "Taps Body Scanner", "annotation": ""},
-        {"screenId": "BodyScanner", "action": "Starts scan, waits 5s", "annotation": "Mock analysis"},
-        {"screenId": "BodyScanner", "action": "Views results", "annotation": "Body fat, visceral fat, lifestyle bonus"}
+        {
+          "screenId": "HungerCoach_HALT_Angry",
+          "action": "Any coach response screen shows follow-up buttons",
+          "annotation": "Representative example — applies to all coach responses"
+        },
+        {
+          "screenId": "HungerCoach_Outcome_Paused",
+          "action": "Taps \"Feeling passed\"",
+          "annotation": "Outcome: Awareness win"
+        },
+        {
+          "screenId": "HungerCoach_Outcome_AteIntentional",
+          "action": "Taps \"Ate intentionally\"",
+          "annotation": "Outcome: Deliberate choice"
+        },
+        {
+          "screenId": "HungerCoach_Outcome_Satisfied",
+          "action": "Taps \"Ate and satisfied\"",
+          "annotation": "Outcome: Perfect landing"
+        },
+        {
+          "screenId": "HungerCoach_Outcome_LearnMore",
+          "action": "Taps \"Learn more\"",
+          "annotation": "Outcome: Curiosity, shows mini-lessons"
+        }
+      ],
+      "subflows": [
+        {
+          "name": "Paused — Feeling Passed",
+          "steps": [
+            {
+              "screenId": "HungerCoach_Outcome_Paused",
+              "action": "Taps 'Feeling passed'",
+              "annotation": "Awareness win, neural pathways strengthened"
+            }
+          ]
+        },
+        {
+          "name": "Ate Intentionally",
+          "steps": [
+            {
+              "screenId": "HungerCoach_Outcome_AteIntentional",
+              "action": "Taps 'Ate intentionally'",
+              "annotation": "Deliberate > reactive, great outcome"
+            }
+          ]
+        },
+        {
+          "name": "Satisfied",
+          "steps": [
+            {
+              "screenId": "HungerCoach_Outcome_Satisfied",
+              "action": "Taps 'Ate and satisfied'",
+              "annotation": "Perfect landing, reference point"
+            }
+          ]
+        },
+        {
+          "name": "Want to Learn More",
+          "steps": [
+            {
+              "screenId": "HungerCoach_Outcome_LearnMore",
+              "action": "Taps 'Learn more'",
+              "annotation": "Curiosity is progress, shows mini-lessons"
+            }
+          ]
+        }
       ]
     },
     {
-      "name": "Program Reset",
+      "name": "Self-Assessment Check-In",
+      "description": "Periodic check-ins at 3 program checkpoints: Block 1 baseline, Block 3 mid-program, and Block 5 post-foundation. Each uses the same 4-step flow (insights → quiz → feedback → focus selection) with stage-customized copy. The Block 5 version unlocks Blocks 5-8.",
+      "personas": [
+        "Active User",
+        "Progressing User"
+      ],
+      "phase": 1,
       "steps": [
-        {"screenId": "Settings", "action": "Taps Reset program", "annotation": "Red card"},
-        {"screenId": "Settings", "action": "Confirms in modal", "annotation": "Clears localStorage"},
-        {"screenId": "Onboarding_Welcome", "action": "", "annotation": "Returns to step 0"}
+        {
+          "screenId": "CheckIn_SelfAssessment",
+          "action": "Rates 8 questions 1-5 (hunger, nutrition, exercise, sleep, glucose, stress, fullness, weight)",
+          "annotation": "Same quiz format at all 3 checkpoints"
+        },
+        {
+          "screenId": "CheckIn_Feedback",
+          "action": "Reviews per-question feedback with progress bars and area rankings",
+          "annotation": "Color-coded red/yellow/green, delta from baseline at later checkpoints"
+        },
+        {
+          "screenId": "Assessment_Baseline_Intro",
+          "action": "Reviews starting numbers and Signos-noticed insights",
+          "annotation": "Establishes baseline scores — completed during onboarding | Subflow: Baseline Assessment (Block 1)"
+        },
+        {
+          "screenId": "Assessment_MidProgram_Intro",
+          "action": "Reviews progress numbers compared to Block 1",
+          "annotation": "Delta indicators vs baseline | Subflow: Mid-Program Assessment (Block 3)"
+        },
+        {
+          "screenId": "WeekDetail_Block5_Locked",
+          "action": "Taps 'Start your check-in'",
+          "annotation": "Subflow: Post-Foundation Assessment (Block 5) — Unlock Blocks 5-8"
+        },
+        {
+          "screenId": "Assessment_Post8_Intro",
+          "action": "Reviews full progress numbers and Signos insights",
+          "annotation": "Subflow: Post-Foundation Assessment (Block 5) — Unlock Blocks 5-8"
+        },
+        {
+          "screenId": "CheckIn_FocusSelection",
+          "action": "Selects 1-2 focus areas to personalize Blocks 5-8",
+          "annotation": "Unlocks weeks 9-16 | Subflow: Post-Foundation Assessment (Block 5) — Unlock Blocks 5-8"
+        }
+      ],
+      "subflows": [
+        {
+          "name": "Baseline Assessment (Block 1)",
+          "steps": [
+            {
+              "screenId": "Assessment_Baseline_Intro",
+              "action": "Reviews starting numbers and Signos-noticed insights",
+              "annotation": "Establishes baseline scores — completed during onboarding"
+            },
+            {
+              "screenId": "CheckIn_SelfAssessment",
+              "action": "Rates 8 questions 1-5"
+            },
+            {
+              "screenId": "CheckIn_Feedback",
+              "action": "Reviews baseline feedback"
+            }
+          ]
+        },
+        {
+          "name": "Mid-Program Assessment (Block 3)",
+          "steps": [
+            {
+              "screenId": "Assessment_MidProgram_Intro",
+              "action": "Reviews progress numbers compared to Block 1",
+              "annotation": "Delta indicators vs baseline"
+            },
+            {
+              "screenId": "CheckIn_SelfAssessment",
+              "action": "Re-rates 8 questions 1-5"
+            },
+            {
+              "screenId": "CheckIn_Feedback",
+              "action": "Reviews progress feedback with comparisons"
+            }
+          ]
+        },
+        {
+          "name": "Post-Foundation Assessment (Block 5) — Unlock Blocks 5-8",
+          "steps": [
+            {
+              "screenId": "WeekDetail_Block5_Locked",
+              "action": "Taps 'Start your check-in'"
+            },
+            {
+              "screenId": "Assessment_Post8_Intro",
+              "action": "Reviews full progress numbers and Signos insights"
+            },
+            {
+              "screenId": "CheckIn_SelfAssessment",
+              "action": "Final self-assessment quiz"
+            },
+            {
+              "screenId": "CheckIn_Feedback",
+              "action": "Reviews comprehensive feedback with full progress comparison"
+            },
+            {
+              "screenId": "CheckIn_FocusSelection",
+              "action": "Selects 1-2 focus areas to personalize Blocks 5-8",
+              "annotation": "Unlocks weeks 9-16"
+            }
+          ]
+        }
       ]
     },
     {
-      "name": "Education Game Flow",
+      "name": "CGM Toggle",
+      "description": "User toggles between CGM-active (blue, live graph) and CGM-off (amber, average-day graph) dashboard states. The off-CGM view exists because 4 of 8 blocks have no sensor — during those blocks the Hunger Coach becomes the primary biofeedback tool, teaching users to read internal signals instead of relying on real-time glucose data. This builds the independence needed for life after graduation.",
+      "personas": [
+        "Active User"
+      ],
+      "phase": 1,
       "steps": [
-        {"screenId": "Toolkit_Main", "action": "Taps Exercise section", "annotation": ""},
-        {"screenId": "Game_ProteinGuess", "action": "Plays quiz rounds", "annotation": "Compare foods"},
-        {"screenId": "Game_BuildBalancedPlate", "action": "Builds a meal", "annotation": "Protein + carb + veggie"}
+        {
+          "screenId": "Home_CGM_Active",
+          "action": "Views live glucose graph",
+          "annotation": "Blue border, LIVE badge"
+        },
+        {
+          "screenId": "Home_CGM_Off",
+          "action": "Taps to toggle CGM Off",
+          "annotation": "Amber border, elevated hunger coach, average-day graph"
+        }
+      ]
+    },
+    {
+      "name": "Explore Insights",
+      "description": "User navigates the three Insights tabs to review GPAs, sensor comparisons, hunger correlations, and graduation trends. Deferred to Phase 2 to accelerate initial launch — existing GPA strip on Home provides sufficient score visibility for Phase 1.",
+      "personas": [
+        "Active User",
+        "Data-Driven User"
+      ],
+      "phase": 2,
+      "steps": [
+        {
+          "screenId": "Insights_Lifestyle",
+          "action": "Views Lifestyle GPA, Transition Readiness, hunger correlations"
+        },
+        {
+          "screenId": "Insights_Glucose",
+          "action": "Taps Glucose tab — views Glucose GPA, sensor-by-sensor comparison, glucose correlations"
+        },
+        {
+          "screenId": "Insights_Graduation",
+          "action": "Taps Graduation tab — views trend graph, score deltas, program progress"
+        }
+      ]
+    },
+    {
+      "name": "Log & Body Scanner",
+      "description": "User accesses the central logging hub and launches the camera-based body composition scan.",
+      "personas": [
+        "Active User"
+      ],
+      "phase": 1,
+      "steps": [
+        {
+          "screenId": "Log_Main",
+          "action": "Views logging hub (hunger, food, exercise, water, sleep, glucose, body scanner)"
+        },
+        {
+          "screenId": "BodyScanner",
+          "action": "Taps Body Scanner, starts scan, views results (body fat %, visceral fat %, lifestyle bonus)"
+        }
+      ]
+    },
+    {
+      "name": "Weekly Check-In",
+      "description": "Each week the app auto-prompts a check-in modal on the home screen: mood (5-emoji), confidence (1-5), biggest challenge, and education progress.",
+      "personas": [
+        "Active User"
+      ],
+      "phase": 1,
+      "steps": [
+        {
+          "screenId": "Home_CGM_Active",
+          "action": "Auto-prompted after 4 seconds",
+          "annotation": "Once per week"
+        },
+        {
+          "screenId": "WeeklyCheckin",
+          "action": "Rates mood and confidence, enters challenge text, reviews education progress"
+        },
+        {
+          "screenId": "Home_CGM_Active",
+          "action": "Submits and returns to dashboard"
+        }
+      ]
+    },
+    {
+      "name": "Settings & Program Management",
+      "description": "User views profile and program details, or resets the program to start fresh.",
+      "personas": [
+        "Active User",
+        "Tester"
+      ],
+      "phase": 1,
+      "steps": [
+        {
+          "screenId": "Settings",
+          "action": "Views user profile, program link, maintenance band, preferences"
+        },
+        {
+          "screenId": "Program_Details",
+          "action": "Reviews detailed metrics, dose history, graduation readiness score",
+          "annotation": "Subflow: View Program Details"
+        },
+        {
+          "screenId": "Onboarding_Welcome",
+          "action": "",
+          "annotation": "Returns to step 0 | Subflow: Reset Program"
+        }
+      ],
+      "subflows": [
+        {
+          "name": "View Program Details",
+          "steps": [
+            {
+              "screenId": "Program_Details",
+              "action": "Reviews detailed metrics, dose history, graduation readiness score"
+            }
+          ]
+        },
+        {
+          "name": "Reset Program",
+          "steps": [
+            {
+              "screenId": "Settings",
+              "action": "Taps Reset program, confirms in modal",
+              "annotation": "Clears all localStorage"
+            },
+            {
+              "screenId": "Onboarding_Welcome",
+              "action": "",
+              "annotation": "Returns to step 0"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Graduation Toolkit Walkthrough",
+      "description": "User explores the 16-week program through the Graduation Toolkit, browsing each block's goals, education modules, and interactive games. Each block detail shows the block's focus, CGM status, and assigned education.",
+      "personas": [
+        "Active User"
+      ],
+      "phase": 1,
+      "steps": [
+        {
+          "screenId": "Home_CGM_Active",
+          "action": "Taps graduation card"
+        },
+        {
+          "screenId": "Toolkit_Main",
+          "action": "Views 16-week timeline, core principles, education sections"
+        },
+        {
+          "screenId": "WeekDetail_Block1_Baseline",
+          "action": "Taps Block 1 — reviews baseline + CGM goal"
+        },
+        {
+          "screenId": "Education_CGM_Basics",
+          "action": "Reads CGM Basics article",
+          "annotation": "Block 1 education"
+        },
+        {
+          "screenId": "WeekDetail_Block2_Nutrition",
+          "action": "Taps Block 2 — reviews protein + fiber goals"
+        },
+        {
+          "screenId": "Education_Protein_Anchor",
+          "action": "Reads Protein Anchor article",
+          "annotation": "Block 2 education"
+        },
+        {
+          "screenId": "WeekDetail_Block3_Movement",
+          "action": "Taps Block 3 — reviews walking + resistance goals"
+        },
+        {
+          "screenId": "Education_Walking_Glucose",
+          "action": "Reads Walking & Glucose article",
+          "annotation": "Block 3 education"
+        },
+        {
+          "screenId": "WeekDetail_Block4_FullSystem",
+          "action": "Taps Block 4 — reviews satiating meals + sleep/stress"
+        },
+        {
+          "screenId": "WeekDetail_Block5_Locked",
+          "action": "Taps Block 5 — sees locked state with check-in prompt"
+        },
+        {
+          "screenId": "Game_ProteinGuess",
+          "action": "Plays Protein Guess quiz"
+        },
+        {
+          "screenId": "Game_BuildBalancedPlate",
+          "action": "Plays Build a Balanced Plate"
+        }
       ]
     }
   ]

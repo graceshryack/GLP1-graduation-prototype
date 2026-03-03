@@ -52,3 +52,14 @@
 - **Date**: 2026-02-19
 - **Decision**: Build `getGlucoseContext()` and `getGlucoseHungerInsight()` to connect glucose data with hunger signals throughout the app
 - **Rationale**: The unique value of having CGM data is explaining *why* users feel hungry. No other app connects these two data streams. This is the key differentiator.
+
+## D011: Defer Insights tabs to Phase 2
+- **Date**: 2026-03-02
+- **Decision**: Move all three Insights tabs (Lifestyle, Glucose, Graduation) to Phase 2. The GPA strip on the Home screen provides sufficient score visibility for Phase 1.
+- **Rationale**: Reduces Phase 1 scope to accelerate launch. The Insights screen is useful but not critical for the core loop (onboarding → hunger coaching → daily check-ins → education). Team agreed this is the right scope cut.
+- **Open question**: G raised keeping Lifestyle GPA in Phase 1 since movement is part of weekly block goals. To be decided before Phase 2 scoping.
+
+## D012: Expanded Hunger Coach flow documentation
+- **Date**: 2026-03-02
+- **Decision**: Document every branching path within each of the 10 Hunger Coach scenarios as explicit subflows with dedicated screens and screenshots for each end-state.
+- **Rationale**: ProtoFlow feedback (v11) asked "what happens after this page?" for 5 of the coach scenarios. Rather than add brief annotations, we captured every response screen across all branches (97 total screens, up from 47), making the full conversation tree visible in the UX flow. This is critical for design review since the coach's value is in the quality of its branching responses.

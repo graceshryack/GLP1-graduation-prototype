@@ -29,7 +29,7 @@ When you update SCREENS.md or FLOWS.md, also update `protoflow-manifest.json`:
 
 ## Snapshot Tests
 
-This project uses swift-snapshot-testing to capture screenshots in CI. When you add or rename a screen:
+This project uses swift-snapshot-testing (or Paparazzi for Android) to capture screenshots in CI. When you add or rename a screen:
 
 1. Add a matching snapshot test in the ProtoFlowCapture test target
 2. Use the screen's ID as the test function name: `func test_ScreenId()`
@@ -39,5 +39,6 @@ This project uses swift-snapshot-testing to capture screenshots in CI. When you 
 
 When the user asks to "generate a UX flow", "create a Figma flow", "export to Figma", or similar:
 1. Make sure `protoflow-manifest.json` is up to date
-2. Tell the user to push to GitHub — the CI workflow will capture screenshots, build the payload, and upload to ProtoFlow
-3. Or fetch https://protoflow-app.netlify.app/api/kickstart/generate and follow every instruction for a local run
+2. Run snapshot tests locally in Xcode and then run `node .protoflow/ci-upload.mjs` to upload screenshots and get a generation ID
+3. Or fetch https://protoflow-app.netlify.app/api/kickstart/generate and follow every instruction to automate this
+4. If CI is set up, the user can also push to GitHub and the workflow captures screenshots automatically
