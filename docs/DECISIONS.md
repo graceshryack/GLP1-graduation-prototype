@@ -63,3 +63,14 @@
 - **Date**: 2026-03-02
 - **Decision**: Document every branching path within each of the 10 Hunger Coach scenarios as explicit subflows with dedicated screens and screenshots for each end-state.
 - **Rationale**: ProtoFlow feedback (v11) asked "what happens after this page?" for 5 of the coach scenarios. Rather than add brief annotations, we captured every response screen across all branches (97 total screens, up from 47), making the full conversation tree visible in the UX flow. This is critical for design review since the coach's value is in the quality of its branching responses.
+
+## D013: Redesign from 8-block to 16-week weekly focus model
+- **Date**: 2026-03-02
+- **Decision**: Redesign the program from an 8-block (2 weeks each) structure to a 16-week, one-focus-per-week model.
+- **Rationale**: Users want information each week — one focus prevents overwhelm. Baseline assessment during onboarding (same 8 questions as check-ins) enables progress tracking over time. Weight band split (Still Losing vs Maintenance) better serves users not at goal weight yet. Check-ins every 4 weeks (Weeks 4, 8, 12, 16) provides more frequent touchpoints than the previous Weeks 1, 5, 9 schedule. Toolkit resources tied to current week's focus increases engagement.
+- **Alternatives considered**: Keep 8-block structure with more content per block (rejected: users may lose interest without weekly progression); fully personalized from start (rejected: need structured foundation first).
+
+## D014: CGM schedule and onboarding assessment consolidation
+- **Date**: 2026-03-08
+- **Decision**: (1) All 4 CGM sensor periods are now 2 consecutive weeks each (sensors last 15 days): CGM 1 Weeks 1–2 (baseline), CGM 2 Weeks 5–6 (satiety check), CGM 3 Weeks 9–10 (movement), CGM 4 Weeks 15–16 (graduation). Previously CGM 2 was only Week 5 and CGM 3 was Weeks 8–9. (2) The 8 baseline assessment questions are now on a single scrollable page instead of 8 separate one-question-per-page screens. Onboarding is now 6 steps (0=welcome, 1=about you, 2=concerns, 3=weight, 4=baseline assessment, 5=plan overview) instead of 12 steps.
+- **Rationale**: CGM sensors last ~15 days; aligning each period to 2 full weeks reduces confusion and ensures users have CGM data for the full focus period. Consolidating baseline questions into one scrollable page reduces onboarding friction and drop-off while preserving the same 8 questions for check-in comparison.

@@ -13,41 +13,44 @@ const MOCK_STATE_BASE = {
   phaseStartAt: new Date(Date.now() - 14 * 86400000).toISOString().split('T')[0],
   program_enrolled_at: new Date(Date.now() - 14 * 86400000).toISOString(),
   profile: {
-    name: 'Sarah', age: 34, medication: 'Ozempic', duration: '8 months',
-    medStatus: 'recently_stopped', weight: 165, goalWeight: 155,
-    heightFt: 5, heightIn: 6, activityLevel: 'moderate',
-    strengthTraining: 'beginner',
-    goals: ['maintain', 'habits', 'hunger'],
-    preGlp1Struggles: ['portion_control', 'low_activity', 'poor_sleep'],
-    currentStruggles: ['portion_control', 'low_activity', 'poor_sleep'],
-    reasonOffGlp1: ['reached_goal', 'cost']
+    name: 'Sarah', medication: 'Semaglutide (Ozempic/Wegovy)',
+    medStatus: 'Currently tapering', weight: 175, goalWeight: 155,
+    weightMode: 'lose',
+    concerns: ['weight_regain', 'appetite_return', 'no_habits']
   },
-  weekOrder: ['baseline_cgm', 'nutrition', 'movement_cgm', 'full_system'],
-  week1CheckIn: { answers: { q1: 3, q2: 2, q3: 3, q4: 2, q5: 3, q6: 2, q7: 3, q8: 2 }, completedAt: new Date().toISOString() },
-  week5CheckIn: { answers: { q1: 4, q2: 3, q3: 4, q4: 3, q5: 4, q6: 3, q7: 4, q8: 3 }, completedAt: new Date().toISOString() },
+  weightMode: 'lose',
+  weightAnchor: 175,
+  goalWeight: 155,
+  week1CheckIn: { answers: { q_protein: 2, q_walking: 2, q_hunger: 2, q_sleep: 3, q_glucose: 2, q_stress: 2, q_satiety: 2, q_weight: 2 }, completedAt: new Date().toISOString() },
+  week4CheckIn: { answers: { q_protein: 3, q_walking: 3, q_hunger: 3, q_sleep: 3, q_glucose: 3, q_stress: 2, q_satiety: 3, q_weight: 3 }, completedAt: new Date().toISOString() },
+  weekChoices: { 2: 'Breakfast', 3: 'Extra vegetables', 4: 'Lunch', 5: 'Avocado / olive oil' },
   hungerEntries: {},
   bodyScanEntries: {},
-  completedModules: { 'cgm_basics': Date.now(), 'cgm_what_is': Date.now(), 'protein_anchor': Date.now(), 'walking_glucose': Date.now(), 'glp1_basics': Date.now() },
+  completedModules: { 'cgm_basics': Date.now(), 'glp1_basics': Date.now(), 'patterns_101': Date.now(), 'protein_anchor_p1': Date.now(), 'protein_muscle': Date.now() },
   completedGames: { 'protein_guess': Date.now() },
   weeklyCheckIns: {},
   weeklyScoreHistory: [],
   coachSessions: [
     { timestamp: Date.now() - 86400000, scenario: 'ate_still_hungry', path: ['< 30 min', 'Mostly carbs'], followUp: 'ate_intentional' },
-    { timestamp: Date.now() - 172800000, scenario: 'craving', path: ['Sweet'], followUp: 'paused' },
-    { timestamp: Date.now() - 259200000, scenario: 'ate_still_hungry', path: ['< 30 min', 'Balanced'], followUp: 'satisfied' }
+    { timestamp: Date.now() - 172800000, scenario: 'craving', path: ['Sweet'], followUp: 'paused' }
   ],
   strategyLog: [
-    { timestamp: Date.now() - 86400000, scenario: 'ate_still_hungry', strategy: 'Drink a full glass of water first', helped: true },
-    { timestamp: Date.now() - 172800000, scenario: 'craving', strategy: 'Wait 10 minutes', helped: true },
-    { timestamp: Date.now() - 259200000, scenario: 'ate_still_hungry', strategy: 'Eat protein first', helped: false }
+    { timestamp: Date.now() - 86400000, scenario: 'ate_still_hungry', strategy: 'Drink a full glass of water first', helped: true }
   ],
   focusAreas: [],
   doseEvents: [],
   preferences: {},
   dismissedBanners: {},
-  maintenanceBandPct: 5,
-  weightAnchor: 165,
+  maintenanceBandPct: 3,
   cgmOverride: null
+};
+
+const MAINTAIN_STATE = {
+  ...MOCK_STATE_BASE,
+  weightMode: 'maintain',
+  weightAnchor: 160,
+  goalWeight: 160,
+  profile: { ...MOCK_STATE_BASE.profile, weight: 160, goalWeight: 160, weightMode: 'maintain' }
 };
 
 function seedHungerEntries(state) {
@@ -88,48 +91,52 @@ function coachChain(scenario, opts) {
 }
 
 const SCREENS = [
-  // ─── ONBOARDING FLOW ───
+  // ─── ONBOARDING FLOW (6 steps: 0 welcome, 1 about you, 2 concerns, 3 weight, 4 assessment, 5 plan) ───
   { id: 'Onboarding_Welcome', state: ONBOARDING_STATE, navigate: null },
-  { id: 'Onboarding_NameAge', state: ONBOARDING_STATE, navigate: `${PF}.setOnboardStep(1); ${PF}.navigate('onboarding');` },
-  { id: 'Onboarding_Medication', state: ONBOARDING_STATE, navigate: `${PF}.setOnboardStep(2); ${PF}.navigate('onboarding');` },
-  { id: 'Onboarding_WhyOffGLP1', state: ONBOARDING_STATE, navigate: `${PF}.setOnboardStep(3); ${PF}.navigate('onboarding');` },
-  { id: 'Onboarding_BodyActivity', state: ONBOARDING_STATE, navigate: `${PF}.setOnboardStep(4); ${PF}.navigate('onboarding');` },
-  { id: 'Onboarding_Goals', state: ONBOARDING_STATE, navigate: `${PF}.setOnboardStep(5); ${PF}.navigate('onboarding');` },
-  { id: 'Onboarding_PreStruggles', state: ONBOARDING_STATE, navigate: `${PF}.setOnboardStep(6); ${PF}.navigate('onboarding');` },
-  { id: 'Onboarding_CurrentStruggles', state: ONBOARDING_STATE, navigate: `${PF}.setOnboardStep(7); ${PF}.navigate('onboarding');` },
-  { id: 'Onboarding_StrengthTraining', state: ONBOARDING_STATE, navigate: `${PF}.setOnboardStep(8); ${PF}.navigate('onboarding');` },
-  { id: 'Onboarding_AssessmentQ1', state: ONBOARDING_STATE, navigate: `${PF}.setOnboardStep(9); ${PF}.navigate('onboarding');` },
-  { id: 'Onboarding_AssessmentQ5', state: ONBOARDING_STATE, navigate: `${PF}.setOnboardStep(13); ${PF}.navigate('onboarding');` },
-  { id: 'Onboarding_PersonalizedProgram', state: ONBOARDING_STATE, navigate: `${PF}.setOnboardStep(17); ${PF}.navigate('onboarding');` },
+  { id: 'Onboarding_AboutYou', state: ONBOARDING_STATE, navigate: `${PF}.setOnboardStep(1); ${PF}.setOnboardProfile({name:'Sarah',medication:'Semaglutide (Ozempic/Wegovy)',medStatus:'Currently tapering'}); ${PF}.navigate('onboarding');` },
+  { id: 'Onboarding_Concerns', state: ONBOARDING_STATE, navigate: `${PF}.setOnboardStep(2); ${PF}.setOnboardProfile({name:'Sarah',medication:'Semaglutide (Ozempic/Wegovy)',medStatus:'Currently tapering',concerns:['weight_regain','appetite_return']}); ${PF}.navigate('onboarding');` },
+  { id: 'Onboarding_Weight', state: ONBOARDING_STATE, navigate: `${PF}.setOnboardStep(3); ${PF}.setOnboardProfile({name:'Sarah',medication:'Semaglutide (Ozempic/Wegovy)',medStatus:'Currently tapering',concerns:['weight_regain','appetite_return'],weight:175,weightMode:'lose',goalWeight:155}); ${PF}.navigate('onboarding');` },
+  {
+    id: 'Onboarding_BaselineAssessment',
+    fullPage: true,
+    state: ONBOARDING_STATE,
+    navigate: `${PF}.setOnboardStep(4); ${PF}.setOnboardProfile({name:'Sarah',medication:'Semaglutide (Ozempic/Wegovy)',medStatus:'Currently tapering',concerns:['weight_regain','appetite_return'],weight:175,weightMode:'lose',goalWeight:155}); ${PF}.setOnboardAnswers({q_protein:3,q_walking:2,q_hunger:2,q_sleep:3,q_glucose:2,q_stress:2,q_satiety:3,q_weight:2}); ${PF}.navigate('onboarding');`
+  },
+  { id: 'Onboarding_PlanOverview', fullPage: true, state: ONBOARDING_STATE, navigate: `${PF}.setOnboardStep(5); ${PF}.setOnboardProfile({name:'Sarah',medication:'Semaglutide (Ozempic/Wegovy)',medStatus:'Currently tapering',concerns:['weight_regain','appetite_return'],weight:175,weightMode:'lose',goalWeight:155}); ${PF}.setOnboardAnswers({q_protein:3,q_walking:2,q_hunger:2,q_sleep:3,q_glucose:2,q_stress:2,q_satiety:2,q_weight:2}); ${PF}.navigate('onboarding');` },
 
   // ─── HOME SCREEN STATES ───
   { id: 'Home_CGM_Active', navigate: `${PF}.setCGM(true); ${PF}.navigate('home');` },
   { id: 'Home_CGM_Off', navigate: `${PF}.setCGM(false); ${PF}.navigate('home');` },
+  { id: 'Home_WeightLoss', navigate: `${PF}.setCGM(false); ${PF}.navigate('home');` },
+  { id: 'Home_Maintenance', state: MAINTAIN_STATE, navigate: `${PF}.setCGM(false); ${PF}.navigate('home');` },
 
   // ─── TOOLKIT ───
-  { id: 'Toolkit_Main', navigate: `${PF}.navigate('dailies');` },
+  { id: 'Toolkit_Main', fullPage: true, navigate: `${PF}.navigate('dailies');` },
 
   // ─── WEEK DETAIL VIEWS ───
-  { id: 'WeekDetail_Block1_Baseline', navigate: `${PF}.setWeek(1); ${PF}.navigate('week_detail');` },
-  { id: 'WeekDetail_Block2_Nutrition', navigate: `${PF}.setWeek(3); ${PF}.navigate('week_detail');` },
-  { id: 'WeekDetail_Block3_Movement', navigate: `${PF}.setWeek(5); ${PF}.navigate('week_detail');` },
-  { id: 'WeekDetail_Block4_FullSystem', navigate: `${PF}.setWeek(7); ${PF}.navigate('week_detail');` },
-  { id: 'WeekDetail_Block5_Locked', navigate: `${PF}.setWeek(9); ${PF}.navigate('week_detail');` },
+  { id: 'WeekDetail_Week1_Baseline', navigate: `${PF}.setWeek(1); ${PF}.navigate('week_detail');` },
+  { id: 'WeekDetail_Week2_Protein', navigate: `${PF}.setWeek(2); ${PF}.navigate('week_detail');` },
+  { id: 'WeekDetail_Week3_Fiber', navigate: `${PF}.setWeek(3); ${PF}.navigate('week_detail');` },
+  { id: 'WeekDetail_Week5_SatietyPlate', navigate: `${PF}.setWeek(5); ${PF}.navigate('week_detail');` },
+  { id: 'WeekDetail_Week8_Walking', navigate: `${PF}.setWeek(8); ${PF}.navigate('week_detail');` },
+  { id: 'WeekDetail_Week10_Portions', navigate: `${PF}.setWeek(10); ${PF}.navigate('week_detail');` },
+  { id: 'WeekDetail_Week13_Locked', navigate: `${PF}.setWeek(13); ${PF}.navigate('week_detail');` },
+  { id: 'WeekDetail_Week16_Graduation', navigate: `${PF}.setWeek(16); ${PF}.navigate('week_detail');` },
 
-  // ─── SELF-ASSESSMENT FLOW (4 steps) ───
-  { id: 'Assessment_Baseline_Intro', navigate: `${PF}.setCheckin(1); ${PF}.navigate('post8_checkin');` },
-  { id: 'Assessment_MidProgram_Intro', navigate: `${PF}.setCheckin(5); ${PF}.navigate('post8_checkin');` },
-  { id: 'Assessment_Post8_Intro', navigate: `${PF}.setCheckin(9); ${PF}.navigate('post8_checkin');` },
-  { id: 'CheckIn_SelfAssessment', fullPage: true, navigate: `${PF}.setCheckin(9); ${PF}.setCheckinStep(1); ${PF}.navigate('post8_checkin');` },
+  // ─── CHECK-IN FLOW (every 4 weeks) ───
+  { id: 'CheckIn_Week4_Intro', navigate: `${PF}.setCheckin(4); ${PF}.navigate('post8_checkin');` },
+  { id: 'CheckIn_Week8_Intro', navigate: `${PF}.setCheckin(8); ${PF}.navigate('post8_checkin');` },
+  { id: 'CheckIn_Week12_Intro', navigate: `${PF}.setCheckin(12); ${PF}.navigate('post8_checkin');` },
+  { id: 'CheckIn_SelfAssessment', fullPage: true, navigate: `${PF}.setCheckin(8); ${PF}.setCheckinStep(1); ${PF}.navigate('post8_checkin');` },
   {
     id: 'CheckIn_Feedback',
     fullPage: true,
-    navigate: `${PF}.setCheckin(9); ${PF}.setCheckinAnswers({q_hunger:4,q_nutrition:3,q_exercise:4,q_sleep:3,q_glucose:4,q_weight:3,q_stress:2,q_muscle:3,_ranked:[{area:'sleep_stress',avg:2.5},{area:'nutrition',avg:3},{area:'hunger',avg:4},{area:'exercise',avg:4}]}); ${PF}.setCheckinStep(2); ${PF}.navigate('post8_checkin');`
+    navigate: `${PF}.setCheckin(8); ${PF}.setCheckinAnswers({q_protein:4,q_walking:3,q_hunger:4,q_sleep:3,q_glucose:4,q_stress:2,q_satiety:3,q_weight:3,_ranked:[{area:'sleep_stress',avg:2.5},{area:'nutrition',avg:3.5},{area:'hunger',avg:4},{area:'exercise',avg:3}]}); ${PF}.setCheckinStep(2); ${PF}.navigate('post8_checkin');`
   },
   {
     id: 'CheckIn_FocusSelection',
     state: CHECKIN_STATE,
-    navigate: `${PF}.setCheckin(9); ${PF}.setCheckinAnswers({q_hunger:4,q_nutrition:3,q_exercise:4,q_sleep:3,q_glucose:4,q_weight:3,q_stress:2,q_muscle:3,_ranked:[{area:'sleep_stress',avg:2.5},{area:'nutrition',avg:3},{area:'hunger',avg:4},{area:'exercise',avg:4}]}); ${PF}.setCheckinStep(3); ${PF}.navigate('post8_checkin');`
+    navigate: `${PF}.setCheckin(12); ${PF}.setCheckinAnswers({q_protein:4,q_walking:3,q_hunger:4,q_sleep:3,q_glucose:4,q_stress:2,q_satiety:3,q_weight:3,_ranked:[{area:'sleep_stress',avg:2.5},{area:'nutrition',avg:3.5},{area:'hunger',avg:4},{area:'exercise',avg:3}]}); ${PF}.setCheckinStep(3); ${PF}.navigate('post8_checkin');`
   },
 
   // ─── LOG SCREEN ───

@@ -23,8 +23,8 @@
 | State Manager | localStorage persistence with migration | `index.html` (`state`, `saveState`, `migrateToProgramState`) | Active |
 | Glucose Engine | Simulated CGM readings based on time/profile/hunger | `index.html` (`getGlucoseContext`) | Active |
 | Hunger-Glucose Engine | Cross-references glucose state with hunger ratings | `index.html` (`getGlucoseHungerInsight`) | Active |
-| Block System | 8-block program with personalized ordering | `index.html` (`BLOCK_GOALS`, `BLOCK_TOPICS`, `buildPersonalizedWeekOrder`) | Active |
-| CGM Scheduler | Intermittent CGM schedule with 4 sensor periods | `index.html` (`CGM_BLOCKS`, `CGM_SCHEDULE`, `isCGMBlock`) | Active |
+| Week System | 16-week program with one focus per week, choice prompts | `index.html` (`WEEK_GOALS`, `WEEK_TOPICS`, weekly choice mechanism) | Active |
+| CGM Scheduler | Intermittent CGM: Weeks 1–2 (baseline), 5–6 (satiety check), 9–10 (movement), 15–16 (graduation) | `index.html` (`CGM_SCHEDULE`, `isCGMWeek`) | Active |
 | Graduation Evaluator | Checks 4 graduation criteria against state | `index.html` (`checkGraduationCriteria`) | Active |
 | Scoring System | GPA calculations for glucose, lifestyle, consistency | `index.html` (`getGlucoseGPA`, `getLifestyleGPA`, `getConsistencyScore`) | Active |
 | Coach Engine | Branching conversation logic with strategy tracking | `index.html` (`COACH_SCENARIOS`, `COACH_BRANCHES`, `renderHungerCoach`) | Active |

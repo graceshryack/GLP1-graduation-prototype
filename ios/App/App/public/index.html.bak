@@ -1089,137 +1089,69 @@
           }
         }
       };
+      var TOTAL_BLOCKS = 8;
       var TOTAL_WEEKS = 16;
-      var CHECK_IN_WEEKS = [4, 8, 12, 16];
-      function weekToBlock(w) { return Math.ceil(w / 4); }
-      function blockToWeeks(b) { var s = (b-1)*4+1; return [s, s+1, s+2, s+3]; }
-      var TOTAL_BLOCKS = 4;
-
-      var CGM_WEEKS = {1:true, 2:true, 5:true, 6:true, 9:true, 10:true, 15:true, 16:true};
+      function blockToWeeks(b) { return [b * 2 - 1, b * 2]; }
+      function weekToBlock(w) { return Math.ceil(w / 2); }
+      var CGM_BLOCKS = { 1: true, 2: false, 3: true, 4: false, 5: false, 6: true, 7: false, 8: true };
       var CGM_SCHEDULE = {};
-      for (var _w = 1; _w <= 16; _w++) CGM_SCHEDULE[_w] = !!CGM_WEEKS[_w];
-      var CGM_BLOCKS = { 1: true, 2: true, 3: true, 4: true };
+      for (var _b = 1; _b <= TOTAL_BLOCKS; _b++) { var _wks = blockToWeeks(_b); CGM_SCHEDULE[_wks[0]] = !!CGM_BLOCKS[_b]; CGM_SCHEDULE[_wks[1]] = !!CGM_BLOCKS[_b]; }
       var CGM_PERIODS = [
-        { id: 1, label: 'CGM 1: Baseline', weeks: [1, 2], purpose: 'Observe glucose patterns before changing anything' },
-        { id: 2, label: 'CGM 2: Satiety Check', weeks: [5, 6], purpose: 'See how protein + fiber + fat affect your glucose' },
-        { id: 3, label: 'CGM 3: Movement', weeks: [9, 10], purpose: 'Watch how walking changes your glucose curve' },
-        { id: 4, label: 'CGM 4: Graduation', weeks: [15, 16], purpose: 'Final proof \u2014 your habits handle your glucose' }
+        { id: 1, block: 1, label: 'CGM 1: Baseline', weeks: [1, 2], purpose: 'Learn your glucose patterns and establish baseline data' },
+        { id: 2, block: 3, label: 'CGM 2: Movement', weeks: [5, 6], purpose: 'See how walking and resistance training change your glucose' },
+        { id: 3, block: 6, label: 'CGM 3: Validation', weeks: [11, 12], purpose: 'Validate your full system is working' },
+        { id: 4, block: 8, label: 'CGM 4: Graduation', weeks: [15, 16], purpose: 'Final assessment \u2014 prove it with data' }
       ];
       function isCGMWeek(wk) { return !!CGM_SCHEDULE[wk]; }
-      function isCGMBlock(b) { return blockToWeeks(b).some(function(w) { return CGM_SCHEDULE[w]; }); }
+      function isCGMBlock(b) { return !!CGM_BLOCKS[b]; }
       function getCGMPeriod(wk) { for (var i = 0; i < CGM_PERIODS.length; i++) { if (CGM_PERIODS[i].weeks.indexOf(wk) >= 0) return CGM_PERIODS[i]; } return null; }
       function getNextCGMWeek(wk) { for (var w = wk + 1; w <= 16; w++) { if (CGM_SCHEDULE[w]) return w; } return null; }
-      function getNextCGMBlock(b) { for (var i = b + 1; i <= 4; i++) { if (isCGMBlock(i)) return i; } return null; }
-      function getLastCGMPeriod(wk) { for (var i = CGM_PERIODS.length - 1; i >= 0; i--) { if (CGM_PERIODS[i].weeks[CGM_PERIODS[i].weeks.length-1] < wk) return CGM_PERIODS[i]; } return null; }
-
-      var WEEKLY_FOCUSES = {
-        1:  { title: 'Know Your Baseline', desc: 'Your CGM sensor is on. Don’t change anything yet — just observe. Watch how different meals, sleep, and activity affect your glucose. Log your hunger levels. By the end of this week, you’ll have a personal baseline.', icon: '📊', goal: 'Log meals and hunger daily, observe CGM after each meal', cgm: true, category: 'baseline' },
-        2:  { title: 'Protein Foundation', desc: 'Pick one meal and anchor it with 30g+ of protein. Eggs at breakfast, chicken at lunch, fish at dinner — any source works. Protein is the #1 satiety lever when appetite returns.', icon: '🥩', goal: '30g+ protein at your chosen meal every day', cgm: true, category: 'nutrition', choicePrompt: 'Which meal will you anchor with protein?', choices: ['Breakfast', 'Lunch', 'Dinner'] },
-        3:  { title: 'Add Fiber', desc: 'Add a fiber source to the meal you’re already anchoring with protein. Vegetables, beans, whole grains — pick what you like. Fiber + protein together create lasting fullness.', icon: '🥦', goal: 'Protein + fiber at your anchor meal daily', cgm: false, category: 'nutrition', choicePrompt: 'How will you add fiber this week?', choices: ['Extra vegetables', 'Beans or legumes', 'Whole grains'] },
-        4:  { title: 'Second Meal', desc: 'You’ve proven you can build one strong meal. Now expand — apply protein + fiber to a second meal. Two anchored meals means most of your day is covered.', icon: '🍽️', goal: 'Two meals with protein + fiber daily', cgm: false, category: 'nutrition', choicePrompt: 'Which second meal will you anchor?', choices: ['Breakfast', 'Lunch', 'Dinner'] },
-        5:  { title: 'Complete the Satiety Plate', desc: 'Add healthy fats to round out your meals. Avocado, olive oil, nuts, fatty fish — fat is the third pillar of fullness. With protein + fiber + fat, your meals keep you satisfied 3–4 hours.', icon: '🥑', goal: 'All meals include protein + fiber + healthy fat', cgm: true, category: 'nutrition', choicePrompt: 'Your go-to healthy fat source?', choices: ['Avocado / olive oil', 'Nuts / seeds', 'Fatty fish / cheese'] },
-        6:  { title: 'Meal Timing', desc: 'Your second CGM sensor is still on. Establish a consistent 3–4 meal rhythm. No skipping, even when not hungry. Regular timing trains your hunger hormones and prevents crash-binge cycles common post-GLP-1.', icon: '⏰', goal: 'Eat at consistent times, 3–4 meals, no skipping', cgm: true, category: 'structure' },
-        7:  { title: 'Hydration', desc: 'Learn to distinguish thirst from hunger. Drink water before meals — it helps calibrate how much food you actually need.', icon: '💧', goal: 'Water before every meal, 8+ glasses daily', cgm: false, category: 'structure' },
-        8:  { title: 'Post-Meal Walking', desc: 'Add a 10–15 minute walk after your largest meal. Walking blunts glucose spikes by 20–30 mg/dL — you proved this with your last sensor.', icon: '🚶', goal: '10–15 min walk after at least 1 meal daily', cgm: false, category: 'movement' },
-        9:  { title: 'Glucose Patterns', desc: 'You have 8 weeks of data. Time to read it. Identify your top spike triggers, your best meals, and your daily pattern.', icon: '📈', goal: 'Identify top 3 spike triggers and 3 best meals', cgm: true, category: 'glucose' },
-        10: { title: 'Portion Intuition', desc: 'Your third CGM sensor is on. Practice the hunger scale (1–5) before and after every meal. The goal: eat at a 2–3, stop at “satisfied.” This is the hardest skill.', icon: '🎯', goal: 'Rate hunger before every meal, stop at satisfied', cgm: true, category: 'hunger' },
-        11: { title: 'Daily Movement', desc: 'Set and hit a daily step target. Movement supports glucose regulation, appetite normalization, and mood.', icon: '👟', goal: '7,000+ steps daily', cgm: false, category: 'movement' },
-        12: { title: 'Resistance Training', desc: 'Start 2x/week strength training. Muscle mass drives resting metabolic rate and is critical for long-term weight maintenance after GLP-1.', icon: '💪', goal: '2 strength sessions this week', cgm: false, category: 'movement' },
-        13: { title: 'Your Focus', desc: 'Based on your Week 12 check-in, you’ve selected your personalized focus area. Spend this week going deeper on what you need most.', icon: '🎯', goal: 'Deep-dive your chosen focus area', cgm: false, category: 'personalized', personalized: true },
-        14: { title: 'Your Focus', desc: 'Continue building consistency in your personalized focus. Your habits from Weeks 1–12 keep running — this is about strengthening your weakest link.', icon: '🔧', goal: 'Build consistency in your focus area', cgm: false, category: 'personalized', personalized: true },
-        15: { title: 'Full Integration', desc: 'Your final CGM sensor goes on. Run your full system — all habits together. Handle a disruption (travel, social meal, busy day) and see how your habits hold.', icon: '🔄', goal: 'All habits running, navigate 1+ disruption with CGM', cgm: true, category: 'integration' },
-        16: { title: 'Graduation', desc: 'Your final week. Compare your glucose data to Week 1. The difference is the proof that your habits work. If you’ve met your graduation criteria — congratulations.', icon: '🎓', goal: 'All criteria met — graduate', cgm: true, category: 'graduation' }
-      };
-
-      var WEEKLY_RESOURCES = {
-        2: { title: 'Protein Sources', sections: [
-          { name: 'Animal Protein (per 4oz)', items: ['Chicken breast — 31g', 'Ground turkey — 22g', 'Salmon — 25g', 'Eggs — 6g each (12g for 2)', 'Greek yogurt — 15–20g/cup', 'Cottage cheese — 14g/½ cup'] },
-          { name: 'Plant Protein', items: ['Lentils — 18g/cup', 'Black beans — 15g/cup', 'Tofu firm — 20g/½ block', 'Edamame — 17g/cup', 'Tempeh — 21g/½ cup'] },
-          { name: 'Quick 30g Combos', items: ['2 eggs + Greek yogurt = 32g', '4oz chicken + salad = 33g', 'Salmon fillet + rice = 30g', 'Lentil soup + bread = 28g'] }
-        ]},
-        3: { title: 'Fiber Sources', sections: [
-          { name: 'Vegetables', items: ['Broccoli — 5g/cup', 'Brussels sprouts — 4g/cup', 'Artichoke — 7g each', 'Sweet potato — 4g each', 'Spinach — 4g/cup cooked'] },
-          { name: 'Legumes & Grains', items: ['Lentils — 16g/cup', 'Black beans — 15g/cup', 'Chickpeas — 12g/cup', 'Quinoa — 5g/cup', 'Oats — 4g/cup'] },
-          { name: 'Fruits & Seeds', items: ['Raspberries — 8g/cup', 'Chia seeds — 10g/2tbsp', 'Avocado — 10g each', 'Flax seeds — 8g/2tbsp'] }
-        ]},
-        4: { title: 'Satiety Meal Ideas', sections: [
-          { name: 'Breakfast', items: ['Greek yogurt + berries + chia + walnuts', 'Veggie egg scramble: 2 eggs + spinach + peppers + feta', 'Overnight oats + protein powder + banana + almond butter'] },
-          { name: 'Lunch', items: ['Power bowl: chicken + quinoa + roasted veggies + tahini', 'Big salad: greens + salmon + avocado + chickpeas', 'Lentil soup + grilled chicken + whole grain bread'] },
-          { name: 'Dinner', items: ['Sheet pan: salmon + broccoli + sweet potato', 'Stir-fry: chicken + peppers + snap peas over cauliflower rice', 'Taco bowl: turkey + black beans + greens + salsa + avocado'] }
-        ]},
-        5: { title: 'Healthy Fat Sources', sections: [
-          { name: 'Cooking Fats', items: ['Extra virgin olive oil', 'Avocado oil', 'Coconut oil (moderate)'] },
-          { name: 'Whole Food Fats', items: ['Avocado — 15g fat/half', 'Almonds — 14g/¼ cup', 'Walnuts — 18g/¼ cup', 'Salmon, sardines, mackerel', 'Chia seeds — 9g/2tbsp'] },
-          { name: 'Condiment Fats', items: ['Nut butter — 8g/tbsp', 'Tahini — 8g/tbsp', 'Pesto — 5g/tbsp'] }
-        ]},
-        7: { title: 'Hydration Guide', sections: [
-          { name: 'Daily Routine', items: ['Glass when you wake up', 'Water 15 min before each meal', 'Water during and after exercise', 'Glass before bed'] },
-          { name: 'If Plain Water Is Boring', items: ['Lemon, lime, or cucumber slices', 'Herbal tea counts', 'Sparkling water with fruit'] }
-        ]},
-        8: { title: 'Walking Guide', sections: [
-          { name: 'Timing', items: ['Start within 15–30 min after eating', 'Best after your largest meal', '10–15 min is the sweet spot', 'Even 5 min helps'] },
-          { name: 'Making It Easy', items: ['Keep shoes by the door', 'Walk around your block or office', 'Call a friend while walking'] }
-        ]},
-        12: { title: 'Strength Training Basics', sections: [
-          { name: 'No-Gym Exercises', items: ['Squats — 3 sets of 10', 'Push-ups (wall or floor) — 3x8', 'Lunges — 3x8 each leg', 'Plank — 3x 20–30 sec'] },
-          { name: 'Weekly Plan', items: ['Day 1: Upper (push-ups, rows, planks)', 'Day 2: Rest', 'Day 3: Lower (squats, lunges, bridges)', 'Keep sessions 20–30 min'] }
-        ]},
-        13: { title: 'Personalized Resources', sections: [
-          { name: 'Sleep Hygiene', items: ['Same bedtime ±30 min, even weekends', 'Dim lights 1 hr before bed', 'Room: cool 65–68°F, dark, quiet', 'No screens 30 min before sleep'] },
-          { name: 'Stress Management', items: ['Box breathing: inhale 4, hold 4, exhale 4, hold 4', '5 min daily beats weekly meditation', 'Short walk when stressed', 'Name the emotion out loud'] },
-          { name: 'Snack Strategy', items: ['Protein-forward: yogurt, cheese + apple, nuts', 'Plan snacks, don’t graze', 'Craving? Wait 10 min then decide'] },
-          { name: 'Emotional Eating', items: ['HALT: Hungry, Angry, Lonely, Tired?', 'Not physical hunger? Address emotion first', '15-min rule: wait, then eat mindfully'] }
-        ]}
-      };
-
-      var WEEK_EDUCATION_MAP = {
-        1: ['cgm_basics', 'glp1_basics', 'patterns_101'],
-        2: ['protein_anchor_p1', 'protein_muscle', 'meal_structure'],
-        3: ['fiber_intro', 'gi_comfort'],
-        4: ['satiety_playbook', 'satiety_skill'],
-        5: ['pairing_glucose', 'carb_strategy'],
-        6: ['meal_structure', 'appetite_return', 'hunger_basics'],
-        7: ['hydration_p1', 'hunger_signals', 'understanding_fullness'],
-        8: ['post_meal_move', 'post_meal_walk', 'cgm_transition'],
-        9: ['patterns_101', 'cgm_transition', 'weight_after_glp1'],
-        10: ['hunger_signals', 'fullness_signals', 'hunger_medication', 'emotional_hunger'],
-        11: ['post_meal_maintenance', 'recovery_p1'],
-        12: ['resistance_first', 'strength_taper', 'long_term_strength'],
-        13: [], 14: [],
-        15: ['drift_prevention', 'cgm_maintenance', 'quick_reset'],
-        16: ['maintenance_playbook', 'scale_during_transition', 'maintenance_band_education']
-      };
+      function getNextCGMBlock(b) { for (var i = b + 1; i <= TOTAL_BLOCKS; i++) { if (CGM_BLOCKS[i]) return i; } return null; }
+      function getLastCGMPeriod(wk) { for (var i = CGM_PERIODS.length - 1; i >= 0; i--) { if (CGM_PERIODS[i].weeks[1] < wk) return CGM_PERIODS[i]; } return null; }
 
       var BLOCK_MILESTONES = {
-        1: 'Build Your Satiety Foundation',
-        2: 'Structure & Habits',
-        3: 'Deepen Your Skills',
-        4: 'Personalize & Graduate'
+        1: 'Baseline & Learn Your Glucose',
+        2: 'Nutrition Foundation',
+        3: 'Movement & CGM Proof',
+        4: 'Full System Build',
+        5: 'Personalized Focus',
+        6: 'Validation & CGM Check',
+        7: 'Refinement & Stress Test',
+        8: 'Graduation'
       };
       var GRADUATION_MILESTONES = {};
-      for (var _mb = 1; _mb <= TOTAL_BLOCKS; _mb++) { var _mw = blockToWeeks(_mb); _mw.forEach(function(w) { GRADUATION_MILESTONES[w] = BLOCK_MILESTONES[_mb]; }); }
+      for (var _mb = 1; _mb <= TOTAL_BLOCKS; _mb++) { var _mw = blockToWeeks(_mb); GRADUATION_MILESTONES[_mw[0]] = BLOCK_MILESTONES[_mb]; GRADUATION_MILESTONES[_mw[1]] = BLOCK_MILESTONES[_mb]; }
 
-      var BLOCK_GOALS = {};
-      for (var _bg = 1; _bg <= 16; _bg++) BLOCK_GOALS[_bg] = WEEKLY_FOCUSES[_bg];
-      var WEEKLY_GOALS = BLOCK_GOALS;
+      var BLOCK_GOALS = {
+        1: { title: 'Baseline & Learn Your Glucose', desc: 'Your first CGM sensor is on for 2 weeks. Don\u2019t change anything \u2014 just observe. Learn to read your glucose graph: what causes spikes? What keeps you stable? Notice your hunger patterns, activity level, and sleep. By the end of this block, you\u2019ll have a full personal baseline to measure all future progress against.', metric: 'Log meals, sleep, and hunger daily \u2014 review CGM after each meal', cgm: true },
+        2: { title: 'Protein + Fiber Foundation', desc: 'CGM is off. Build your nutrition foundation over 2 weeks. Week 1: include protein at every meal (25g+). Week 2: add fiber \u2014 one extra serving of vegetables or fiber-rich food per day. Pair them together for maximum satiety. Use your hunger check-ins as your data source.', metric: '25g+ protein per meal, +1 fiber serving/day', cgm: false },
+        3: { title: 'Movement & CGM Proof', desc: 'Your second CGM sensor goes on. This block is all about movement. Add a 10\u201315 minute walk after meals and start 2 strength training sessions per week. Watch your CGM \u2014 see how walking blunts spikes by 20\u201330 mg/dL and how resistance training improves glucose for 24\u201348 hours. Compare your data to your Block 1 baseline.', metric: '7,000+ steps/day, 2 strength sessions/wk \u2014 compare CGM 2 to CGM 1', cgm: true },
+        4: { title: 'Satiating Meals + Sleep & Stress', desc: 'CGM is off. Put it all together: protein + fiber + healthy fat + volume. Practice building meals that keep you full for 3\u20134 hours. Then add sleep consistency \u2014 same bedtime within 30 minutes. Add one stress management tool. This is your full system without CGM training wheels.', metric: 'Build balanced meals 5+ days, consistent bedtime 5/7 nights', cgm: false },
+        5: { title: 'Your Personalized Focus', desc: 'Complete the post-block-4 check-in to unlock your personalized focus. Signos will show where your scores lag and you\u2019ll choose your deep-dive topic. Spend 2 weeks going deeper on what you need most while keeping all foundation habits running.', metric: 'Complete check-in, choose focus, maintain all habits', cgm: false },
+        6: { title: 'Validation & CGM Check', desc: 'Your third CGM sensor goes on. This is your validation check \u2014 compare your glucose to CGM 1 (baseline) and CGM 2 (movement). Are your habits holding? Handle a disruption (travel, social meal, busy day) with CGM on \u2014 see how your system holds under pressure.', metric: 'Compare CGM 3 to CGM 1 & 2, navigate 1+ disruption', cgm: true },
+        7: { title: 'Refinement & Stress Test', desc: 'CGM is off. Refine your approach based on what CGM 3 revealed. What meals work best? What time of day do you struggle most? Build your "minimum viable day" plan \u2014 the baseline you maintain no matter what. Fine-tune for real life: hard days, travel, social events.', metric: 'Fix 2 weak spots, create minimum viable day plan', cgm: false },
+        8: { title: 'Graduation', desc: 'Your final CGM sensor goes on. This is your graduation assessment. Run your full system for 2 weeks with CGM data. Compare to your very first baseline from Block 1. The difference is the proof that your habits work. If you\u2019ve met your graduation criteria \u2014 congratulations.', metric: 'All criteria met \u2014 graduate', cgm: true }
+      };
+      var WEEKLY_GOALS = {};
+      for (var _gb = 1; _gb <= TOTAL_BLOCKS; _gb++) { var _gw = blockToWeeks(_gb); WEEKLY_GOALS[_gw[0]] = BLOCK_GOALS[_gb]; WEEKLY_GOALS[_gw[1]] = BLOCK_GOALS[_gb]; }
 
-      var BLOCK_EDUCATION = {};
-      for (var _be = 1; _be <= 16; _be++) BLOCK_EDUCATION[_be] = { modules: WEEK_EDUCATION_MAP[_be] || [] };
-      var WEEKLY_EDUCATION = BLOCK_EDUCATION;
+      var BLOCK_EDUCATION = {
+        1: { focus: ['glucose_cgm', 'hunger'], modules: ['cgm_basics', 'glp1_basics', 'patterns_101', 'hunger_basics', 'hunger_signals', 'understanding_fullness', 'protein_anchor_p1', 'meal_structure'] },
+        2: { focus: ['nutrition', 'hunger'], modules: ['protein_muscle', 'fullness_signals', 'fiber_intro', 'gi_comfort', 'appetite_return', 'hunger_medication'] },
+        3: { focus: ['exercise', 'glucose_cgm'], modules: ['post_meal_move', 'post_meal_walk', 'resistance_first', 'strength_taper', 'recovery_p1', 'cgm_transition', 'pairing_glucose'] },
+        4: { focus: ['nutrition', 'sleep', 'stress', 'hunger'], modules: ['satiety_playbook', 'satiety_skill', 'carb_strategy', 'hydration_p1', 'sleep_consistency_p1', 'sleep_taper', 'stress_glucose_p1', 'stress_taper', 'hydration_p2'] }
+      };
+      var WEEKLY_EDUCATION = {};
+      for (var _eb = 1; _eb <= 4; _eb++) { var _ew = blockToWeeks(_eb); WEEKLY_EDUCATION[_ew[0]] = BLOCK_EDUCATION[_eb]; WEEKLY_EDUCATION[_ew[1]] = BLOCK_EDUCATION[_eb]; }
 
-      function getWeeklyFocus(wk) { return WEEKLY_FOCUSES[wk] || WEEKLY_FOCUSES[1]; }
-      function getBlockTopic(b) { return null; }
-      function getWeekTopic(wk) { return null; }
-      function pBlockGoal(b) { return getWeeklyFocus(blockToWeeks(b)[0]); }
-      function pWeekGoal(wk) { return getWeeklyFocus(wk); }
-      function pBlockEdu(b) { return { modules: WEEK_EDUCATION_MAP[blockToWeeks(b)[0]] || [] }; }
-      function pWeekEdu(wk) { return { modules: WEEK_EDUCATION_MAP[wk] || [] }; }
-      function pBlockMilestone(b) { return BLOCK_MILESTONES[b] || ''; }
-      function pWeekMilestone(wk) { return pBlockMilestone(weekToBlock(wk)); }
-
-      var BLOCK_TOPICS = {};
+      var BLOCK_TOPICS = {
+        baseline_cgm:  { goal: BLOCK_GOALS[1], edu: BLOCK_EDUCATION[1], milestone: 'Baseline & Glucose', fixed: true },
+        nutrition:     { goal: BLOCK_GOALS[2], edu: BLOCK_EDUCATION[2], milestone: 'Nutrition Foundation' },
+        movement_cgm:  { goal: BLOCK_GOALS[3], edu: BLOCK_EDUCATION[3], milestone: 'Movement & CGM', fixed: true },
+        full_system:   { goal: BLOCK_GOALS[4], edu: BLOCK_EDUCATION[4], milestone: 'Full System Build' }
+      };
       var WEEK_TOPICS = BLOCK_TOPICS;
-      var DEFAULT_BLOCK_ORDER = ['baseline', 'structure', 'skills', 'personalized'];
+      var DEFAULT_BLOCK_ORDER = ['baseline_cgm', 'nutrition', 'movement_cgm', 'full_system'];
       var DEFAULT_WEEK_ORDER = DEFAULT_BLOCK_ORDER;
 
       var STRUGGLE_OPTIONS = [
@@ -1247,7 +1179,38 @@
         { id: 'other', label: 'Other', icon: '&#10067;' }
       ];
 
-      function buildPersonalizedWeekOrder() { return DEFAULT_BLOCK_ORDER.slice(); }
+      var STRUGGLE_TO_TOPIC = {
+        portion_control: ['full_system', 'nutrition'],
+        emotional_eating: ['full_system', 'nutrition'],
+        late_night: ['full_system', 'nutrition'],
+        low_activity: ['nutrition', 'full_system'],
+        poor_sleep: ['full_system', 'nutrition'],
+        sugar_cravings: ['nutrition', 'full_system'],
+        glucose_confusion: ['nutrition', 'full_system'],
+        inconsistent_meals: ['nutrition', 'full_system'],
+        low_protein: ['nutrition', 'full_system'],
+        staying_full: ['nutrition', 'full_system'],
+        stress: ['full_system', 'nutrition'],
+        no_strength: ['nutrition', 'full_system']
+      };
+
+      function buildPersonalizedWeekOrder(struggles) {
+        if (!struggles || struggles.length === 0) return DEFAULT_BLOCK_ORDER.slice();
+        var topicPriority = {};
+        var movable = ['nutrition', 'full_system'];
+        movable.forEach(function(t) { topicPriority[t] = 0; });
+        struggles.forEach(function(s, idx) {
+          var mapped = STRUGGLE_TO_TOPIC[s];
+          if (!mapped) return;
+          var weight = struggles.length - idx;
+          mapped.forEach(function(topic, ti) {
+            if (movable.indexOf(topic) < 0) return;
+            topicPriority[topic] = (topicPriority[topic] || 0) + weight * (ti === 0 ? 2 : 1);
+          });
+        });
+        var sorted = movable.slice().sort(function(a, b) { return (topicPriority[b] || 0) - (topicPriority[a] || 0); });
+        return ['baseline_cgm', sorted[0], 'movement_cgm', sorted[1]];
+      }
 
       function getBlockTopic(blockNum) {
         if (blockNum >= 5) return null;
@@ -1293,7 +1256,7 @@
         goal: PROGRAM_PRIMARY_GOAL,
         do: 'Consistent protein, meal structure, resistance training, post-meal walking, sleep consistency.',
         dont: 'Aggressive restriction, perfect glucose chasing, reactive dieting, all-or-nothing resets.',
-        cgm: '4 sensor periods: Wk 1\u20132 (baseline) \u2192 Wk 5 (satiety) \u2192 Wk 8\u20139 (movement) \u2192 Wk 15\u201316 (graduation).',
+        cgm: '4 sensor periods across 8 blocks: Block 1 (baseline) \u2192 Block 3 (movement) \u2192 Block 6 (validation) \u2192 Block 8 (graduation).',
         optimize: 'Build habits in early weeks, refine and stress-test in later weeks, graduate with confidence.'
       };
       var TOOLKIT_EDUCATION_SINGLE = {
@@ -2256,32 +2219,45 @@
       }
       function buildGraduationTimeline(s, clickable) {
         var currentWeek = getGraduationWeek(s);
-        var focus = getWeeklyFocus(currentWeek);
+        var currentBlock = weekToBlock(currentWeek);
+        var milestone = pBlockMilestone(currentBlock);
         var gradCheck = checkGraduationCriteria(s);
         var metCount = gradCheck.criteria.filter(function(c) { return c.met; }).length;
+        var p2unlocked = isPhase2Unlocked(s);
         var html = '<div class="grad-timeline-wrap"><div class="grad-timeline-title">16-Week Graduation</div>' +
-          '<div class="grad-timeline-sub">Week ' + currentWeek + ': ' + focus.title + (currentWeek >= 16 && gradCheck.allMet ? ' \ud83c\udf93' : '') + '</div><div class="grad-timeline">';
+          '<div class="grad-timeline-sub">Block ' + currentBlock + ' (Weeks ' + blockToWeeks(currentBlock).join('\u2013') + ') \u2014 ' + milestone + (currentBlock >= 8 && gradCheck.allMet ? ' \ud83c\udf93' : '') + '</div><div class="grad-timeline">';
         for (var w = 1; w <= TOTAL_WEEKS; w++) {
-          var wf = WEEKLY_FOCUSES[w];
-          var hasCgm = isCGMWeek(w);
-          var isCheckIn = CHECK_IN_WEEKS.indexOf(w) >= 0;
+          var blk = weekToBlock(w);
+          var isFirstInBlock = w % 2 === 1;
+          var isLastInBlock = w % 2 === 0;
+          var isLocked = blk >= 5 && !p2unlocked;
+          var hasCgm = isCGMBlock(blk);
+          if (isFirstInBlock) {
+            var blockBg = hasCgm ? 'background:rgba(37,99,235,0.06);border:1.5px solid #93c5fd;' : 'background:rgba(0,0,0,0.02);border:1.5px solid #e2e8f0;';
+            html += '<div style="display:flex;align-items:center;gap:0;position:relative;border-radius:20px;padding:2px 4px;flex-shrink:0;' + blockBg + '">';
+            if (hasCgm) html += '<div style="position:absolute;top:-8px;left:50%;transform:translateX(-50%);font-size:0.5rem;background:#2563eb;color:#fff;border-radius:3px;padding:0 4px;line-height:1.4;white-space:nowrap">CGM</div>';
+          }
           var cls = 'grad-week';
           if (w < currentWeek) cls += ' done';
           else if (w === currentWeek) cls += ' current';
           if (w === TOTAL_WEEKS) cls += ' graduation';
+          if (isLocked) cls += ' locked';
           if (clickable) cls += ' clickable';
-          var dotContent = w < currentWeek ? '&#10003;' : w === TOTAL_WEEKS ? '&#9733;' : w;
-          var dotStyle = hasCgm && w >= currentWeek ? 'border:2px solid #2563eb;' : '';
-          html += '<div class="' + cls + '" title="Wk ' + w + ': ' + wf.title + '"' + (clickable ? ' data-week="' + w + '"' : '') + ' style="position:relative;' + dotStyle + '"><div class="grad-week-dot">' + dotContent + '</div><div class="grad-week-label">' + (w === TOTAL_WEEKS ? 'Grad' : 'W' + w) + '</div>';
-          if (isCheckIn && w > 1) html += '<div style="position:absolute;bottom:-6px;left:50%;transform:translateX(-50%);width:5px;height:5px;border-radius:50%;background:#d97706"></div>';
-          html += '</div>';
-          if (w < TOTAL_WEEKS) html += '<div class="grad-week-line' + (w < currentWeek ? ' done' : '') + '"></div>';
+          var dotContent = w < currentWeek ? '&#10003;' : isLocked ? '&#128274;' : w === TOTAL_WEEKS ? '&#9733;' : w;
+          html += '<div class="' + cls + '" title="' + pBlockMilestone(blk) + '"' + (clickable ? ' data-week="' + w + '"' : '') + ' style="position:relative"><div class="grad-week-dot">' + dotContent + '</div><div class="grad-week-label">' + (w === TOTAL_WEEKS ? 'Grad' : 'W' + w) + '</div></div>';
+          if (isFirstInBlock) {
+            html += '<div class="grad-week-line' + (w < currentWeek ? ' done' : '') + (isLocked ? ' locked' : '') + '" style="width:6px;min-width:6px"></div>';
+          }
+          if (isLastInBlock) {
+            html += '</div>';
+            if (w < TOTAL_WEEKS) html += '<div class="grad-week-line' + (w < currentWeek ? ' done' : '') + (isLocked ? ' locked' : '') + '"></div>';
+          }
         }
         html += '</div>';
         html += '<div style="display:flex;justify-content:center;gap:14px;padding:4px 0 6px;font-size:0.625rem;color:var(--text-muted)">' +
-          '<span style="display:flex;align-items:center;gap:3px"><span style="display:inline-block;width:8px;height:8px;border-radius:50%;border:2px solid #2563eb"></span> CGM week</span>' +
-          '<span style="display:flex;align-items:center;gap:3px"><span style="display:inline-block;width:5px;height:5px;border-radius:50%;background:#d97706"></span> Check-in</span></div>';
-        if (clickable) html += '<div style="text-align:center;padding:2px 0 8px;font-size:0.6875rem;color:var(--text-muted)">Scroll &amp; tap any week &#8594;</div>';
+          '<span style="display:flex;align-items:center;gap:3px"><span style="display:inline-block;width:16px;height:8px;border-radius:4px;border:1.5px solid #93c5fd;background:rgba(37,99,235,0.06)"></span> CGM block</span>' +
+          '<span style="display:flex;align-items:center;gap:3px"><span style="display:inline-block;width:16px;height:8px;border-radius:4px;border:1.5px solid #e2e8f0;background:rgba(0,0,0,0.02)"></span> Habit block</span></div>';
+        if (clickable) html += '<div style="text-align:center;padding:2px 0 8px;font-size:0.6875rem;color:var(--text-muted)">Scroll &amp; tap any week to see goals &amp; education &#8594;</div>';
         html += '<div style="padding:0 16px 14px"><div style="font-size:0.8125rem;font-weight:600;color:var(--text);margin-bottom:6px">Graduation Criteria (' + metCount + '/' + gradCheck.criteria.length + ')</div>';
         gradCheck.criteria.forEach(function(c) {
           html += '<div style="display:flex;align-items:center;gap:6px;margin-bottom:3px;font-size:0.75rem;color:' + (c.met ? '#16a34a' : 'var(--text-muted)') + '"><span>' + (c.met ? '&#10003;' : '&#9711;') + '</span> ' + c.label + '</div>';
@@ -2406,7 +2382,7 @@
         state.readinessScore = readiness;
         var currentWeek = getGraduationWeek(state);
         var currentBlock = weekToBlock(currentWeek);
-        var weeklyGoal = getWeeklyFocus(currentWeek);
+        var weeklyGoal = pBlockGoal(currentBlock);
         return { metrics: metrics, readiness: readiness, currentWeek: currentWeek, currentBlock: currentBlock, weeklyGoal: weeklyGoal, dismissedBanners: state.dismissedBanners || {} };
       }
 
@@ -2519,7 +2495,7 @@
       var onboardStep = 0;
       var onboardAnswers = {};
       var onboardProfile = {};
-      var OB_TOTAL_STEPS = 6;
+      var OB_TOTAL_STEPS = 18;
 
       function obProgressBar(step) {
         var pct = Math.round((step / (OB_TOTAL_STEPS - 1)) * 100);
@@ -2529,7 +2505,10 @@
       function obMultiSelect(items, selectedArr, dataAttr, cssClass) {
         return items.map(function(item) {
           var sel = selectedArr.indexOf(item.id) >= 0;
-          return '<button type="button" class="' + cssClass + '" data-' + dataAttr + '="' + item.id + '" style="display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:12px;border:2px solid ' + (sel ? 'var(--phase-accent)' : '#e2e8f0') + ';background:' + (sel ? 'var(--phase-accent-light)' : '#fff') + ';text-align:left;cursor:pointer;transition:all 0.15s;width:100%"><span style="font-size:1.25rem;flex-shrink:0">' + item.icon + '</span><div style="flex:1"><div style="font-size:0.8125rem;font-weight:' + (sel ? '700' : '600') + ';color:' + (sel ? 'var(--phase-accent)' : 'var(--text)') + '">' + item.label + '</div>' + (item.desc ? '<div style="font-size:0.6875rem;color:var(--text-muted);margin-top:2px">' + item.desc + '</div>' : '') + '</div><div style="width:22px;height:22px;border-radius:50%;border:2px solid ' + (sel ? 'var(--phase-accent)' : '#cbd5e1') + ';display:flex;align-items:center;justify-content:center;flex-shrink:0;background:' + (sel ? 'var(--phase-accent)' : '#fff') + ';color:#fff;font-size:0.6875rem">' + (sel ? '&#10003;' : '') + '</div></button>';
+          return '<button type="button" class="' + cssClass + '" data-' + dataAttr + '="' + item.id + '" style="display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:12px;border:2px solid ' + (sel ? 'var(--phase-accent)' : '#e2e8f0') + ';background:' + (sel ? 'var(--phase-accent-light)' : '#fff') + ';text-align:left;cursor:pointer;transition:all 0.15s;width:100%">' +
+            '<span style="font-size:1.25rem;flex-shrink:0">' + item.icon + '</span>' +
+            '<div style="flex:1"><div style="font-size:0.8125rem;font-weight:' + (sel ? '700' : '600') + ';color:' + (sel ? 'var(--phase-accent)' : 'var(--text)') + '">' + item.label + '</div>' + (item.desc ? '<div style="font-size:0.6875rem;color:var(--text-muted);margin-top:2px">' + item.desc + '</div>' : '') + '</div>' +
+            '<div style="width:22px;height:22px;border-radius:50%;border:2px solid ' + (sel ? 'var(--phase-accent)' : '#cbd5e1') + ';display:flex;align-items:center;justify-content:center;flex-shrink:0;background:' + (sel ? 'var(--phase-accent)' : '#fff') + ';color:#fff;font-size:0.6875rem">' + (sel ? '&#10003;' : '') + '</div></button>';
         }).join('');
       }
       function obBindMultiSelect(div, cssClass, dataAttr, profileKey) {
@@ -2552,168 +2531,267 @@
 
         if (onboardStep === 0) {
           div.innerHTML = '<div style="padding:28px 20px;text-align:center">' +
-            '<div style="font-size:3rem;margin-bottom:16px">🎓</div>' +
+            '<div style="font-size:3rem;margin-bottom:16px">\ud83c\udf93</div>' +
             '<h1 style="font-size:1.5rem;margin:0 0 8px">GLP-1 Graduation</h1>' +
             '<p style="font-size:0.9375rem;color:var(--text-muted);margin:0 0 24px;line-height:1.5">A 16-week program to build the habits and confidence you need to thrive after GLP-1.</p>' +
             '<div style="text-align:left;background:var(--phase-accent-light);border-radius:14px;padding:16px;margin:0 0 24px">' +
-            '<p style="margin:0 0 8px;font-size:0.875rem;font-weight:700;color:var(--phase-accent)">One goal per week</p>' +
+            '<p style="margin:0 0 8px;font-size:0.875rem;font-weight:700;color:var(--phase-accent)">What to expect</p>' +
             '<ul style="margin:0;padding:0 0 0 18px;font-size:0.8125rem;color:var(--text);line-height:1.6">' +
-            '<li>Weeks 1–4: Build your satiety foundation</li>' +
-            '<li>Weeks 5–8: Structure & habits</li>' +
-            '<li>Weeks 9–12: Deepen your skills</li>' +
-            '<li>Weeks 13–16: Personalized to YOU</li></ul></div>' +
-            '<button type="button" class="btn btn-primary" id="onboard-next" style="font-size:1.0625rem;padding:14px 20px;width:100%">Get started →</button>' +
-            '<p style="font-size:0.75rem;color:var(--text-muted);margin:16px 0 0">We do not provide medication advice. Work with your clinician for dosing decisions.</p></div>';
+            '<li>Weeks 1\u20134: Build your foundation</li>' +
+            '<li>Weeks 5\u20138: Develop skills</li>' +
+            '<li>Weeks 9\u201316: Personalized to what works best for YOU</li>' +
+            '</ul></div>' +
+            '<button type="button" class="btn btn-primary" id="onboard-next" style="font-size:1.0625rem;padding:14px 20px;width:100%">Get started \u2192</button>' +
+            '<p style="font-size:0.75rem;color:var(--text-muted);margin:16px 0 0">We do not provide medication advice. Work with your clinician for dosing decisions.</p>' +
+            '</div>';
           div.querySelector('#onboard-next').onclick = function() { onboardStep = 1; render(); };
 
         } else if (onboardStep === 1) {
-          var meds = ['Semaglutide (Ozempic/Wegovy)', 'Tirzepatide (Mounjaro/Zepbound)', 'Liraglutide (Saxenda)', 'Other GLP-1'];
-          var statuses = ['Currently tapering', 'Planning to taper soon', 'Recently stopped (< 1 month)', 'Stopped 1–3 months ago', 'Stopped 3+ months ago'];
           div.innerHTML = obProgressBar(1) +
-            '<div style="padding:0 20px"><h2 style="margin:0 0 6px;font-size:1.25rem">About you</h2>' +
-            '<p style="font-size:0.8125rem;color:var(--text-muted);margin:0 0 16px;line-height:1.5">This helps us tailor your experience.</p>' +
+            '<div style="padding:0 20px">' +
+            '<h2 style="margin:0 0 6px;font-size:1.25rem">Let\u2019s get to know you</h2>' +
+            '<p style="font-size:0.8125rem;color:var(--text-muted);margin:0 0 20px;line-height:1.5">This helps us personalize your experience.</p>' +
             '<div class="card" style="padding:16px">' +
             '<label style="display:block;margin-bottom:14px"><span style="font-size:0.8125rem;font-weight:600;color:var(--text);display:block;margin-bottom:4px">First name</span><input type="text" id="ob-name" value="' + (p.name || '') + '" placeholder="Your first name" style="width:100%;padding:10px 12px;border:2px solid #e2e8f0;border-radius:10px;font-size:0.9375rem;box-sizing:border-box" /></label>' +
-            '<span style="font-size:0.8125rem;font-weight:600;color:var(--text);display:block;margin-bottom:8px">Which GLP-1?</span><div style="display:flex;flex-direction:column;gap:6px;margin-bottom:14px">' +
-            meds.map(function(m) { var sel = p.medication === m; return '<button type="button" class="ob-med-btn" data-med="' + m + '" style="padding:10px 12px;border-radius:10px;border:2px solid ' + (sel ? 'var(--phase-accent)' : '#e2e8f0') + ';background:' + (sel ? 'var(--phase-accent-light)' : '#fff') + ';text-align:left;font-size:0.8125rem;color:' + (sel ? 'var(--phase-accent)' : 'var(--text)') + ';font-weight:' + (sel ? '700' : '400') + ';cursor:pointer">' + m + '</button>'; }).join('') +
-            '</div><span style="font-size:0.8125rem;font-weight:600;color:var(--text);display:block;margin-bottom:8px">Where are you now?</span><div style="display:flex;flex-direction:column;gap:6px">' +
-            statuses.map(function(s) { var sel = p.medStatus === s; return '<button type="button" class="ob-stat-btn" data-stat="' + s + '" style="padding:10px 12px;border-radius:10px;border:2px solid ' + (sel ? 'var(--phase-accent)' : '#e2e8f0') + ';background:' + (sel ? 'var(--phase-accent-light)' : '#fff') + ';text-align:left;font-size:0.8125rem;color:' + (sel ? 'var(--phase-accent)' : 'var(--text)') + ';font-weight:' + (sel ? '700' : '400') + ';cursor:pointer">' + s + '</button>'; }).join('') +
-            '</div></div>' +
-            '<button type="button" class="btn btn-primary" id="ob-next1" style="width:100%;margin-top:16px;' + (p.name && p.medication && p.medStatus ? '' : 'opacity:0.5') + '">Continue →</button></div>';
-          div.querySelector('#ob-name').oninput = function() { onboardProfile.name = this.value.trim(); div.querySelector('#ob-next1').style.opacity = this.value.trim() && p.medication && p.medStatus ? '1' : '0.5'; };
-          div.querySelectorAll('.ob-med-btn').forEach(function(b) { b.onclick = function() { onboardProfile.medication = b.getAttribute('data-med'); render(); }; });
-          div.querySelectorAll('.ob-stat-btn').forEach(function(b) { b.onclick = function() { onboardProfile.medStatus = b.getAttribute('data-stat'); render(); }; });
-          div.querySelector('#ob-next1').onclick = function() { if (!p.name || !p.medication || !p.medStatus) return; onboardStep = 2; render(); };
+            '<label style="display:block;margin-bottom:14px"><span style="font-size:0.8125rem;font-weight:600;color:var(--text);display:block;margin-bottom:4px">Age</span><input type="number" id="ob-age" value="' + (p.age || '') + '" placeholder="e.g. 34" min="18" max="100" style="width:100%;padding:10px 12px;border:2px solid #e2e8f0;border-radius:10px;font-size:0.9375rem;box-sizing:border-box" /></label>' +
+            '<div><span style="font-size:0.8125rem;font-weight:600;color:var(--text);display:block;margin-bottom:6px">Sex</span><div style="display:flex;gap:8px">' +
+            ['Female', 'Male', 'Other'].map(function(s) {
+              var sel = p.sex === s;
+              return '<button type="button" class="ob-sex-btn" data-sex="' + s + '" style="flex:1;padding:10px 4px;border-radius:10px;border:2px solid ' + (sel ? 'var(--phase-accent)' : '#e2e8f0') + ';background:' + (sel ? 'var(--phase-accent-light)' : '#fff') + ';font-size:0.8125rem;font-weight:' + (sel ? '700' : '400') + ';color:' + (sel ? 'var(--phase-accent)' : 'var(--text-muted)') + ';cursor:pointer">' + s + '</button>';
+            }).join('') +
+            '</div></div></div>' +
+            '<button type="button" class="btn btn-primary" id="ob-next1" style="width:100%;margin-top:16px;' + (p.name ? '' : 'opacity:0.5') + '">Continue \u2192</button></div>';
+          div.querySelectorAll('.ob-sex-btn').forEach(function(btn) { btn.onclick = function() { onboardProfile.sex = btn.getAttribute('data-sex'); render(); }; });
+          div.querySelector('#ob-name').oninput = function() { onboardProfile.name = this.value.trim(); div.querySelector('#ob-next1').style.opacity = this.value.trim() ? '1' : '0.5'; };
+          div.querySelector('#ob-age').oninput = function() { onboardProfile.age = parseInt(this.value) || ''; };
+          div.querySelector('#ob-next1').onclick = function() { if (!onboardProfile.name) return; onboardStep = 2; render(); };
 
         } else if (onboardStep === 2) {
-          var concerns = [
-            { id: 'weight_regain', icon: '&#9878;', label: 'Weight regain', desc: 'I’m worried I’ll gain the weight back' },
-            { id: 'appetite_return', icon: '&#129368;', label: 'Appetite coming back', desc: 'I’m scared of feeling hungry again' },
-            { id: 'no_habits', icon: '&#127793;', label: 'No lasting habits', desc: 'I don’t have habits to replace the medication' },
-            { id: 'glucose', icon: '&#128200;', label: 'Glucose instability', desc: 'My blood sugar might go haywire' },
-            { id: 'emotional_eating', icon: '&#128546;', label: 'Emotional eating', desc: 'I eat when stressed, bored, or upset' },
-            { id: 'dont_know', icon: '&#10067;', label: 'Don’t know where to start', desc: 'I feel overwhelmed by the whole process' }
-          ];
-          var selected = p.concerns || [];
+          var meds = ['Semaglutide (Ozempic/Wegovy)', 'Tirzepatide (Mounjaro/Zepbound)', 'Liraglutide (Saxenda)', 'Other GLP-1'];
+          var durations = ['Less than 3 months', '3\u20136 months', '6\u201312 months', '1\u20132 years', '2+ years'];
+          var statuses = ['Currently tapering', 'Planning to taper soon', 'Recently stopped (< 1 month)', 'Stopped 1\u20133 months ago', 'Stopped 3+ months ago'];
           div.innerHTML = obProgressBar(2) +
-            '<div style="padding:0 20px"><h2 style="margin:0 0 6px;font-size:1.25rem">What worries you most?</h2>' +
-            '<p style="font-size:0.8125rem;color:var(--text-muted);margin:0 0 16px;line-height:1.5">Select all that apply. This helps your Hunger Coach.</p>' +
-            '<div style="display:flex;flex-direction:column;gap:8px">' + obMultiSelect(concerns, selected, 'concern', 'ob-concern-btn') + '</div>' +
-            '<button type="button" class="btn btn-primary" id="ob-next2" style="width:100%;margin-top:16px;' + (selected.length > 0 ? '' : 'opacity:0.5') + '">Continue →</button></div>';
-          obBindMultiSelect(div, 'ob-concern-btn', 'concern', 'concerns');
-          div.querySelector('#ob-next2').onclick = function() { if (!(p.concerns && p.concerns.length > 0)) return; onboardStep = 3; render(); };
+            '<div style="padding:0 20px">' +
+            '<h2 style="margin:0 0 6px;font-size:1.25rem">Your medication</h2>' +
+            '<p style="font-size:0.8125rem;color:var(--text-muted);margin:0 0 16px;line-height:1.5">This helps us tailor content to your medication journey.</p>' +
+            '<div class="card" style="padding:16px"><span style="font-size:0.8125rem;font-weight:600;color:var(--text);display:block;margin-bottom:8px">Current or most recent GLP-1 medication</span><div style="display:flex;flex-direction:column;gap:6px">' +
+            meds.map(function(m) { var sel = p.medication === m; return '<button type="button" class="ob-med-btn" data-med="' + m + '" style="padding:10px 12px;border-radius:10px;border:2px solid ' + (sel ? 'var(--phase-accent)' : '#e2e8f0') + ';background:' + (sel ? 'var(--phase-accent-light)' : '#fff') + ';text-align:left;font-size:0.8125rem;color:' + (sel ? 'var(--phase-accent)' : 'var(--text)') + ';font-weight:' + (sel ? '700' : '400') + ';cursor:pointer">' + m + '</button>'; }).join('') +
+            '</div></div>' +
+            '<div class="card" style="padding:16px"><span style="font-size:0.8125rem;font-weight:600;color:var(--text);display:block;margin-bottom:8px">How long were you on GLP-1 medication?</span><div style="display:flex;flex-direction:column;gap:6px">' +
+            durations.map(function(d) { var sel = p.duration === d; return '<button type="button" class="ob-dur-btn" data-dur="' + d + '" style="padding:10px 12px;border-radius:10px;border:2px solid ' + (sel ? 'var(--phase-accent)' : '#e2e8f0') + ';background:' + (sel ? 'var(--phase-accent-light)' : '#fff') + ';text-align:left;font-size:0.8125rem;color:' + (sel ? 'var(--phase-accent)' : 'var(--text)') + ';font-weight:' + (sel ? '700' : '400') + ';cursor:pointer">' + d + '</button>'; }).join('') +
+            '</div></div>' +
+            '<div class="card" style="padding:16px"><span style="font-size:0.8125rem;font-weight:600;color:var(--text);display:block;margin-bottom:8px">Medication status</span><div style="display:flex;flex-direction:column;gap:6px">' +
+            statuses.map(function(s) { var sel = p.medStatus === s; return '<button type="button" class="ob-stat-btn" data-stat="' + s + '" style="padding:10px 12px;border-radius:10px;border:2px solid ' + (sel ? 'var(--phase-accent)' : '#e2e8f0') + ';background:' + (sel ? 'var(--phase-accent-light)' : '#fff') + ';text-align:left;font-size:0.8125rem;color:' + (sel ? 'var(--phase-accent)' : 'var(--text)') + ';font-weight:' + (sel ? '700' : '400') + ';cursor:pointer">' + s + '</button>'; }).join('') +
+            '</div></div>' +
+            '<button type="button" class="btn btn-primary" id="ob-next2" style="width:100%;margin-top:12px;' + (p.medication && p.duration && p.medStatus ? '' : 'opacity:0.5') + '">Continue \u2192</button></div>';
+          div.querySelectorAll('.ob-med-btn').forEach(function(btn) { btn.onclick = function() { onboardProfile.medication = btn.getAttribute('data-med'); render(); }; });
+          div.querySelectorAll('.ob-dur-btn').forEach(function(btn) { btn.onclick = function() { onboardProfile.duration = btn.getAttribute('data-dur'); render(); }; });
+          div.querySelectorAll('.ob-stat-btn').forEach(function(btn) { btn.onclick = function() { onboardProfile.medStatus = btn.getAttribute('data-stat'); render(); }; });
+          div.querySelector('#ob-next2').onclick = function() { if (!p.medication || !p.duration || !p.medStatus) return; onboardStep = 3; render(); };
 
         } else if (onboardStep === 3) {
+          var selected = p.reasonOffGlp1 || [];
           div.innerHTML = obProgressBar(3) +
-            '<div style="padding:0 20px"><h2 style="margin:0 0 6px;font-size:1.25rem">Your weight</h2>' +
-            '<p style="font-size:0.8125rem;color:var(--text-muted);margin:0 0 16px;line-height:1.5">This helps us set the right targets for you.</p>' +
-            '<div class="card" style="padding:16px">' +
-            '<label style="display:block;margin-bottom:14px"><span style="font-size:0.8125rem;font-weight:600;color:var(--text);display:block;margin-bottom:4px">Current weight (lbs)</span><input type="number" id="ob-wt" value="' + (p.weight || '') + '" placeholder="e.g. 185" min="80" max="500" style="width:100%;padding:10px 12px;border:2px solid #e2e8f0;border-radius:10px;font-size:0.9375rem;box-sizing:border-box" /></label>' +
-            '<label style="display:block;margin-bottom:14px"><span style="font-size:0.8125rem;font-weight:600;color:var(--text);display:block;margin-bottom:4px">Goal weight (lbs)</span><input type="number" id="ob-gw" value="' + (p.goalWeight || '') + '" placeholder="e.g. 165" min="80" max="500" style="width:100%;padding:10px 12px;border:2px solid #e2e8f0;border-radius:10px;font-size:0.9375rem;box-sizing:border-box" /></label>' +
-            '<div style="font-size:0.8125rem;font-weight:600;color:var(--text);display:block;margin-bottom:8px">Weight goal</div>' +
-            '<div style="display:flex;flex-direction:column;gap:6px">' +
-            [{ id: 'lose', label: 'Still losing — I haven’t hit my goal weight yet' }, { id: 'maintain', label: 'Maintaining — I’m at or near my goal' }].map(function(o) {
-              var sel = p.weightMode === o.id;
-              return '<button type="button" class="ob-wm-btn" data-wm="' + o.id + '" style="padding:10px 12px;border-radius:10px;border:2px solid ' + (sel ? 'var(--phase-accent)' : '#e2e8f0') + ';background:' + (sel ? 'var(--phase-accent-light)' : '#fff') + ';text-align:left;font-size:0.8125rem;color:' + (sel ? 'var(--phase-accent)' : 'var(--text)') + ';font-weight:' + (sel ? '700' : '400') + ';cursor:pointer">' + o.label + '</button>';
-            }).join('') +
-            '</div></div>' +
-            '<button type="button" class="btn btn-primary" id="ob-next3" style="width:100%;margin-top:16px;' + (p.weight && p.weightMode ? '' : 'opacity:0.5') + '">Continue to baseline assessment →</button></div>';
-          div.querySelector('#ob-wt').oninput = function() { onboardProfile.weight = parseInt(this.value) || ''; };
-          div.querySelector('#ob-gw').oninput = function() { onboardProfile.goalWeight = parseInt(this.value) || ''; };
-          div.querySelectorAll('.ob-wm-btn').forEach(function(b) { b.onclick = function() { onboardProfile.weightMode = b.getAttribute('data-wm'); render(); }; });
-          div.querySelector('#ob-next3').onclick = function() { if (!p.weight || !p.weightMode) return; onboardStep = 4; render(); };
+            '<div style="padding:0 20px">' +
+            '<h2 style="margin:0 0 6px;font-size:1.25rem">Why did you stop or start tapering GLP-1?</h2>' +
+            '<p style="font-size:0.8125rem;color:var(--text-muted);margin:0 0 16px;line-height:1.5">Select all that apply. No judgment \u2014 this helps us understand your situation.</p>' +
+            '<div style="display:flex;flex-direction:column;gap:8px">' +
+            obMultiSelect(REASON_OFF_GLP1, selected, 'reason', 'ob-reason-btn') +
+            '</div>' +
+            '<button type="button" class="btn btn-primary" id="ob-next3" style="width:100%;margin-top:16px;' + (selected.length > 0 ? '' : 'opacity:0.5') + '">Continue \u2192</button></div>';
+          obBindMultiSelect(div, 'ob-reason-btn', 'reason', 'reasonOffGlp1');
+          div.querySelector('#ob-next3').onclick = function() { if (!(p.reasonOffGlp1 && p.reasonOffGlp1.length > 0)) return; onboardStep = 4; render(); };
 
         } else if (onboardStep === 4) {
-          var labels = ['Not at all', 'A little', 'Sometimes', 'Usually', 'Always'];
-          var allAnswered = POST8_QUESTIONS.every(function(q) { return onboardAnswers[q.id] > 0; });
-          var html = obProgressBar(4) +
+          div.innerHTML = obProgressBar(4) +
             '<div style="padding:0 20px">' +
-            '<div style="background:var(--phase-accent-light);border-radius:10px;padding:10px 12px;margin-bottom:16px"><p style="margin:0;font-size:0.8125rem;font-weight:600;color:var(--phase-accent)">Baseline Assessment</p><p style="margin:4px 0 0;font-size:0.75rem;color:var(--text-muted);line-height:1.4">These 8 questions establish your starting point. You’ll answer them again at Weeks 4, 8, 12, and 16 to see your progress.</p></div>';
-          POST8_QUESTIONS.forEach(function(q, qIdx) {
-            var val = onboardAnswers[q.id] || 0;
-            html += '<div class="card" style="padding:14px 16px;margin-bottom:10px"><div style="display:flex;align-items:center;gap:8px;margin-bottom:10px"><span style="font-size:1.25rem">' + q.icon + '</span><h3 style="margin:0;font-size:0.875rem;line-height:1.4;flex:1">' + q.text + '</h3></div>' +
-              '<div style="display:flex;gap:6px;flex-wrap:wrap">';
-            for (var r = 1; r <= 5; r++) {
-              var sel = val === r;
-              html += '<button type="button" class="ob-q-rating" data-qid="' + q.id + '" data-val="' + r + '" style="flex:1;min-width:55px;padding:8px 4px;border-radius:8px;border:2px solid ' + (sel ? 'var(--phase-accent)' : '#e2e8f0') + ';background:' + (sel ? 'var(--phase-accent-light)' : '#fff') + ';text-align:center;cursor:pointer;transition:all 0.15s"><div style="font-size:0.875rem;font-weight:700;color:' + (sel ? 'var(--phase-accent)' : 'var(--text)') + '">' + r + '</div><div style="font-size:0.5625rem;color:' + (sel ? 'var(--phase-accent)' : 'var(--text-muted)') + '">' + labels[r - 1] + '</div></button>';
-            }
-            html += '</div></div>';
-          });
-          html += '<button type="button" class="btn btn-primary" id="ob-q-next" style="width:100%;margin:8px 0 24px;' + (allAnswered ? '' : 'opacity:0.5') + '">See your plan →</button></div>';
+            '<h2 style="margin:0 0 6px;font-size:1.25rem">About your body</h2>' +
+            '<p style="font-size:0.8125rem;color:var(--text-muted);margin:0 0 16px;line-height:1.5">We use this to set your maintenance weight and personalize targets.</p>' +
+            '<div class="card" style="padding:16px">' +
+            '<div style="display:flex;gap:12px;margin-bottom:14px">' +
+            '<label style="flex:1"><span style="font-size:0.8125rem;font-weight:600;color:var(--text);display:block;margin-bottom:4px">Current weight (lbs)</span><input type="number" id="ob-weight" value="' + (p.weight || '') + '" placeholder="e.g. 185" min="80" max="500" style="width:100%;padding:10px 12px;border:2px solid #e2e8f0;border-radius:10px;font-size:0.9375rem;box-sizing:border-box" /></label>' +
+            '<label style="flex:1"><span style="font-size:0.8125rem;font-weight:600;color:var(--text);display:block;margin-bottom:4px">Goal weight (lbs)</span><input type="number" id="ob-goal-wt" value="' + (p.goalWeight || '') + '" placeholder="e.g. 165" min="80" max="500" style="width:100%;padding:10px 12px;border:2px solid #e2e8f0;border-radius:10px;font-size:0.9375rem;box-sizing:border-box" /></label>' +
+            '</div>' +
+            '<div style="display:flex;gap:12px;margin-bottom:14px">' +
+            '<label style="flex:1"><span style="font-size:0.8125rem;font-weight:600;color:var(--text);display:block;margin-bottom:4px">Height (ft)</span><input type="number" id="ob-ht-ft" value="' + (p.heightFt || '') + '" placeholder="5" min="3" max="8" style="width:100%;padding:10px 12px;border:2px solid #e2e8f0;border-radius:10px;font-size:0.9375rem;box-sizing:border-box" /></label>' +
+            '<label style="flex:1"><span style="font-size:0.8125rem;font-weight:600;color:var(--text);display:block;margin-bottom:4px">Height (in)</span><input type="number" id="ob-ht-in" value="' + (p.heightIn || '') + '" placeholder="7" min="0" max="11" style="width:100%;padding:10px 12px;border:2px solid #e2e8f0;border-radius:10px;font-size:0.9375rem;box-sizing:border-box" /></label>' +
+            '</div>' +
+            '<span style="font-size:0.8125rem;font-weight:600;color:var(--text);display:block;margin-bottom:8px">Activity level</span>' +
+            '<div style="display:flex;flex-direction:column;gap:6px">' +
+            [{ id: 'sedentary', label: 'Sedentary', desc: 'Little to no exercise' }, { id: 'light', label: 'Lightly active', desc: '1\u20132 days/week' }, { id: 'moderate', label: 'Moderately active', desc: '3\u20134 days/week' }, { id: 'very', label: 'Very active', desc: '5+ days/week' }].map(function(a) {
+              var sel = p.activityLevel === a.id;
+              return '<button type="button" class="ob-act-btn" data-act="' + a.id + '" style="padding:10px 12px;border-radius:10px;border:2px solid ' + (sel ? 'var(--phase-accent)' : '#e2e8f0') + ';background:' + (sel ? 'var(--phase-accent-light)' : '#fff') + ';text-align:left;font-size:0.8125rem;color:' + (sel ? 'var(--phase-accent)' : 'var(--text)') + ';font-weight:' + (sel ? '700' : '400') + ';cursor:pointer"><strong>' + a.label + '</strong> <span style="color:var(--text-muted);font-weight:400">\u2014 ' + a.desc + '</span></button>';
+            }).join('') +
+            '</div></div>' +
+            '<button type="button" class="btn btn-primary" id="ob-next4" style="width:100%;margin-top:12px;' + (p.weight && p.activityLevel ? '' : 'opacity:0.5') + '">Continue \u2192</button></div>';
+          div.querySelector('#ob-weight').oninput = function() { onboardProfile.weight = parseInt(this.value) || ''; };
+          div.querySelector('#ob-goal-wt').oninput = function() { onboardProfile.goalWeight = parseInt(this.value) || ''; };
+          div.querySelector('#ob-ht-ft').oninput = function() { onboardProfile.heightFt = parseInt(this.value) || ''; };
+          div.querySelector('#ob-ht-in').oninput = function() { onboardProfile.heightIn = parseInt(this.value) || ''; };
+          div.querySelectorAll('.ob-act-btn').forEach(function(btn) { btn.onclick = function() { onboardProfile.activityLevel = btn.getAttribute('data-act'); render(); }; });
+          div.querySelector('#ob-next4').onclick = function() { if (!p.weight || !p.activityLevel) return; onboardStep = 5; render(); };
+
+        } else if (onboardStep === 5) {
+          var goals = [
+            { id: 'maintain', icon: '&#9878;', label: 'Maintain my weight loss', desc: 'Keep the progress I\u2019ve made on medication' },
+            { id: 'habits', icon: '&#127793;', label: 'Build lasting habits', desc: 'Develop routines that stick without medication' },
+            { id: 'glucose', icon: '&#128200;', label: 'Stabilize my glucose', desc: 'Reduce spikes and improve metabolic health' },
+            { id: 'taper', icon: '&#128137;', label: 'Successfully taper off', desc: 'Reduce or stop medication confidently' },
+            { id: 'fitness', icon: '&#128170;', label: 'Improve fitness & strength', desc: 'Build muscle and increase daily movement' },
+            { id: 'hunger', icon: '&#129368;', label: 'Manage hunger naturally', desc: 'Learn to eat well without medication-suppressed appetite' }
+          ];
+          var selected = p.goals || [];
+          div.innerHTML = obProgressBar(5) +
+            '<div style="padding:0 20px">' +
+            '<h2 style="margin:0 0 6px;font-size:1.25rem">What are your goals?</h2>' +
+            '<p style="font-size:0.8125rem;color:var(--text-muted);margin:0 0 16px;line-height:1.5">Select all that apply. This helps us prioritize your education and weekly focus.</p>' +
+            '<div style="display:flex;flex-direction:column;gap:8px">' + obMultiSelect(goals, selected, 'goal', 'ob-goal-btn') + '</div>' +
+            '<button type="button" class="btn btn-primary" id="ob-next5" style="width:100%;margin-top:16px;' + (selected.length > 0 ? '' : 'opacity:0.5') + '">Continue \u2192</button></div>';
+          obBindMultiSelect(div, 'ob-goal-btn', 'goal', 'goals');
+          div.querySelector('#ob-next5').onclick = function() { if (!(p.goals && p.goals.length > 0)) return; onboardStep = 6; render(); };
+
+        } else if (onboardStep === 6) {
+          var selected = p.preGlp1Struggles || [];
+          div.innerHTML = obProgressBar(6) +
+            '<div style="padding:0 20px">' +
+            '<h2 style="margin:0 0 6px;font-size:1.25rem">Before GLP-1</h2>' +
+            '<p style="font-size:0.8125rem;color:var(--text-muted);margin:0 0 16px;line-height:1.5">What did you struggle with <strong>before</strong> starting GLP-1 medication? Select all that apply.</p>' +
+            '<div style="display:flex;flex-direction:column;gap:8px">' + obMultiSelect(STRUGGLE_OPTIONS, selected, 'str', 'ob-prestr-btn') + '</div>' +
+            '<button type="button" class="btn btn-primary" id="ob-next6" style="width:100%;margin-top:16px;' + (selected.length > 0 ? '' : 'opacity:0.5') + '">Continue \u2192</button></div>';
+          obBindMultiSelect(div, 'ob-prestr-btn', 'str', 'preGlp1Struggles');
+          div.querySelector('#ob-next6').onclick = function() { if (!(p.preGlp1Struggles && p.preGlp1Struggles.length > 0)) return; onboardStep = 7; render(); };
+
+        } else if (onboardStep === 7) {
+          var selected = p.currentStruggles || [];
+          div.innerHTML = obProgressBar(7) +
+            '<div style="padding:0 20px">' +
+            '<h2 style="margin:0 0 6px;font-size:1.25rem">Right now</h2>' +
+            '<p style="font-size:0.8125rem;color:var(--text-muted);margin:0 0 6px;line-height:1.5">What do you struggle with <strong>most right now</strong>? This directly shapes the order of your 16-week program.</p>' +
+            '<p style="font-size:0.75rem;color:var(--phase-accent);margin:0 0 16px;font-weight:600">Rank by selecting your biggest struggle first.</p>' +
+            '<div style="display:flex;flex-direction:column;gap:8px">' + obMultiSelect(STRUGGLE_OPTIONS, selected, 'str', 'ob-curstr-btn') + '</div>' +
+            '<button type="button" class="btn btn-primary" id="ob-next7" style="width:100%;margin-top:16px;' + (selected.length > 0 ? '' : 'opacity:0.5') + '">Continue \u2192</button></div>';
+          obBindMultiSelect(div, 'ob-curstr-btn', 'str', 'currentStruggles');
+          div.querySelector('#ob-next7').onclick = function() { if (!(p.currentStruggles && p.currentStruggles.length > 0)) return; onboardStep = 8; render(); };
+
+        } else if (onboardStep === 8) {
+          var stOptions = [
+            { id: 'never', icon: '&#10060;', label: 'Never tried it', desc: 'I haven\u2019t done any strength or resistance training' },
+            { id: 'tried', icon: '&#129300;', label: 'I\u2019ve tried but don\u2019t stick with it', desc: 'I\u2019ve done it before but can\u2019t stay consistent' },
+            { id: 'beginner', icon: '&#128170;', label: 'Just getting started', desc: 'I\u2019ve recently begun and I\u2019m still learning' },
+            { id: 'light', icon: '&#127947;', label: '1\u20132 times per week', desc: 'I train occasionally but want to do more' },
+            { id: 'regular', icon: '&#127941;', label: '3+ times per week', desc: 'I train regularly and feel comfortable with it' },
+            { id: 'lost', icon: '&#128694;', label: 'I don\u2019t know where to start', desc: 'Interested but overwhelmed by the options' }
+          ];
+          div.innerHTML = obProgressBar(8) +
+            '<div style="padding:0 20px">' +
+            '<h2 style="margin:0 0 6px;font-size:1.25rem">Strength & resistance training</h2>' +
+            '<p style="font-size:0.8125rem;color:var(--text-muted);margin:0 0 16px;line-height:1.5">Resistance training is one of the most important tools for maintaining weight loss off GLP-1. Where are you right now?</p>' +
+            '<div style="display:flex;flex-direction:column;gap:8px">' +
+            stOptions.map(function(o) {
+              var sel = p.strengthTraining === o.id;
+              return '<button type="button" class="ob-st-btn" data-st="' + o.id + '" style="padding:12px 14px;border-radius:12px;border:2px solid ' + (sel ? 'var(--phase-accent)' : '#e2e8f0') + ';background:' + (sel ? 'var(--phase-accent-light)' : '#fff') + ';text-align:left;cursor:pointer;display:flex;align-items:center;gap:10px;transition:all 0.15s">' +
+                '<span style="font-size:1.25rem;flex-shrink:0">' + o.icon + '</span>' +
+                '<div><div style="font-size:0.875rem;font-weight:' + (sel ? '700' : '600') + ';color:' + (sel ? 'var(--phase-accent)' : 'var(--text)') + '">' + o.label + '</div><div style="font-size:0.75rem;color:var(--text-muted);margin-top:2px">' + o.desc + '</div></div></button>';
+            }).join('') +
+            '</div>' +
+            '<button type="button" class="btn btn-primary" id="ob-next8" style="width:100%;margin-top:16px;' + (p.strengthTraining ? '' : 'opacity:0.5') + '">Continue to baseline assessment \u2192</button></div>';
+          div.querySelectorAll('.ob-st-btn').forEach(function(btn) { btn.onclick = function() { onboardProfile.strengthTraining = btn.getAttribute('data-st'); render(); }; });
+          div.querySelector('#ob-next8').onclick = function() { if (!p.strengthTraining) return; onboardStep = 9; render(); };
+
+        } else if (onboardStep >= 9 && onboardStep <= 16) {
+          var qIdx = onboardStep - 9;
+          var q = POST8_QUESTIONS[qIdx];
+          var val = onboardAnswers[q.id] || 0;
+          var labels = ['Not at all', 'A little', 'Sometimes', 'Usually', 'Always'];
+          var html = obProgressBar(onboardStep) +
+            '<div style="padding:0 20px">' +
+            '<p style="font-size:0.6875rem;font-weight:600;color:var(--phase-accent);text-transform:uppercase;letter-spacing:0.04em;margin:0 0 16px">Question ' + (qIdx + 1) + ' of 8</p>' +
+            '<div style="text-align:center;margin-bottom:20px"><span style="font-size:2.5rem">' + q.icon + '</span></div>' +
+            '<h2 style="margin:0 0 24px;font-size:1.125rem;text-align:center;line-height:1.4">' + q.text + '</h2>' +
+            '<div style="display:flex;flex-direction:column;gap:10px;margin-bottom:24px">';
+          for (var r = 1; r <= 5; r++) {
+            var sel = val === r;
+            html += '<button type="button" class="ob-q-rating" data-val="' + r + '" style="padding:14px 16px;border-radius:12px;border:2px solid ' + (sel ? 'var(--phase-accent)' : '#e2e8f0') + ';background:' + (sel ? 'var(--phase-accent-light)' : '#fff') + ';text-align:left;cursor:pointer;display:flex;align-items:center;gap:12px;transition:all 0.15s">' +
+              '<div style="width:36px;height:36px;border-radius:50%;background:' + (sel ? 'var(--phase-accent)' : '#f1f5f9') + ';color:' + (sel ? '#fff' : 'var(--text-muted)') + ';display:flex;align-items:center;justify-content:center;font-size:1rem;font-weight:700;flex-shrink:0">' + r + '</div>' +
+              '<span style="font-size:0.9375rem;font-weight:' + (sel ? '700' : '400') + ';color:' + (sel ? 'var(--phase-accent)' : 'var(--text)') + '">' + labels[r - 1] + '</span></button>';
+          }
+          html += '</div>';
+          if (val > 0) {
+            html += '<button type="button" class="btn btn-primary" id="ob-q-next" style="width:100%">' + (qIdx < 7 ? 'Next question \u2192' : 'See your results \u2192') + '</button>';
+          }
+          html += '</div>';
           div.innerHTML = html;
           div.querySelectorAll('.ob-q-rating').forEach(function(btn) {
             btn.onclick = function() {
-              var qid = btn.getAttribute('data-qid');
-              onboardAnswers[qid] = parseInt(btn.getAttribute('data-val'));
+              onboardAnswers[q.id] = parseInt(btn.getAttribute('data-val'));
               render();
             };
           });
           if (div.querySelector('#ob-q-next')) {
             div.querySelector('#ob-q-next').onclick = function() {
-              if (!POST8_QUESTIONS.every(function(q) { return onboardAnswers[q.id] > 0; })) return;
-              var areaScores = {};
-              POST8_QUESTIONS.forEach(function(qq) {
-                if (!areaScores[qq.area]) areaScores[qq.area] = { sum: 0, count: 0 };
-                areaScores[qq.area].sum += (onboardAnswers[qq.id] || 3);
-                areaScores[qq.area].count++;
-              });
-              var ranked = Object.keys(areaScores).map(function(k) { return { area: k, avg: areaScores[k].sum / areaScores[k].count }; });
-              ranked.sort(function(a, b) { return a.avg - b.avg; });
-              onboardAnswers._ranked = ranked;
-              onboardStep = 5;
-              render();
+              if (qIdx < 7) { onboardStep++; render(); }
+              else {
+                var areaScores = {};
+                POST8_QUESTIONS.forEach(function(qq) {
+                  if (!areaScores[qq.area]) areaScores[qq.area] = { sum: 0, count: 0 };
+                  areaScores[qq.area].sum += (onboardAnswers[qq.id] || 3);
+                  areaScores[qq.area].count++;
+                });
+                var ranked = Object.keys(areaScores).map(function(k) { return { area: k, avg: areaScores[k].sum / areaScores[k].count }; });
+                ranked.sort(function(a, b) { return a.avg - b.avg; });
+                onboardAnswers._ranked = ranked;
+                onboardStep = 17;
+                render();
+              }
             };
           }
 
-        } else if (onboardStep >= 5) {} else if (onboardStep >= 12) {
-          var html = '<div style="padding:0 20px">' +
-            '<div style="text-align:center;margin:16px 0"><div style="font-size:2rem;margin-bottom:4px">📅</div><h2 style="margin:0 0 6px;font-size:1.125rem">Your 16-Week Plan</h2><p style="font-size:0.8125rem;color:var(--text-muted);margin:0">One focused goal each week, built for GLP-1 graduation.</p></div>';
+        } else if (onboardStep === 17) {
+          var ranked = onboardAnswers._ranked || [];
+          var personalizedOrder = buildPersonalizedWeekOrder(onboardProfile.currentStruggles || []);
+          var html = obProgressBar(17) +
+            '<div style="padding:0 20px">' +
+            '<div style="text-align:center;margin-bottom:16px"><div style="font-size:2rem;margin-bottom:4px">&#128202;</div><h2 style="margin:0 0 6px;font-size:1.125rem">Your Personalized Program</h2><p style="font-size:0.8125rem;color:var(--text-muted);margin:0">Built from your struggles, goals, and baseline assessment.</p></div>';
 
-          html += '<div class="card" style="border-left:4px solid var(--phase-accent);padding:16px">';
-          var quarters = [
-            { label: 'Satiety Foundation', weeks: [1,2,3,4], color: 'var(--phase-accent)' },
-            { label: 'Structure & Habits', weeks: [5,6,7,8], color: '#2563eb' },
-            { label: 'Deepen Skills', weeks: [9,10,11,12], color: '#16a34a' },
-            { label: 'Personalized', weeks: [13,14,15,16], color: '#d97706' }
-          ];
-          quarters.forEach(function(q, qi) {
-            html += '<div style="margin-bottom:' + (qi < 3 ? '12px;padding-bottom:12px;border-bottom:1px solid #f1f5f9' : '0') + '"><div style="font-size:0.6875rem;font-weight:700;color:' + q.color + ';text-transform:uppercase;letter-spacing:0.04em;margin-bottom:6px">' + q.label + '</div>';
-            q.weeks.forEach(function(wn) {
-              var wf = WEEKLY_FOCUSES[wn];
-              var hasCgm = CGM_SCHEDULE[wn];
-              html += '<div style="display:flex;align-items:center;gap:8px;padding:4px 0"><div style="width:24px;height:24px;border-radius:50%;background:' + (hasCgm ? '#dbeafe' : '#f8fafc') + ';color:' + (hasCgm ? '#2563eb' : 'var(--text-muted)') + ';display:flex;align-items:center;justify-content:center;font-size:0.625rem;font-weight:700;flex-shrink:0">' + wn + '</div><span style="font-size:0.8125rem;color:var(--text)">' + wf.title + '</span>' + (hasCgm ? '<span style="font-size:0.5rem;background:#dbeafe;color:#2563eb;padding:1px 4px;border-radius:3px;font-weight:700">CGM</span>' : '') + '</div>';
-            });
-            html += '</div>';
-          });
-          html += '<div style="margin-top:8px;padding:6px 8px;background:#fef9c3;border-radius:6px;font-size:0.6875rem;color:#92400e;text-align:center">Check-ins at Weeks 4, 8, 12, and 16</div></div>';
-
-          var weightMode = onboardProfile.weightMode || 'maintain';
-          var wt = onboardProfile.weight || 0;
-          var gw = onboardProfile.goalWeight || wt;
-          html += '<div class="card" style="border-left:4px solid ' + (weightMode === 'lose' ? '#d97706' : '#16a34a') + ';padding:14px 16px"><h3 style="margin:0 0 6px;font-size:0.9375rem;color:' + (weightMode === 'lose' ? '#92400e' : '#16a34a') + '">' + (weightMode === 'lose' ? '— Weight Loss Mode' : '— Maintenance Mode') + '</h3>';
-          if (weightMode === 'lose') {
-            var diff = wt - gw;
-            html += '<p style="font-size:0.8125rem;color:var(--text-muted);margin:0 0 8px;line-height:1.5">You’re ' + diff + ' lbs from your goal of ' + gw + ' lbs. We’ll track your progress toward your goal weight, then switch to maintenance mode once you reach it.</p>' +
-              '<div style="height:6px;background:#e2e8f0;border-radius:3px;overflow:hidden"><div style="height:100%;width:' + Math.max(5, Math.round(((wt - diff) / wt) * 100)) + '%;background:#d97706;border-radius:3px"></div></div>' +
-              '<div style="display:flex;justify-content:space-between;font-size:0.625rem;color:var(--text-muted);margin-top:4px"><span>' + gw + ' lbs (goal)</span><span>' + wt + ' lbs (current)</span></div>';
-          } else {
-            html += '<p style="font-size:0.8125rem;color:var(--text-muted);margin:0;line-height:1.5">Your maintenance band is ' + Math.round(wt * 0.97) + '–' + Math.round(wt * 1.03) + ' lbs (±3%). Normal daily fluctuations of 2–4 lbs are expected.</p>';
+          html += '<div class="card" style="border-left:4px solid var(--phase-accent);padding:16px;margin-bottom:12px"><h3 style="margin:0 0 10px;font-size:0.9375rem;font-weight:700;color:var(--phase-accent)">Your 16-week roadmap</h3>';
+          for (var wi = 0; wi < 8; wi++) {
+            var topicId = personalizedOrder[wi];
+            var topic = WEEK_TOPICS[topicId];
+            if (!topic) continue;
+            var isHighlight = wi <= 2;
+            html += '<div style="display:flex;align-items:center;gap:10px;padding:6px 0;' + (wi < 7 ? 'border-bottom:1px solid #f1f5f9;' : '') + '">' +
+              '<div style="width:28px;height:28px;border-radius:50%;background:' + (isHighlight ? 'var(--phase-accent)' : '#f1f5f9') + ';color:' + (isHighlight ? '#fff' : 'var(--text-muted)') + ';display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:700;flex-shrink:0">' + (wi + 1) + '</div>' +
+              '<div style="flex:1"><div style="font-size:0.8125rem;font-weight:' + (isHighlight ? '700' : '400') + ';color:' + (isHighlight ? 'var(--phase-accent)' : 'var(--text)') + '">' + topic.milestone + '</div></div>' +
+              (isHighlight ? '<span style="font-size:0.5625rem;background:var(--phase-accent-light);color:var(--phase-accent);padding:2px 6px;border-radius:4px;font-weight:700">Priority</span>' : '') +
+              '</div>';
           }
+          html += '<div style="display:flex;align-items:center;gap:10px;padding:6px 0;border-top:2px dashed #e2e8f0;margin-top:4px"><div style="width:28px;height:28px;border-radius:50%;background:#f1f5f9;color:var(--text-muted);display:flex;align-items:center;justify-content:center;font-size:0.6875rem;font-weight:700;flex-shrink:0">9\u201312</div><div style="font-size:0.8125rem;color:var(--text-muted)">Personalized deep-dive (unlocked at week 9)</div></div>';
           html += '</div>';
 
-          html += '<button type="button" class="btn btn-primary" id="onboard-finish" style="width:100%;margin:16px 0 24px;font-size:1.0625rem;padding:14px 20px">Start Week 1 🎓</button></div>';
+          POST8_QUESTIONS.forEach(function(q) {
+            var val = onboardAnswers[q.id] || 3;
+            var fb = val <= 2 ? q.feedback.low : val <= 3 ? q.feedback.mid : q.feedback.high;
+            var barColor = val <= 2 ? '#ef4444' : val <= 3 ? '#eab308' : '#22c55e';
+            var ratingLabel = ['', 'Not at all', 'A little', 'Sometimes', 'Usually', 'Always'][val];
+            html += '<div class="card" style="padding:14px 16px;margin-bottom:10px">' +
+              '<div style="display:flex;align-items:center;gap:6px;margin-bottom:6px"><span style="font-size:1rem">' + q.icon + '</span><span style="font-size:0.8125rem;font-weight:700;color:var(--text)">' + q.text + '</span></div>' +
+              '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px"><div style="flex:1;height:6px;background:#e2e8f0;border-radius:3px;overflow:hidden"><div style="height:100%;width:' + (val * 20) + '%;background:' + barColor + ';border-radius:3px"></div></div><span style="font-size:0.6875rem;font-weight:600;color:' + barColor + '">' + val + '/5 \u2014 ' + ratingLabel + '</span></div>' +
+              '<p style="font-size:0.8125rem;color:var(--text);margin:0;line-height:1.55;background:#f8fafc;border-radius:8px;padding:10px 12px">' + fb + '</p></div>';
+          });
+
+          html += '<button type="button" class="btn btn-primary" id="onboard-finish" style="width:100%;margin:16px 0 24px;font-size:1.0625rem;padding:14px 20px">Start your graduation \ud83c\udf93</button></div>';
           div.innerHTML = html;
           div.querySelector('#onboard-finish').onclick = function() {
+            var personalizedOrder = buildPersonalizedWeekOrder(onboardProfile.currentStruggles || []);
             state.onboardingComplete = true;
             state.program_enrolled_at = new Date().toISOString();
             state.phaseStartAt = new Date().toISOString().slice(0, 10);
             state.profile = JSON.parse(JSON.stringify(onboardProfile));
             state.week1CheckIn = { completedAt: new Date().toISOString(), answers: JSON.parse(JSON.stringify(onboardAnswers)) };
-            state.weightMode = onboardProfile.weightMode || 'maintain';
+            state.weekOrder = personalizedOrder;
             if (onboardProfile.weight) state.weightAnchor = onboardProfile.weight;
-            if (onboardProfile.goalWeight) state.goalWeight = onboardProfile.goalWeight;
             saveState(state);
-            analytics('glp1_program_enrolled', { concerns: onboardProfile.concerns, weightMode: onboardProfile.weightMode });
+            analytics('glp1_program_enrolled', { goals: onboardProfile.goals, struggles: onboardProfile.currentStruggles, weekOrder: personalizedOrder });
             onboardStep = 0; onboardAnswers = {}; onboardProfile = {};
             currentScreen = 'home'; currentNav = 'home'; render();
           };
@@ -2765,15 +2843,16 @@
           '<div class="home-gpa-pill"><div class="home-gpa-value">' + consistency15 + '</div><div class="home-gpa-label">Consistency GPA</div></div>' +
           '</div><p class="home-gpa-strip-hint">View in Insights <span class="hint-chevron">&#8250;</span></p></div>';
         var gb = weekToBlock(gw);
-        var focus = getWeeklyFocus(gw);
+        var ms = pBlockMilestone(gb);
         var gc = checkGraduationCriteria(state); var met = gc.criteria.filter(function(c) { return c.met; }).length;
         var pct = Math.round((gw / 16) * 100);
-        var homeNextCgmWk = getNextCGMWeek(gw);
+        var homeNextCgmBlk = getNextCGMBlock(gb);
+        var homeNextCgmWk = homeNextCgmBlk ? blockToWeeks(homeNextCgmBlk)[0] : null;
         var homeNextDays = homeNextCgmWk ? Math.max(0, (homeNextCgmWk - gw) * 7) : 0;
-        var nextSensorLine = (!homeCGMActive && homeNextCgmWk) ? '<div style="font-size:0.6875rem;color:#2563eb;margin-top:4px;display:flex;align-items:center;gap:4px"><span>&#128201;</span> Next sensor in <strong>' + homeNextDays + ' days</strong> (Week ' + homeNextCgmWk + ')</div>' : '';
+        var nextSensorLine = (!homeCGMActive && homeNextCgmWk) ? '<div style="font-size:0.6875rem;color:#2563eb;margin-top:4px;display:flex;align-items:center;gap:4px"><span>&#128201;</span> Next sensor in <strong>' + homeNextDays + ' days</strong> (Block ' + homeNextCgmBlk + ')</div>' : '';
         div.innerHTML = '<header class="page-header"><span style="width:36px"></span><span class="header-title">Home</span><button type="button" class="header-btn" id="go-settings" title="Settings">&#128100;</button></header>' +
-          '<div class="phase-badge"><span class="phase-badge-dot"></span>' + PROGRAM_NAME + ' \u2014 Week ' + gw + ': ' + focus.title + '</div>' +
-          '<div class="card" id="home-grad-card" style="cursor:pointer;padding:14px 16px;border-left:4px solid var(--phase-accent)"><div style="display:flex;justify-content:space-between;align-items:center"><div><div style="font-size:0.9375rem;font-weight:700;color:var(--phase-accent)">' + focus.icon + ' ' + focus.title + '</div><div style="font-size:0.75rem;color:var(--text-muted);margin-top:2px">Week ' + gw + ' of 16</div>' + nextSensorLine + '</div><div style="text-align:right"><div style="font-size:1.25rem;font-weight:800;color:var(--phase-accent)">' + pct + '%</div><div style="font-size:0.625rem;color:var(--text-muted)">' + met + '/' + gc.criteria.length + ' criteria</div></div></div><div style="height:4px;background:#e2e8f0;border-radius:2px;margin-top:8px;overflow:hidden"><div style="height:100%;width:' + pct + '%;background:var(--phase-accent);border-radius:2px"></div></div><div style="font-size:0.6875rem;color:var(--text-muted);margin-top:6px;text-align:right">Tap to view full timeline &#8250;</div></div>' +
+          '<div class="phase-badge"><span class="phase-badge-dot"></span>' + PROGRAM_NAME + ' \u2014 Block ' + gb + ' (Wk ' + blockToWeeks(gb).join('\u2013') + ')</div>' +
+          '<div class="card" id="home-grad-card" style="cursor:pointer;padding:14px 16px;border-left:4px solid var(--phase-accent)"><div style="display:flex;justify-content:space-between;align-items:center"><div><div style="font-size:0.9375rem;font-weight:700;color:var(--phase-accent)">' + ms + '</div><div style="font-size:0.75rem;color:var(--text-muted);margin-top:2px">Block ' + gb + ' of 8 \u00b7 Weeks ' + blockToWeeks(gb).join('\u2013') + '</div>' + nextSensorLine + '</div><div style="text-align:right"><div style="font-size:1.25rem;font-weight:800;color:var(--phase-accent)">' + pct + '%</div><div style="font-size:0.625rem;color:var(--text-muted)">' + met + '/' + gc.criteria.length + ' criteria</div></div></div><div style="height:4px;background:#e2e8f0;border-radius:2px;margin-top:8px;overflow:hidden"><div style="height:100%;width:' + pct + '%;background:var(--phase-accent);border-radius:2px"></div></div><div style="font-size:0.6875rem;color:var(--text-muted);margin-top:6px;text-align:right">Tap to view full timeline &#8250;</div></div>' +
           (homeCGMActive ?
           '<div class="card" id="cgm-status-card" style="cursor:pointer;border:2px solid #2563eb;background:#fafcff"><div class="glucose-section"><p class="glucose-label">Current glucose <span style="font-size:0.6875rem;background:#2563eb;color:#fff;padding:3px 10px;border-radius:12px;margin-left:6px;vertical-align:middle;cursor:pointer">&#128994; LIVE &mdash; tap to toggle</span></p><p class="glucose-value">110<span class="glucose-unit">mg/dL</span> <span style="color:var(--text-muted);font-size:1rem">&#8594;</span></p><div class="metrics-row"><span class="metric-pill tir">TIR 85%</span><span class="metric-pill spd">SPD 5</span><span class="metric-pill lst">LST 5:30p<span class="info-dot">i</span></span></div></div></div>' +
           '<div class="card glucose-graph-card"><div class="glucose-graph-wrap">' +
@@ -2849,9 +2928,9 @@
             hungerReminderHtml) +
           homeGpaStrip +
           buildWeightBandGraph(state) +
-          (gw >= 13 && !isPhase2Unlocked(state) ?
-            '<div class="card focus-card" data-widget="weekly_goal" style="border:2px dashed #cbd5e1"><h3 style="color:#94a3b8">&#128274; Weeks 13\u201316 Locked</h3><p style="font-size:0.875rem;color:var(--text-muted);margin:0 0 8px">Complete weeks 1\u201312 and the Week 12 check-in to unlock your personalized weeks.</p><button type="button" class="btn btn-outline" style="margin-top:0" id="focus-cta">Open Toolkit</button></div>' :
-            '<div class="card focus-card" data-widget="weekly_goal"><h3>' + focus.icon + ' Week ' + gw + ': ' + focus.title + '</h3><p style="font-size:0.875rem;color:var(--text-muted);margin:0 0 8px">' + focus.desc + '</p><p style="font-size:0.8125rem;font-weight:600;color:var(--phase-accent);margin:0 0 12px">Goal: ' + focus.goal + '</p><button type="button" class="btn btn-outline" style="margin-top:0" id="focus-cta">Open Toolkit</button></div>') +
+          (gb >= 5 && !isPhase2Unlocked(state) ?
+            '<div class="card focus-card" data-widget="weekly_goal" style="border:2px dashed #cbd5e1"><h3 style="color:#94a3b8">&#128274; Blocks 5\u20138 Locked</h3><p style="font-size:0.875rem;color:var(--text-muted);margin:0 0 8px">Complete blocks 1\u20134 and the post-block-4 check-in to unlock your personalized final blocks.</p><button type="button" class="btn btn-outline" style="margin-top:0" id="focus-cta">Open Toolkit</button></div>' :
+            '<div class="card focus-card" data-widget="weekly_goal"><h3>Block ' + gb + ' Focus: ' + weeklyGoal.title + '</h3><p style="font-size:0.875rem;color:var(--text-muted);margin:0 0 8px">' + weeklyGoal.desc + '</p><p style="font-size:0.8125rem;font-weight:600;color:var(--phase-accent);margin:0 0 12px">Target: ' + weeklyGoal.metric + '</p><button type="button" class="btn btn-outline" style="margin-top:0" id="focus-cta">Open Toolkit</button></div>') +
           '<div class="card today-card"><div class="card-head"><h3>Today</h3><span class="completed">0/3 Completed</span></div><p class="focus-line">Focus on LST this week</p><p class="pinned">&#128204; PINNED</p>' +
           '<div class="habit-item"><span class="habit-icon">&#127860;</span><span class="habit-label">Log 30g of protein today</span><span class="habit-progress"><span class="fill"></span></span><span class="habit-frac">1/2</span><button type="button" class="habit-more" aria-label="More">&#8942;</button></div>' +
           '<div class="habit-item"><span class="habit-icon">&#128166;</span><span class="habit-label">Drink 8 oz of water with 2 meals</span><span class="habit-progress"><span class="fill"></span></span><span class="habit-frac">1/2</span><button type="button" class="habit-more" aria-label="More">&#8942;</button></div>' +
@@ -2865,12 +2944,6 @@
         if (div.querySelector('#home-coach-cta')) div.querySelector('#home-coach-cta').onclick = function() { resetCoachState(); navigateTo('hunger_coach'); };
         if (div.querySelector('#home-gpa-strip')) div.querySelector('#home-gpa-strip').onclick = function() { navigateTo('insights', 'insights'); };
         if (div.querySelector('#focus-cta')) div.querySelector('#focus-cta').onclick = function() { navigateTo('dailies', 'dailies'); };
-        if (div.querySelector('#switch-maintain')) div.querySelector('#switch-maintain').onclick = function() {
-          state.weightMode = 'maintain';
-          state.weightAnchor = state.goalWeight || state.weightAnchor;
-          saveState(state);
-          render();
-        };
         var cgmCard = div.querySelector('#cgm-status-card');
         if (cgmCard) cgmCard.onclick = function(e) {
           if (e.target.closest('.graph-add-btn') || e.target.closest('.graph-timeline-arrow')) return;
@@ -2888,126 +2961,94 @@
       function renderTransitionToolkit(container) {
         var gw = getGraduationWeek(state);
         var gb = weekToBlock(gw);
-        var focus = getWeeklyFocus(gw);
+        var weeklyGoal = pBlockGoal(gb);
         var readiness = computeReadiness(state);
         var readiness15 = score100To15(readiness);
         var readinessGPA = scoreToGPA(readiness);
+        var planBullets = [
+          'Keep logging workouts 3x/week \u2014 consistency beats make-up days',
+          'Complete weekly education modules \u2014 knowledge drives lasting habits',
+          'Stabilize macros day-to-day and week-to-week',
+          'Hit water goals daily for better consistency score',
+          'Use hunger check-ins to spot patterns'
+        ];
         var div = document.createElement('div');
         div.className = 'screen active';
-
         var cgmCard = '<div class="card" style="padding:12px 14px;border:1px solid #bfdbfe;background:#fafcff"><div style="display:flex;align-items:center;gap:6px;margin-bottom:8px"><span style="font-size:1rem">&#128201;</span><div style="font-size:0.875rem;font-weight:700;color:#2563eb">CGM Sensor Schedule</div></div>' +
           '<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px">' +
           CGM_PERIODS.map(function(p) {
-            var isActive = p.weeks.some(function(pw) { return pw === gw; });
-            var isDone = gw > p.weeks[p.weeks.length - 1];
+            var isActive = p.weeks.indexOf(gw) >= 0;
+            var isDone = gw > p.weeks[1];
             return '<div style="padding:8px 10px;border-radius:8px;background:' + (isActive ? '#dbeafe' : isDone ? '#f0fdf4' : '#f8fafc') + ';border:1px solid ' + (isActive ? '#2563eb' : isDone ? '#bbf7d0' : '#e2e8f0') + '">' +
-              '<div style="font-size:0.75rem;font-weight:700;color:' + (isActive ? '#2563eb' : isDone ? '#16a34a' : 'var(--text)') + '">' + p.label + (isActive ? ' \u25C0 NOW' : isDone ? ' \u2714' : '') + '</div>' +
+              '<div style="font-size:0.75rem;font-weight:700;color:' + (isActive ? '#2563eb' : isDone ? '#16a34a' : 'var(--text)') + '">Block ' + p.block + ' (Wk ' + p.weeks[0] + '\u2013' + p.weeks[1] + ')' + (isActive ? ' \u25C0 NOW' : isDone ? ' \u2714' : '') + '</div>' +
               '<div style="font-size:0.625rem;color:var(--text-muted);margin-top:2px">' + p.purpose + '</div></div>';
           }).join('') +
           '</div></div>';
-
-        var focusCard = '<div class="card" style="border-left:4px solid var(--phase-accent);padding:16px"><div style="display:flex;align-items:center;gap:10px;margin-bottom:10px"><span style="font-size:1.75rem">' + focus.icon + '</span><div><div style="font-size:0.625rem;font-weight:700;color:var(--phase-accent);text-transform:uppercase;letter-spacing:0.04em">Week ' + gw + ' Focus</div><h3 style="margin:0;font-size:1.0625rem">' + focus.title + '</h3></div></div>' +
-          '<p style="font-size:0.875rem;color:var(--text-muted);margin:0 0 10px;line-height:1.5">' + focus.desc + '</p>' +
-          '<div style="padding:10px 12px;background:var(--phase-accent-light);border-radius:10px"><div style="font-size:0.6875rem;font-weight:700;color:var(--phase-accent);text-transform:uppercase;letter-spacing:0.03em;margin-bottom:4px">This week\u2019s goal</div><div style="font-size:0.875rem;font-weight:600;color:var(--text)">' + focus.goal + '</div></div>';
-        if (focus.choicePrompt) {
-          var choice = state.weekChoices && state.weekChoices[gw];
-          focusCard += '<div style="margin-top:10px"><div style="font-size:0.8125rem;font-weight:600;color:var(--text);margin-bottom:6px">' + focus.choicePrompt + '</div><div style="display:flex;flex-direction:column;gap:6px">';
-          focus.choices.forEach(function(c) {
-            var sel = choice === c;
-            focusCard += '<button type="button" class="tk-choice-btn" data-choice="' + c + '" style="padding:10px 12px;border-radius:10px;border:2px solid ' + (sel ? 'var(--phase-accent)' : '#e2e8f0') + ';background:' + (sel ? 'var(--phase-accent-light)' : '#fff') + ';text-align:left;font-size:0.8125rem;font-weight:' + (sel ? '700' : '400') + ';color:' + (sel ? 'var(--phase-accent)' : 'var(--text)') + ';cursor:pointer">' + (sel ? '&#10003; ' : '') + c + '</button>';
-          });
-          focusCard += '</div></div>';
-        }
-        focusCard += '</div>';
-
-        var resourceCard = '';
-        var res = WEEKLY_RESOURCES[gw];
-        if (res) {
-          resourceCard = '<div class="card" style="padding:14px 16px"><h3 style="margin:0 0 10px;font-size:0.9375rem">' + res.title + '</h3>';
-          res.sections.forEach(function(sec) {
-            resourceCard += '<div style="margin-bottom:10px"><div style="font-size:0.75rem;font-weight:700;color:var(--phase-accent);text-transform:uppercase;letter-spacing:0.03em;margin-bottom:6px">' + sec.name + '</div><div style="display:flex;flex-direction:column;gap:4px">';
-            sec.items.forEach(function(item) {
-              resourceCard += '<div style="font-size:0.8125rem;color:var(--text);padding:6px 8px;background:#f8fafc;border-radius:6px;border:1px solid #f1f5f9">' + item + '</div>';
-            });
-            resourceCard += '</div></div>';
-          });
-          resourceCard += '</div>';
-        }
-
-        var weightCard = '';
-        var wm = state.weightMode || 'maintain';
-        var wt = (state.profile && state.profile.weight) || state.weightAnchor || 0;
-        var gw2 = state.goalWeight || wt;
-        if (wm === 'lose') {
-          var diff = wt - gw2;
-          weightCard = '<div class="card" style="border-left:4px solid #d97706;padding:14px 16px"><h3 style="margin:0 0 6px;font-size:0.9375rem;color:#92400e">&#9878; Weight Loss Progress</h3>' +
-            '<p style="font-size:0.8125rem;color:var(--text-muted);margin:0 0 8px">' + diff + ' lbs to goal (' + gw2 + ' lbs). Once you reach it, we\u2019ll switch to maintenance mode.</p>' +
-            '<div style="height:6px;background:#e2e8f0;border-radius:3px;overflow:hidden"><div style="height:100%;width:' + Math.max(5, Math.round(((wt - diff) / wt) * 100)) + '%;background:#d97706;border-radius:3px"></div></div>' +
-            '<div style="display:flex;justify-content:space-between;font-size:0.625rem;color:var(--text-muted);margin-top:4px"><span>' + gw2 + ' lbs</span><span>' + wt + ' lbs</span></div></div>';
-        } else {
-          var lo = Math.round(wt * 0.97);
-          var hi = Math.round(wt * 1.03);
-          weightCard = '<div class="card" style="border-left:4px solid #16a34a;padding:14px 16px"><h3 style="margin:0 0 6px;font-size:0.9375rem;color:#16a34a">&#9878; Maintenance Band</h3>' +
-            '<p style="font-size:0.8125rem;color:var(--text-muted);margin:0">' + lo + '\u2013' + hi + ' lbs (\u00b13%). Daily 2\u20134 lb swings are normal.</p></div>';
-        }
-
-        var weekCards = '<div class="card" style="padding:14px 16px"><h3 style="margin:0 0 12px;font-size:0.9375rem">All 16 Weeks</h3>';
-        var phases = [
-          { label: 'Satiety Foundation', range: [1,4], color: 'var(--phase-accent)' },
-          { label: 'Structure & Habits', range: [5,8], color: '#2563eb' },
-          { label: 'Deepen Skills', range: [9,12], color: '#16a34a' },
-          { label: 'Personalized', range: [13,16], color: '#d97706' }
-        ];
-        phases.forEach(function(ph) {
-          weekCards += '<div style="margin-bottom:12px"><div style="font-size:0.625rem;font-weight:700;color:' + ph.color + ';text-transform:uppercase;letter-spacing:0.04em;margin-bottom:6px">' + ph.label + '</div>';
-          for (var w = ph.range[0]; w <= ph.range[1]; w++) {
-            var wf = WEEKLY_FOCUSES[w];
-            var isPast = w < gw;
-            var isCurr = w === gw;
-            var isCheck = CHECK_IN_WEEKS.indexOf(w) >= 0;
-            weekCards += '<button type="button" class="tk-week-btn" data-week="' + w + '" style="display:flex;align-items:center;gap:10px;width:100%;padding:10px 12px;border-radius:10px;border:' + (isCurr ? '2px solid var(--phase-accent)' : '1px solid #f1f5f9') + ';background:' + (isCurr ? 'var(--phase-accent-light)' : isPast ? '#f8fafc' : '#fff') + ';margin-bottom:6px;cursor:pointer;text-align:left">' +
-              '<div style="width:28px;height:28px;border-radius:50%;background:' + (isPast ? '#dcfce7' : isCurr ? 'var(--phase-accent)' : '#f1f5f9') + ';color:' + (isPast ? '#16a34a' : isCurr ? '#fff' : 'var(--text-muted)') + ';display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:700;flex-shrink:0">' + (isPast ? '&#10003;' : w) + '</div>' +
-              '<div style="flex:1;min-width:0"><div style="font-size:0.8125rem;font-weight:' + (isCurr ? '700' : '500') + ';color:' + (isCurr ? 'var(--phase-accent)' : 'var(--text)') + '">' + wf.icon + ' ' + wf.title + '</div><div style="font-size:0.6875rem;color:var(--text-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + wf.goal + '</div></div>' +
-              (wf.cgm ? '<span style="font-size:0.5rem;background:#dbeafe;color:#2563eb;padding:1px 4px;border-radius:3px;font-weight:700;flex-shrink:0">CGM</span>' : '') +
-              (isCheck ? '<span style="font-size:0.5rem;background:#fef3c7;color:#92400e;padding:1px 4px;border-radius:3px;font-weight:700;flex-shrink:0">CHECK-IN</span>' : '') +
-              '</button>';
-          }
-          weekCards += '</div>';
-        });
-        weekCards += '</div>';
-
-        var readinessCard = '<div class="card" style="padding:14px 16px"><h3 style="margin:0 0 8px;font-size:0.9375rem">Graduation Readiness</h3>' +
-          '<div style="display:flex;align-items:center;gap:12px;margin:8px 0 12px"><div class="gpa-circle ' + readinessGPA.class + '" style="width:48px;height:48px;font-size:1.25rem">' + readinessGPA.letter + '</div><span style="font-size:1.0625rem;font-weight:600">' + readiness15 + ' / 5</span></div>' +
-          '<div class="consistency-row"><span>Glucose GPA</span><span>' + getGlucoseGPA(state).score15 + '</span></div>' +
-          '<div class="consistency-row"><span>Lifestyle GPA</span><span>' + getLifestyleGPA(state).score15 + '</span></div>' +
-          '<div class="consistency-row"><span>Consistency</span><span>' + score100To15(getConsistencyScore(state)) + '</span></div></div>';
-
         div.innerHTML = '<header class="page-header"><span style="width:36px"></span><span class="header-title">Toolkit</span><span style="width:36px"></span></header>' +
           buildGraduationTimeline(state, true) +
-          focusCard +
-          resourceCard +
           cgmCard +
-          weightCard +
-          weekCards +
-          readinessCard;
-
-        div.querySelectorAll('.tk-choice-btn').forEach(function(btn) {
-          btn.onclick = function() {
-            if (!state.weekChoices) state.weekChoices = {};
-            state.weekChoices[gw] = btn.getAttribute('data-choice');
-            saveState(state);
-            render();
+          '<div class="card" style="background:var(--phase-accent-light);border-left:4px solid var(--phase-accent)"><h3 style="margin:0 0 8px;font-size:0.9375rem;font-weight:700;color:var(--phase-accent)">Core Principles</h3><div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">' +
+          CORE_PRINCIPLES.map(function(p, i) { return '<div style="font-size:0.8125rem;color:var(--text);line-height:1.4;padding:6px 8px;background:rgba(255,255,255,0.7);border-radius:8px"><strong style="color:var(--phase-accent)">' + (i + 1) + '.</strong> ' + p + '</div>'; }).join('') +
+          '</div></div>' +
+          '<div class="card focus-card" data-widget="weekly_goal"><h3>Block ' + gb + ' Focus: ' + weeklyGoal.title + '</h3><p style="font-size:0.875rem;color:var(--text-muted);margin:0 0 8px">' + weeklyGoal.desc + '</p><p style="font-size:0.8125rem;font-weight:600;color:var(--phase-accent);margin:0">Target: ' + weeklyGoal.metric + '</p></div>' +
+          '<div class="card readiness-plan-card"><h3 style="margin:0 0 8px;font-size:1rem">Graduation Readiness Score</h3><p style="font-size:0.8125rem;color:var(--text-muted);margin:0 0 10px">Based on Glucose GPA, Lifestyle GPA, hunger/satiety ratings, education completion, and consistency.</p><div style="display:flex;align-items:center;gap:12px;margin:12px 0"><div class="gpa-circle ' + readinessGPA.class + '" style="width:52px;height:52px;font-size:1.375rem">' + readinessGPA.letter + '</div><span style="font-size:1.125rem;font-weight:600">' + readiness15 + ' / 5</span></div><div class="m-title" style="margin:8px 0 4px">Components</div><div class="consistency-row"><span>Glucose GPA</span><span>' + getGlucoseGPA(state).score15 + '</span></div><div class="consistency-row"><span>Lifestyle GPA</span><span>' + getLifestyleGPA(state).score15 + '</span></div><div class="consistency-row"><span>Hunger/satiety ratings</span><span>On track</span></div><div class="consistency-row"><span>Consistency rating</span><span>' + score100To15(getConsistencyScore(state)) + '</span></div><div class="m-title" style="margin:10px 0 4px">Your plan</div><ul class="plan-list">' + planBullets.map(function(b) { return '<li>' + b + '</li>'; }).join('') + '</ul></div>' +
+          (function() {
+          var secOrder = EDUCATION_SECTION_ORDER;
+          var eduProg = getPhaseEducationProgress(state);
+          var pct = eduProg.total > 0 ? Math.round((eduProg.done / eduProg.total) * 100) : 0;
+          var pBE = pBlockEdu(gb);
+          var weekEduMods = gb >= 5 ? getPersonalizedWeekModules(state, gw) : (pBE ? pBE.modules : []);
+          var weekEduTotal = weekEduMods.length;
+          var weekEduDone = weekEduMods.filter(function(mid) { return isModuleCompleted(state, mid); }).length;
+          var weekPct = weekEduTotal > 0 ? Math.round((weekEduDone / weekEduTotal) * 100) : 0;
+          var weekGoalMet = weekPct >= 80;
+          var html = '<div class="card"><h3 class="edu-section-title">Education</h3>' +
+            '<p class="edu-section-subtitle">' + eduProg.done + ' of ' + eduProg.total + ' completed (' + pct + '%)</p><div class="edu-progress-bar"><div class="edu-progress-fill" style="width:' + pct + '%"></div></div>' +
+            '<div style="margin-top:10px;padding:10px 12px;border-radius:10px;background:' + (weekGoalMet ? '#f0fdf4' : '#fefce8') + ';border:1px solid ' + (weekGoalMet ? '#bbf7d0' : '#fef08a') + ';display:flex;align-items:center;gap:8px">' +
+            '<div style="font-size:1.25rem">' + (weekGoalMet ? '&#10003;' : '&#9201;') + '</div><div><div style="font-size:0.8125rem;font-weight:600;color:' + (weekGoalMet ? '#16a34a' : '#a16207') + '">Block ' + gb + ' Education: ' + weekEduDone + '/' + weekEduTotal + (weekGoalMet ? ' \u2014 Goal met!' : '') + '</div><div style="font-size:0.75rem;color:var(--text-muted)">Goal: complete 80% (' + Math.ceil(weekEduTotal * 0.8) + '+ modules) this block</div></div></div>' +
+            '<p style="font-size:0.75rem;color:var(--text-muted);margin:10px 0 4px">Tap a section to see all modules in that category.</p>';
+          secOrder.forEach(function(secId) {
+            var sec = EDUCATION_SECTIONS[secId];
+            if (!sec || (!sec.modules.length && !(sec.games && sec.games.length))) return;
+            var sp = eduProg.sections[secId] || { total: 0, done: 0 };
+            var secPct = sp.total > 0 ? Math.round((sp.done / sp.total) * 100) : 0;
+            var secIcons = { glucose_cgm: '&#128200;', nutrition: '&#127860;', exercise: '&#127939;', hunger: '&#129368;', sleep: '&#128164;', stress: '&#129504;' };
+            html += '<div class="edu-section-block ' + secId + ' collapsed" data-sec-id="' + secId + '"><div class="edu-section-header" data-sec-toggle="' + secId + '" style="display:flex;align-items:center;justify-content:space-between;cursor:pointer;padding:10px 0;border-bottom:1px solid #f1f5f9"><div style="display:flex;align-items:center;gap:8px"><span style="font-size:1.125rem">' + (secIcons[secId] || '') + '</span><div><h4 class="edu-section-head" style="margin:0;font-size:0.9375rem">' + (sec.title || secId).replace(/</g, '&lt;') + '</h4><p style="margin:2px 0 0;font-size:0.6875rem;color:var(--text-muted)">' + sp.done + '/' + sp.total + ' completed</p></div></div><div style="display:flex;align-items:center;gap:6px"><div style="width:40px;height:4px;background:#e2e8f0;border-radius:2px;overflow:hidden"><div style="height:100%;width:' + secPct + '%;background:var(--phase-accent);border-radius:2px"></div></div><span class="edu-section-chevron" style="font-size:0.875rem;color:var(--text-muted);transition:transform 0.2s">&#9654;</span></div></div>' +
+              '<div class="edu-section-content" style="display:none">';
+            (sec.modules || []).forEach(function(m) {
+              var done = isModuleCompleted(state, m.id);
+              var tierLabel = m.tier === 'foundation' ? '\ud83d\udfe2' : m.tier === 'intermediate' ? '\ud83d\udfe1' : '\ud83d\udfe3';
+              var isThisWeek = weekEduMods.indexOf(m.id) >= 0;
+              html += '<div class="edu-module-card' + (done ? ' completed' : '') + (isThisWeek ? ' this-week' : '') + '">' + (isThisWeek ? '<div style="font-size:0.625rem;font-weight:700;color:var(--phase-accent);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px">Block ' + gb + ' module</div>' : '') + '<div class="edu-module-title">' + tierLabel + ' ' + (m.title || '').replace(/</g, '&lt;') + '</div><div class="edu-module-desc">' + (m.description || '').replace(/</g, '&lt;') + '</div><div class="edu-module-meta"><span class="edu-module-time">' + (done ? 'Completed' : (m.estimatedTime || '')) + '</span><button type="button" class="btn btn-primary edu-module-start" data-module-id="' + (m.id || '').replace(/"/g, '&quot;') + '">' + (done ? 'Review' : 'Start') + '</button></div></div>';
+            });
+            (sec.games || []).forEach(function(g) {
+              var gDone = isGameCompleted(state, g.type);
+              html += '<div class="edu-module-card edu-game-card' + (gDone ? ' completed' : '') + '"><div class="edu-module-title">' + (g.title || g.type || '').replace(/</g, '&lt;') + '</div><div class="edu-module-desc">' + (g.description || '').replace(/</g, '&lt;') + '</div><div class="edu-module-meta"><span class="edu-module-time">' + (gDone ? 'Completed today' : (g.estimatedTime || '')) + '</span><button type="button" class="btn btn-outline edu-game-play" data-game-type="' + (g.type || '').replace(/"/g, '&quot;') + '" data-game-title="' + (g.title || g.type || '').replace(/"/g, '&quot;').replace(/'/g, '&#39;') + '">' + (gDone ? 'Play again' : 'Play') + '</button></div></div>';
+            });
+            html += '</div></div>';
+          });
+          return html + '</div>';
+        })() +
+          '';
+        div.querySelectorAll('[data-sec-toggle]').forEach(function(hdr) {
+          hdr.onclick = function() {
+            var secBlock = hdr.closest('.edu-section-block');
+            var content = secBlock.querySelector('.edu-section-content');
+            var chevron = hdr.querySelector('.edu-section-chevron');
+            if (secBlock.classList.contains('collapsed')) {
+              secBlock.classList.remove('collapsed');
+              content.style.display = 'block';
+              chevron.style.transform = 'rotate(90deg)';
+            } else {
+              secBlock.classList.add('collapsed');
+              content.style.display = 'none';
+              chevron.style.transform = 'rotate(0deg)';
+            }
           };
         });
         div.querySelectorAll('[data-week]').forEach(function(weekDot) {
           weekDot.onclick = function() {
             openWeekNumber = parseInt(weekDot.getAttribute('data-week'));
-            navigateTo('week_detail');
-          };
-        });
-        div.querySelectorAll('.tk-week-btn').forEach(function(btn) {
-          btn.onclick = function() {
-            openWeekNumber = parseInt(btn.getAttribute('data-week'));
             navigateTo('week_detail');
           };
         });
@@ -3021,11 +3062,34 @@
             }
           }, 50);
         }
+        div.querySelectorAll('.edu-module-start').forEach(function(btn) {
+          btn.onclick = function() {
+            openEducationModuleId = btn.getAttribute('data-module-id');
+            navigateTo('education_module');
+          };
+        });
+        div.querySelectorAll('.edu-game-play').forEach(function(btn) {
+          btn.onclick = function() {
+            openEducationGameType = btn.getAttribute('data-game-type');
+            openEducationGameTitle = btn.getAttribute('data-game-title') || openEducationGameType;
+            eduGameIndex = 0;
+            eduGameAnswered = false;
+            eduBuildMealSelected = { protein: null, carb: null, veggie: null };
+            eduBuildWorkoutStep = 0;
+            eduBuildBackSelected = [];
+            eduBuildLegsSelected = [];
+            eduFormQuizIndex = 0;
+            eduFormQuizAnswered = false;
+            eduRecordFormMovementId = null;
+            eduRecordFormPhase = 'pick';
+            navigateTo('education_game');
+          };
+        });
         container.appendChild(div);
       }
 
       function isPhase2Unlocked(s) {
-        if ((s.postWeek8CheckIn || s.week12CheckIn) && s.focusAreas && s.focusAreas.length > 0) return true;
+        if (s.postWeek8CheckIn && s.focusAreas && s.focusAreas.length > 0) return true;
         return false;
       }
       function getWeek1to8EduCompletion(s) {
@@ -3088,123 +3152,147 @@
 
       function renderWeekDetail(container) {
         var wk = openWeekNumber || 1;
-        var focus = getWeeklyFocus(wk);
+        var blk = weekToBlock(wk);
+        var goal = pBlockGoal(blk);
+        var milestone = pBlockMilestone(blk);
         var currentWeek = getGraduationWeek(state);
-        var isPast = wk < currentWeek;
-        var isCurrent = wk === currentWeek;
-        var isFuture = wk > currentWeek;
-        var isPersonalized = focus.personalized;
-        var isLocked = wk >= 13 && !isPhase2Unlocked(state) && wk > currentWeek;
-        var hasCGM = isCGMWeek(wk);
-        var cgmPeriod = getCGMPeriod(wk);
-        var isCheckInWeek = CHECK_IN_WEEKS.indexOf(wk) >= 0;
+        var currentBlock = weekToBlock(currentWeek);
+        var isPast = blk < currentBlock;
+        var isCurrent = blk === currentBlock;
+        var isPersonalized = blk >= 5;
+        var phase2Unlocked = isPhase2Unlocked(state);
         var div = document.createElement('div');
         div.className = 'screen active';
         var statusColor = isCurrent ? 'var(--phase-accent)' : isPast ? '#16a34a' : 'var(--text-muted)';
-        var statusLabel = isCurrent ? 'This week' : isPast ? 'Completed' : isLocked ? 'Locked' : 'Upcoming';
+        var statusLabel = isCurrent ? 'Current block' : isPast ? 'Completed' : 'Upcoming';
+        var blockHasCGM = isCGMBlock(blk);
+        var cgmPeriod = getCGMPeriod(blockToWeeks(blk)[0]);
+        var bwks = blockToWeeks(blk);
         var secIcons = { glucose_cgm: '&#128200;', nutrition: '&#127860;', exercise: '&#127939;', hunger: '&#129368;', sleep: '&#128164;', stress: '&#129504;' };
-
-        var html = '<header class="page-header"><button type="button" class="header-btn back-btn" id="week-back" aria-label="Back">&#8249;</button><span class="header-title">Week ' + wk + '</span><span style="width:36px"></span></header>' +
+        var html = '<header class="page-header"><button type="button" class="header-btn back-btn" id="week-back" aria-label="Back">&#8249;</button><span class="header-title">Block ' + blk + ' (Wk ' + bwks.join('\u2013') + ')</span><span style="width:36px"></span></header>' +
           '<div style="padding:0 16px">' +
-          '<div style="display:flex;align-items:center;gap:10px;margin-bottom:12px"><div style="width:48px;height:48px;border-radius:50%;background:' + (isCurrent ? 'var(--phase-accent)' : isPast ? '#16a34a' : isLocked ? '#94a3b8' : '#e2e8f0') + ';color:#fff;display:flex;align-items:center;justify-content:center;font-size:1.5rem;flex-shrink:0">' + (isPast ? '&#10003;' : isLocked ? '&#128274;' : focus.icon) + '</div><div><div style="font-size:1.125rem;font-weight:700;color:var(--text)">' + focus.title + '</div><div style="font-size:0.75rem;color:' + statusColor + ';font-weight:600">' + statusLabel + ' \u00b7 Week ' + wk + ' of 16</div></div></div>';
+          '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px"><div style="width:44px;height:44px;border-radius:50%;background:' + (isCurrent ? 'var(--phase-accent)' : isPast ? '#16a34a' : (isPersonalized && !phase2Unlocked) ? '#94a3b8' : '#e2e8f0') + ';color:#fff;display:flex;align-items:center;justify-content:center;font-size:1.125rem;font-weight:700">' + (isPast ? '&#10003;' : (isPersonalized && !phase2Unlocked) ? '&#128274;' : blk) + '</div><div><div style="font-size:1.0625rem;font-weight:700;color:var(--text)">' + milestone + '</div><div style="font-size:0.75rem;color:' + statusColor + ';font-weight:600">' + statusLabel + ' \u00b7 Weeks ' + bwks.join('\u2013') + '</div></div></div>' +
+          (blockHasCGM ?
+            '<div style="display:flex;align-items:center;gap:6px;margin-bottom:16px;padding:8px 12px;background:#eff6ff;border-radius:8px;border:1px solid #bfdbfe"><span style="font-size:1rem">&#128201;</span><div><div style="font-size:0.8125rem;font-weight:700;color:#2563eb">CGM Active' + (cgmPeriod ? ' \u2014 ' + cgmPeriod.label : '') + '</div><div style="font-size:0.6875rem;color:#3b82f6">' + (cgmPeriod ? cgmPeriod.purpose : 'Wear your sensor this block') + '</div></div></div>' :
+            '<div style="display:flex;align-items:center;gap:6px;margin-bottom:16px;padding:8px 12px;background:#f8fafc;border-radius:8px;border:1px solid #e2e8f0"><span style="font-size:1rem">&#128170;</span><div><div style="font-size:0.8125rem;font-weight:600;color:var(--text)">Habit Mode \u2014 No CGM</div><div style="font-size:0.6875rem;color:var(--text-muted)">Focus on building habits using what you learned from your last sensor</div></div></div>');
 
-        if (hasCGM) {
-          html += '<div style="display:flex;align-items:center;gap:6px;margin-bottom:12px;padding:8px 12px;background:#eff6ff;border-radius:8px;border:1px solid #bfdbfe"><span style="font-size:1rem">&#128201;</span><div><div style="font-size:0.8125rem;font-weight:700;color:#2563eb">CGM Active' + (cgmPeriod ? ' \u2014 ' + cgmPeriod.label : '') + '</div><div style="font-size:0.6875rem;color:#3b82f6">' + (cgmPeriod ? cgmPeriod.purpose : 'Wear your sensor this week') + '</div></div></div>';
-        }
+        html += '<div class="card" style="border-left:4px solid ' + (isPersonalized && !phase2Unlocked ? '#94a3b8' : 'var(--phase-accent)') + '"><h3 style="margin:0 0 6px;font-size:1rem;color:' + (isPersonalized && !phase2Unlocked ? '#94a3b8' : 'var(--phase-accent)') + '">Block ' + blk + ' Goal: ' + goal.title + '</h3><p style="font-size:0.875rem;color:var(--text-muted);margin:0 0 8px;line-height:1.5">' + goal.desc + '</p><div style="display:inline-block;font-size:0.8125rem;font-weight:600;color:' + (isPersonalized && !phase2Unlocked ? '#94a3b8' : 'var(--phase-accent)') + ';background:' + (isPersonalized && !phase2Unlocked ? '#f1f5f9' : 'var(--phase-accent-light)') + ';padding:4px 10px;border-radius:6px">Target: ' + goal.metric + '</div></div>';
 
-        if (isLocked) {
+        if (isPersonalized && !phase2Unlocked) {
+          var w18prog = getWeek1to8EduCompletion(state);
           html += '<div class="card" style="background:#f8fafc;border:2px dashed #cbd5e1;text-align:center;padding:24px 16px">' +
             '<div style="font-size:2.5rem;margin-bottom:12px">&#128274;</div>' +
-            '<h3 style="margin:0 0 8px;font-size:1.0625rem;color:var(--text)">Weeks 13\u201316 are locked</h3>' +
-            '<p style="font-size:0.875rem;color:var(--text-muted);margin:0 0 16px;line-height:1.5">Complete weeks 1\u201312 and the Week 12 check-in to unlock your personalized weeks.</p>' +
-            '<button type="button" class="btn btn-primary" id="start-checkin" style="width:100%">Start Week 12 Check-In</button></div>';
-        } else {
-          html += '<div class="card" style="border-left:4px solid var(--phase-accent)">' +
-            '<div style="padding:10px 12px;background:var(--phase-accent-light);border-radius:8px;margin-bottom:10px"><div style="font-size:0.6875rem;font-weight:700;color:var(--phase-accent);text-transform:uppercase;letter-spacing:0.03em;margin-bottom:4px">This week\u2019s goal</div><div style="font-size:0.875rem;font-weight:600;color:var(--text)">' + focus.goal + '</div></div>' +
-            '<p style="font-size:0.875rem;color:var(--text-muted);margin:0;line-height:1.5">' + focus.desc + '</p></div>';
+            '<h3 style="margin:0 0 8px;font-size:1.0625rem;color:var(--text)">Blocks 5\u20138 are locked</h3>' +
+            '<p style="font-size:0.875rem;color:var(--text-muted);margin:0 0 16px;line-height:1.5">Complete blocks 1\u20134 and the post-block-4 check-in to unlock your personalized final blocks.</p>' +
+            '<div style="text-align:left;background:#fff;border-radius:10px;padding:12px;margin-bottom:12px">' +
+            '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px"><span style="font-size:0.8125rem;font-weight:600">Education progress (Blocks 1\u20134)</span><span style="font-size:0.8125rem;font-weight:600;color:' + (w18prog.pct >= 80 ? '#16a34a' : 'var(--phase-accent)') + '">' + w18prog.pct + '%</span></div>' +
+            '<div style="height:6px;background:#e2e8f0;border-radius:3px;overflow:hidden"><div style="height:100%;width:' + w18prog.pct + '%;background:' + (w18prog.pct >= 80 ? '#16a34a' : 'var(--phase-accent)') + ';border-radius:3px"></div></div>' +
+            '<div style="font-size:0.6875rem;color:var(--text-muted);margin-top:4px">' + w18prog.done + ' of ' + w18prog.total + ' modules completed</div></div>' +
+            '<div style="text-align:left;background:#fff;border-radius:10px;padding:12px">' +
+            '<div style="display:flex;align-items:center;gap:6px"><span style="font-size:0.9375rem">' + (state.postWeek8CheckIn ? '&#10003;' : '&#9711;') + '</span><span style="font-size:0.8125rem;color:' + (state.postWeek8CheckIn ? '#16a34a' : 'var(--text-muted)') + '">Post-block-4 check-in</span></div></div>';
+          html += '<button type="button" class="btn btn-primary" id="start-checkin" style="margin-top:16px;width:100%">Start your check-in</button>';
+          html += '</div>';
 
-          if (focus.choicePrompt) {
-            var choice = state.weekChoices && state.weekChoices[wk];
-            html += '<div class="card"><div style="font-size:0.8125rem;font-weight:600;color:var(--text);margin-bottom:8px">' + focus.choicePrompt + '</div><div style="display:flex;flex-direction:column;gap:6px">';
-            focus.choices.forEach(function(c) {
-              var sel = choice === c;
-              html += '<button type="button" class="wd-choice-btn" data-choice="' + c + '" style="padding:10px 12px;border-radius:10px;border:2px solid ' + (sel ? 'var(--phase-accent)' : '#e2e8f0') + ';background:' + (sel ? 'var(--phase-accent-light)' : '#fff') + ';text-align:left;font-size:0.8125rem;font-weight:' + (sel ? '700' : '400') + ';color:' + (sel ? 'var(--phase-accent)' : 'var(--text)') + ';cursor:pointer">' + (sel ? '&#10003; ' : '') + c + '</button>';
-            });
-            html += '</div></div>';
-          }
-
-          var res = WEEKLY_RESOURCES[wk];
-          if (res) {
-            html += '<div class="card" style="padding:14px 16px"><h3 style="margin:0 0 10px;font-size:0.9375rem">' + res.title + '</h3>';
-            res.sections.forEach(function(sec) {
-              html += '<div style="margin-bottom:10px"><div style="font-size:0.75rem;font-weight:700;color:var(--phase-accent);text-transform:uppercase;letter-spacing:0.03em;margin-bottom:6px">' + sec.name + '</div><div style="display:flex;flex-direction:column;gap:4px">';
-              sec.items.forEach(function(item) {
-                html += '<div style="font-size:0.8125rem;color:var(--text);padding:6px 8px;background:#f8fafc;border-radius:6px;border:1px solid #f1f5f9">' + item + '</div>';
-              });
-              html += '</div></div>';
+        } else if (isPersonalized && phase2Unlocked) {
+          var focusLabels = (state.focusAreas || []).map(function(k) {
+            var fa = FOCUS_AREA_OPTIONS[k];
+            return fa ? fa.title : k;
+          }).join(' & ');
+          html += '<div class="card" style="background:var(--phase-accent-light);border:1px solid var(--phase-accent)">' +
+            '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px"><span style="font-size:1.25rem">&#127919;</span><h3 style="margin:0;font-size:0.9375rem;font-weight:700;color:var(--phase-accent)">Your Focus: ' + focusLabels + '</h3></div>' +
+            '<p style="font-size:0.8125rem;color:var(--text);margin:0;line-height:1.5">These modules are personalized based on your post-block-4 check-in. Keep all your block 1\u20134 habits running \u2014 they are your foundation. These blocks go deeper on your chosen area.</p></div>';
+          var weekModIds = getPersonalizedWeekModules(state, wk);
+          var weekDone = weekModIds.filter(function(mid) { return isModuleCompleted(state, mid); }).length;
+          var weekTotal = weekModIds.length;
+          var weekPct = weekTotal > 0 ? Math.round((weekDone / weekTotal) * 100) : 0;
+          var goalMet = weekPct >= 80;
+          html += '<div class="card"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><h3 style="margin:0;font-size:0.9375rem">Education this block</h3><span style="font-size:0.8125rem;font-weight:600;color:' + (goalMet ? '#16a34a' : 'var(--phase-accent)') + '">' + weekDone + '/' + weekTotal + '</span></div>' +
+            '<div style="height:6px;background:#e2e8f0;border-radius:3px;overflow:hidden;margin-bottom:4px"><div style="height:100%;width:' + weekPct + '%;background:' + (goalMet ? '#16a34a' : 'var(--phase-accent)') + ';border-radius:3px;transition:width 0.3s"></div></div>' +
+            '<div style="display:flex;justify-content:space-between;font-size:0.6875rem;color:var(--text-muted);margin-bottom:12px"><span>' + weekPct + '% complete</span><span>Goal: 80%' + (goalMet ? ' &#10003;' : '') + '</span></div>';
+          var bySec = getWeekModulesBySection(wk);
+          var secKeys = Object.keys(bySec);
+          secKeys.forEach(function(secId) {
+            var sec = EDUCATION_SECTIONS[secId];
+            var mods = bySec[secId];
+            var secDone = mods.filter(function(m) { return isModuleCompleted(state, m.id); }).length;
+            html += '<div style="margin-bottom:12px"><div style="display:flex;align-items:center;gap:6px;margin-bottom:6px"><span style="font-size:0.9375rem">' + (secIcons[secId] || '') + '</span><span style="font-size:0.8125rem;font-weight:600;color:var(--text)">' + (sec ? sec.title : secId) + '</span><span style="font-size:0.6875rem;color:var(--text-muted);margin-left:auto">' + secDone + '/' + mods.length + '</span></div>';
+            mods.forEach(function(m) {
+              var done = isModuleCompleted(state, m.id);
+              var tierLabel = m.tier === 'foundation' ? '\ud83d\udfe2' : m.tier === 'intermediate' ? '\ud83d\udfe1' : '\ud83d\udfe3';
+              html += '<div class="edu-module-card' + (done ? ' completed' : '') + '" style="margin-left:0"><div class="edu-module-title">' + tierLabel + ' ' + (m.title || '') + '</div><div class="edu-module-desc">' + (m.description || '') + '</div><div class="edu-module-meta"><span class="edu-module-time">' + (done ? 'Completed' : (m.estimatedTime || '')) + '</span><button type="button" class="btn btn-primary edu-module-start" data-module-id="' + (m.id || '') + '">' + (done ? 'Review' : 'Start') + '</button></div></div>';
             });
             html += '</div>';
-          }
+          });
+          html += '</div>';
 
-          if (isCheckInWeek) {
-            var ciKey = wk <= 4 ? 'week4CheckIn' : wk <= 8 ? 'week8CheckIn' : wk <= 12 ? 'week12CheckIn' : 'week16CheckIn';
-            var ciDone = !!(state[ciKey] || (wk <= 4 && state.week1CheckIn));
-            html += '<div class="card" style="border-left:4px solid ' + (ciDone ? '#16a34a' : '#d97706') + ';padding:14px 16px">' +
-              '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px"><span style="font-size:1.25rem">' + (ciDone ? '&#10003;' : '&#128200;') + '</span><h3 style="margin:0;font-size:0.9375rem;font-weight:700;color:' + (ciDone ? '#16a34a' : '#92400e') + '">Week ' + wk + ' Check-In</h3></div>' +
-              '<p style="font-size:0.8125rem;color:var(--text-muted);margin:0 0 10px;line-height:1.5">Answer the same 8 questions from your baseline to see how you\u2019ve progressed.</p>' +
+        } else {
+          if (blk === 1) {
+            var ciDoneW1 = !!state.week1CheckIn;
+            html += '<div class="card" style="border-left:4px solid ' + (ciDoneW1 ? '#16a34a' : 'var(--phase-accent)') + ';padding:16px">' +
+              '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px"><span style="font-size:1.25rem">&#128640;</span><h3 style="margin:0;font-size:0.9375rem;font-weight:700;color:' + (ciDoneW1 ? '#16a34a' : 'var(--phase-accent)') + '">Baseline Assessment</h3></div>' +
+              '<p style="font-size:0.8125rem;color:var(--text-muted);margin:0 0 12px;line-height:1.5">You completed your baseline assessment during onboarding. This is used to track your growth throughout the program.</p>' +
+              '<div style="display:flex;align-items:center;gap:8px"><span style="color:#16a34a;font-size:1rem">&#10003;</span><span style="font-size:0.8125rem;font-weight:600;color:#16a34a">Completed during onboarding</span>' +
+              '<button type="button" class="btn btn-outline start-week-checkin" data-ci-week="1" style="margin-left:auto;font-size:0.75rem;padding:6px 12px">Review</button></div></div>';
+          }
+          if (blk === 3) {
+            var ciState = state.week5CheckIn;
+            var ciDone = !!ciState;
+            var ciLabel = 'Mid-Program Check-In';
+            var ciDesc = 'You\u2019re halfway through the foundation blocks! Assess how you\u2019ve progressed since your baseline and see where to adjust.';
+            var ciIcon = '&#128200;';
+            html += '<div class="card" style="border-left:4px solid ' + (ciDone ? '#16a34a' : 'var(--phase-accent)') + ';padding:16px">' +
+              '<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px"><span style="font-size:1.25rem">' + ciIcon + '</span><h3 style="margin:0;font-size:0.9375rem;font-weight:700;color:' + (ciDone ? '#16a34a' : 'var(--phase-accent)') + '">' + ciLabel + '</h3></div>' +
+              '<p style="font-size:0.8125rem;color:var(--text-muted);margin:0 0 12px;line-height:1.5">' + ciDesc + '</p>' +
               (ciDone
-                ? '<div style="display:flex;align-items:center;gap:8px"><span style="color:#16a34a;font-size:1rem">&#10003;</span><span style="font-size:0.8125rem;font-weight:600;color:#16a34a">Completed</span><button type="button" class="btn btn-outline start-week-checkin" data-ci-week="' + wk + '" style="margin-left:auto;font-size:0.75rem;padding:6px 12px">Review</button></div>'
-                : '<button type="button" class="btn btn-primary start-week-checkin" data-ci-week="' + wk + '" style="width:100%">Start check-in</button>') +
+                ? '<div style="display:flex;align-items:center;gap:8px"><span style="color:#16a34a;font-size:1rem">&#10003;</span><span style="font-size:0.8125rem;font-weight:600;color:#16a34a">Completed</span><button type="button" class="btn btn-outline start-week-checkin" data-ci-week="5" style="margin-left:auto;font-size:0.75rem;padding:6px 12px">Review</button></div>'
+                : '<button type="button" class="btn btn-primary start-week-checkin" data-ci-week="5" style="width:100%">Start check-in</button>') +
               '</div>';
           }
-
-          var weekEduMods = (WEEK_EDUCATION_MAP[wk] || []);
-          if (weekEduMods.length > 0) {
-            var bySec = getWeekModulesBySection(wk);
-            var secKeys = Object.keys(bySec);
-            var totalMods = weekEduMods.length;
-            var doneMods = weekEduMods.filter(function(mid) { return isModuleCompleted(state, mid); }).length;
-            var pctDone = totalMods > 0 ? Math.round((doneMods / totalMods) * 100) : 0;
-            html += '<div class="card"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><h3 style="margin:0;font-size:0.9375rem">Education</h3><span style="font-size:0.8125rem;font-weight:600;color:' + (pctDone >= 80 ? '#16a34a' : 'var(--phase-accent)') + '">' + doneMods + '/' + totalMods + '</span></div>' +
-              '<div style="height:6px;background:#e2e8f0;border-radius:3px;overflow:hidden;margin-bottom:12px"><div style="height:100%;width:' + pctDone + '%;background:' + (pctDone >= 80 ? '#16a34a' : 'var(--phase-accent)') + ';border-radius:3px"></div></div>';
-            secKeys.forEach(function(secId) {
-              var sec = EDUCATION_SECTIONS[secId];
-              var mods = bySec[secId];
-              html += '<div style="margin-bottom:10px"><div style="display:flex;align-items:center;gap:6px;margin-bottom:6px"><span style="font-size:0.9375rem">' + (secIcons[secId] || '') + '</span><span style="font-size:0.8125rem;font-weight:600;color:var(--text)">' + (sec ? sec.title : secId) + '</span></div>';
-              mods.forEach(function(m) {
-                var done = isModuleCompleted(state, m.id);
-                html += '<div class="edu-module-card' + (done ? ' completed' : '') + '"><div class="edu-module-title">' + (m.title || '') + '</div><div class="edu-module-desc">' + (m.description || '') + '</div><div class="edu-module-meta"><span class="edu-module-time">' + (done ? 'Completed' : (m.estimatedTime || '')) + '</span><button type="button" class="btn btn-primary edu-module-start" data-module-id="' + (m.id || '') + '">' + (done ? 'Review' : 'Start') + '</button></div></div>';
-              });
-              html += '</div>';
+          var weekEdu = pBlockEdu(blk);
+          var weekModIds2 = weekEdu ? weekEdu.modules : [];
+          var weekDone2 = weekModIds2.filter(function(mid) { return isModuleCompleted(state, mid); }).length;
+          var weekTotal2 = weekModIds2.length;
+          var weekPct2 = weekTotal2 > 0 ? Math.round((weekDone2 / weekTotal2) * 100) : 0;
+          var goalMet2 = weekPct2 >= 80;
+          var bySec2 = getWeekModulesBySection(wk);
+          html += '<div class="card"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px"><h3 style="margin:0;font-size:0.9375rem">Education this block</h3><span style="font-size:0.8125rem;font-weight:600;color:' + (goalMet2 ? '#16a34a' : 'var(--phase-accent)') + '">' + weekDone2 + '/' + weekTotal2 + '</span></div>' +
+            '<div style="height:6px;background:#e2e8f0;border-radius:3px;overflow:hidden;margin-bottom:4px"><div style="height:100%;width:' + weekPct2 + '%;background:' + (goalMet2 ? '#16a34a' : 'var(--phase-accent)') + ';border-radius:3px;transition:width 0.3s"></div></div>' +
+            '<div style="display:flex;justify-content:space-between;font-size:0.6875rem;color:var(--text-muted);margin-bottom:12px"><span>' + weekPct2 + '% complete</span><span>Goal: 80%' + (goalMet2 ? ' &#10003;' : '') + '</span></div>';
+          var secKeys2 = Object.keys(bySec2);
+          secKeys2.forEach(function(secId) {
+            var sec = EDUCATION_SECTIONS[secId];
+            var mods = bySec2[secId];
+            var secDone = mods.filter(function(m) { return isModuleCompleted(state, m.id); }).length;
+            html += '<div style="margin-bottom:12px"><div style="display:flex;align-items:center;gap:6px;margin-bottom:6px"><span style="font-size:0.9375rem">' + (secIcons[secId] || '') + '</span><span style="font-size:0.8125rem;font-weight:600;color:var(--text)">' + (sec ? sec.title : secId) + '</span><span style="font-size:0.6875rem;color:var(--text-muted);margin-left:auto">' + secDone + '/' + mods.length + '</span></div>';
+            mods.forEach(function(m) {
+              var done = isModuleCompleted(state, m.id);
+              var tierLabel = m.tier === 'foundation' ? '\ud83d\udfe2' : m.tier === 'intermediate' ? '\ud83d\udfe1' : '\ud83d\udfe3';
+              html += '<div class="edu-module-card' + (done ? ' completed' : '') + '" style="margin-left:0"><div class="edu-module-title">' + tierLabel + ' ' + (m.title || '') + '</div><div class="edu-module-desc">' + (m.description || '') + '</div><div class="edu-module-meta"><span class="edu-module-time">' + (done ? 'Completed' : (m.estimatedTime || '')) + '</span><button type="button" class="btn btn-primary edu-module-start" data-module-id="' + (m.id || '') + '">' + (done ? 'Review' : 'Start') + '</button></div></div>';
             });
             html += '</div>';
-          }
+          });
+          html += '</div>';
         }
 
+        var prevBlk = blk > 1 ? blockToWeeks(blk - 1)[0] : null;
+        var nextBlk = blk < TOTAL_BLOCKS ? blockToWeeks(blk + 1)[0] : null;
         html += '<div style="display:flex;gap:8px;padding:0 0 24px">' +
-          (wk > 1 ? '<button type="button" class="btn btn-outline" id="wk-prev" style="flex:1">&laquo; Week ' + (wk - 1) + '</button>' : '<div style="flex:1"></div>') +
-          (wk < 16 ? '<button type="button" class="btn btn-outline" id="wk-next" style="flex:1">Week ' + (wk + 1) + ' &raquo;</button>' : '<div style="flex:1"></div>') +
+          (prevBlk ? '<button type="button" class="btn btn-outline" id="wk-prev" style="flex:1">&laquo; Block ' + (blk - 1) + '</button>' : '<div style="flex:1"></div>') +
+          (nextBlk ? '<button type="button" class="btn btn-outline" id="wk-next" style="flex:1">Block ' + (blk + 1) + ' &raquo;</button>' : '<div style="flex:1"></div>') +
           '</div></div>';
         div.innerHTML = html;
         div.querySelector('#week-back').onclick = function() { navigateBack(); };
-        if (div.querySelector('#wk-prev')) div.querySelector('#wk-prev').onclick = function() { openWeekNumber = wk - 1; render(); };
-        if (div.querySelector('#wk-next')) div.querySelector('#wk-next').onclick = function() { openWeekNumber = wk + 1; render(); };
-        if (div.querySelector('#start-checkin')) div.querySelector('#start-checkin').onclick = function() { checkinWeek = 12; post8Step = 0; post8Answers = {}; navigateTo('post8_checkin'); };
+        if (div.querySelector('#wk-prev')) div.querySelector('#wk-prev').onclick = function() { openWeekNumber = prevBlk; render(); };
+        if (div.querySelector('#wk-next')) div.querySelector('#wk-next').onclick = function() { openWeekNumber = nextBlk; render(); };
+        if (div.querySelector('#start-checkin')) div.querySelector('#start-checkin').onclick = function() { checkinWeek = 9; post8Step = 0; post8Answers = {}; navigateTo('post8_checkin'); };
         div.querySelectorAll('.start-week-checkin').forEach(function(btn) {
           btn.onclick = function() {
             var ciW = parseInt(btn.getAttribute('data-ci-week'));
             checkinWeek = ciW;
             post8Step = 0;
-            post8Answers = {};
+            var prev = ciW === 1 ? state.week1CheckIn : ciW === 5 ? state.week5CheckIn : state.postWeek8CheckIn;
+            post8Answers = (prev && prev.answers) ? JSON.parse(JSON.stringify(prev.answers)) : {};
             navigateTo('post8_checkin');
-          };
-        });
-        div.querySelectorAll('.wd-choice-btn').forEach(function(btn) {
-          btn.onclick = function() {
-            if (!state.weekChoices) state.weekChoices = {};
-            state.weekChoices[wk] = btn.getAttribute('data-choice');
-            saveState(state);
-            render();
           };
         });
         div.querySelectorAll('.edu-module-start').forEach(function(btn) {
@@ -3275,19 +3363,19 @@
         var insights = getSignosInsights(state);
         var focusKeys = Object.keys(FOCUS_AREA_OPTIONS);
 
-        var ciTitle = checkinWeek <= 4 ? 'Week ' + checkinWeek + ' Check-In' : 'Week ' + checkinWeek + ' Check-In';
-        var ciEmoji = checkinWeek <= 4 ? '&#128640;' : checkinWeek <= 8 ? '&#128200;' : checkinWeek <= 12 ? '&#127881;' : '&#127942;';
-        var ciHeading = checkinWeek <= 4 ? 'Week ' + checkinWeek + ' Progress' : checkinWeek <= 8 ? 'Week ' + checkinWeek + ' Progress' : checkinWeek <= 12 ? 'Week ' + checkinWeek + ' Progress' : 'Graduation Report';
-        var ciSubhead = checkinWeek <= 4 ? 'Your first 4-week check-in. Compare these answers to your onboarding baseline.' : checkinWeek <= 8 ? 'Two months in. Here\u2019s what the data shows \u2014 and where to adjust.' : checkinWeek <= 12 ? 'Three-quarters through. Your answers will personalize weeks 13\u201316.' : 'Final check-in. See how far you\u2019ve come since week 1.';
-        var ciAssessHead = checkinWeek <= 4 ? 'How are you progressing since your baseline?' : 'How do you feel about each area?';
-        var ciAssessSub = checkinWeek <= 4 ? 'Compare to your onboarding answers. This tracks your growth.' : checkinWeek <= 12 ? 'Be honest \u2014 this personalizes your remaining weeks.' : 'Be honest \u2014 this is your graduation report.';
-        var ciFbHeading = checkinWeek <= 4 ? 'Week ' + checkinWeek + ' Progress' : checkinWeek <= 8 ? 'Week ' + checkinWeek + ' Progress' : checkinWeek <= 12 ? 'Week ' + checkinWeek + ' Progress' : 'Graduation Report';
-        var ciFbSub = checkinWeek <= 4 ? 'Here\u2019s how you\u2019ve progressed since onboarding.' : checkinWeek <= 12 ? 'Here\u2019s how you\u2019ve grown \u2014 and what to focus on next.' : 'Here\u2019s your complete progress across 16 weeks.';
-        var ciNextLabel = 'See your progress report \u2192';
-        var ciFinishLabel = checkinWeek <= 8 ? 'Save progress & continue' : checkinWeek <= 12 ? 'Choose your focus \u2192' : 'Complete graduation check-in';
-        var ciNumbersTitle = checkinWeek <= 4 ? 'Your Numbers So Far' : 'Your Numbers';
-        var ciNoticeTitle = checkinWeek <= 4 ? 'What Signos noticed' : 'What Signos noticed';
-        var ciNoticeDesc = checkinWeek <= 4 ? 'Based on your first 4 weeks of data:' : 'Based on your data through week ' + checkinWeek + ':';
+        var ciTitle = checkinWeek === 1 ? 'Baseline Check-In' : checkinWeek === 5 ? 'Mid-Program Check-In' : 'Post-Block 4 Check-In';
+        var ciEmoji = checkinWeek === 1 ? '&#128640;' : checkinWeek === 5 ? '&#128200;' : '&#127881;';
+        var ciHeading = checkinWeek === 1 ? 'Your Starting Point' : checkinWeek === 5 ? 'Your Mid-Program Report' : 'Your Foundation Progress Report';
+        var ciSubhead = checkinWeek === 1 ? 'Let\u2019s establish your baseline. This snapshot captures where you are today so we can measure your progress.' : checkinWeek === 5 ? 'You\u2019re halfway through the foundation. Here\u2019s what the data shows so far \u2014 and where to adjust.' : 'Here\u2019s what we\u2019ve learned about your body and habits over the first 4 blocks.';
+        var ciAssessHead = checkinWeek === 1 ? 'How confident do you feel about each area right now?' : checkinWeek === 5 ? 'How are you progressing in each area?' : 'How do you feel about each area?';
+        var ciAssessSub = checkinWeek === 1 ? 'Be honest \u2014 there are no wrong answers. This sets your baseline.' : checkinWeek === 5 ? 'Compare to how you felt at block 1. This helps guide the rest of your foundation.' : 'Be honest \u2014 this personalizes your final 4 blocks.';
+        var ciFbHeading = checkinWeek === 1 ? 'Your Baseline Profile' : checkinWeek === 5 ? 'Mid-Program Feedback' : 'Personalized Feedback';
+        var ciFbSub = checkinWeek === 1 ? 'Here\u2019s where you\u2019re starting from. We\u2019ll use this to track your growth.' : checkinWeek === 5 ? 'Here\u2019s how you\u2019ve progressed since block 1 \u2014 and where to focus next.' : 'Here\u2019s how you did on each area \u2014 and what to focus on next.';
+        var ciNextLabel = checkinWeek === 1 ? 'See your baseline profile \u2192' : checkinWeek === 5 ? 'See your mid-program feedback \u2192' : 'See your personalized feedback \u2192';
+        var ciFinishLabel = checkinWeek === 1 ? 'Save baseline & continue' : checkinWeek === 5 ? 'Save progress & continue' : 'Choose your focus \u2192';
+        var ciNumbersTitle = checkinWeek === 1 ? 'Your Starting Numbers' : checkinWeek === 5 ? 'Your Numbers So Far' : 'Your Numbers';
+        var ciNoticeTitle = checkinWeek === 1 ? 'What we\u2019ll be tracking' : checkinWeek === 5 ? 'What Signos noticed (so far)' : 'What Signos noticed';
+        var ciNoticeDesc = checkinWeek === 1 ? 'Here\u2019s what we\u2019ll monitor over your 16-week program:' : checkinWeek === 5 ? 'Based on your scores and data from blocks 1\u20132:' : 'Based on your scores and data from blocks 1\u20134:';
 
         if (post8Step === 0) {
           var glucoseGPA = getGlucoseGPA(state);
@@ -3433,27 +3521,18 @@
           div.innerHTML = html;
           div.querySelector('#p8-back').onclick = function() { post8Step = 1; render(); };
           div.querySelector('#p8-next3').onclick = function() {
-            var ciData = { completedAt: new Date().toISOString(), answers: JSON.parse(JSON.stringify(post8Answers)) };
-            if (checkinWeek <= 4) {
-              state.week4CheckIn = ciData;
-              state.week1CheckIn = state.week1CheckIn || ciData;
+            if (checkinWeek === 1) {
+              state.week1CheckIn = { completedAt: new Date().toISOString(), answers: JSON.parse(JSON.stringify(post8Answers)) };
               saveState(state);
               post8Step = 0; post8Answers = {};
               navigateBack();
-            } else if (checkinWeek <= 8) {
-              state.week8CheckIn = ciData;
-              state.week5CheckIn = state.week5CheckIn || ciData;
+            } else if (checkinWeek === 5) {
+              state.week5CheckIn = { completedAt: new Date().toISOString(), answers: JSON.parse(JSON.stringify(post8Answers)) };
               saveState(state);
               post8Step = 0; post8Answers = {};
               navigateBack();
-            } else if (checkinWeek <= 12) {
-              post8Step = 3; render();
             } else {
-              state.week16CheckIn = ciData;
-              state.postWeek8CheckIn = ciData;
-              saveState(state);
-              post8Step = 0; post8Answers = {};
-              navigateBack();
+              post8Step = 3; render();
             }
           };
 
@@ -3492,17 +3571,12 @@
           var finishBtn = div.querySelector('#p8-finish');
           if (finishBtn && selectedAreas.length > 0) {
             finishBtn.onclick = function() {
-              var ciData = { completedAt: new Date().toISOString(), answers: post8Answers, focusAreas: selectedAreas.slice() };
-              state.postWeek8CheckIn = ciData;
-              if (checkinWeek <= 4) state.week4CheckIn = ciData;
-              else if (checkinWeek <= 8) state.week8CheckIn = ciData;
-              else if (checkinWeek <= 12) { state.week12CheckIn = ciData; }
-              else state.week16CheckIn = ciData;
+              state.postWeek8CheckIn = { completedAt: new Date().toISOString(), answers: post8Answers, focusAreas: selectedAreas.slice() };
               state.focusAreas = selectedAreas.slice();
               saveState(state);
               post8Step = 0;
               post8Answers = {};
-              openWeekNumber = checkinWeek + 1;
+              openWeekNumber = 9;
               navigateTo('week_detail');
             };
           }
@@ -4369,14 +4443,10 @@
       }
 
       function buildWeightBandGraph(state) {
-        var weightMode = state.weightMode || 'maintain';
         var anchor = state.weightAnchor || 165;
-        var goalWt = state.goalWeight || anchor;
-        var isLosing = weightMode === 'lose' && anchor > goalWt;
-        var bandPct = isLosing ? 0.03 : (state.maintenance_band_pct || 5) / 100;
-        var bandTarget = isLosing ? goalWt : anchor;
-        var upper = Math.round(bandTarget * (1 + bandPct));
-        var lower = Math.round(bandTarget * (1 - bandPct));
+        var bandPct = (state.maintenance_band_pct || 5) / 100;
+        var upper = Math.round(anchor * (1 + bandPct));
+        var lower = Math.round(anchor * (1 - bandPct));
         var weeks = [];
         var dayLabels = [];
         for (var i = 11; i >= 0; i--) {
@@ -4386,16 +4456,12 @@
           dayLabels.push(d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }));
           if (state.weightHistory && state.weightHistory[key]) {
             weeks.push(state.weightHistory[key]);
-          } else if (isLosing) {
-            var progress = Math.min(1, (12 - i) / 12);
-            var simulated = anchor - (anchor - goalWt) * progress * 0.6 + (Math.random() - 0.4) * 2;
-            weeks.push(+simulated.toFixed(1));
           } else {
             var drift = Math.min(i < 4 ? 0 : (i - 3) * 0.4, bandPct * anchor * 0.8);
             weeks.push(+(anchor + drift + (Math.random() - 0.3) * 2).toFixed(1));
           }
         }
-        var allVals = weeks.concat([upper, lower, isLosing ? anchor : lower]);
+        var allVals = weeks.concat([upper, lower]);
         var minW = Math.min.apply(null, allVals) - 2;
         var maxW = Math.max.apply(null, allVals) + 2;
         var range = maxW - minW || 1;
@@ -4403,35 +4469,24 @@
         var plotW = w - padL - padR, plotH = h - padT - padB;
         function x(i) { return padL + (i / (weeks.length - 1)) * plotW; }
         function y(v) { return padT + plotH - ((v - minW) / range) * plotH; }
-
+        var bandY1 = y(upper), bandY2 = y(lower);
+        var anchorY = y(anchor);
         var svg = '<svg viewBox="0 0 ' + w + ' ' + h + '" style="width:100%;height:auto">';
-        if (isLosing) {
-          var goalY = y(goalWt);
-          var bandY1 = y(goalWt + goalWt * bandPct);
-          var bandY2 = y(goalWt - goalWt * bandPct);
-          svg += '<rect x="' + padL + '" y="' + bandY1 + '" width="' + plotW + '" height="' + (bandY2 - bandY1) + '" fill="#fef3c7" rx="4"/>';
-          svg += '<line x1="' + padL + '" y1="' + goalY + '" x2="' + (w - padR) + '" y2="' + goalY + '" stroke="#d97706" stroke-width="1.5" stroke-dasharray="6 3"/>';
-          svg += '<text x="' + (padL - 4) + '" y="' + (goalY + 3) + '" text-anchor="end" font-size="9" fill="#d97706">' + goalWt + '</text>';
-          svg += '<text x="' + (w - padR + 2) + '" y="' + (goalY - 4) + '" text-anchor="start" font-size="8" fill="#d97706">Goal</text>';
-          var startY = y(anchor);
-          svg += '<line x1="' + padL + '" y1="' + startY + '" x2="' + (padL + 30) + '" y2="' + startY + '" stroke="#94a3b8" stroke-width="1" stroke-dasharray="3 2"/>';
-          svg += '<text x="' + (padL - 4) + '" y="' + (startY + 3) + '" text-anchor="end" font-size="8" fill="#94a3b8">' + anchor + '</text>';
-        } else {
-          var bandY1 = y(upper), bandY2 = y(lower);
-          var anchorY = y(anchor);
-          svg += '<rect x="' + padL + '" y="' + bandY1 + '" width="' + plotW + '" height="' + (bandY2 - bandY1) + '" fill="#dcfce7" rx="4"/>';
-          svg += '<line x1="' + padL + '" y1="' + anchorY + '" x2="' + (w - padR) + '" y2="' + anchorY + '" stroke="#16a34a" stroke-width="1" stroke-dasharray="4 3"/>';
-          svg += '<line x1="' + padL + '" y1="' + bandY1 + '" x2="' + (w - padR) + '" y2="' + bandY1 + '" stroke="#bbf7d0" stroke-width="1"/>';
-          svg += '<line x1="' + padL + '" y1="' + bandY2 + '" x2="' + (w - padR) + '" y2="' + bandY2 + '" stroke="#bbf7d0" stroke-width="1"/>';
-          svg += '<text x="' + (padL - 4) + '" y="' + (anchorY + 3) + '" text-anchor="end" font-size="9" fill="#16a34a">' + anchor + '</text>';
-          svg += '<text x="' + (padL - 4) + '" y="' + (bandY1 + 3) + '" text-anchor="end" font-size="8" fill="#94a3b8">+' + Math.round(bandPct * 100) + '%</text>';
-          svg += '<text x="' + (padL - 4) + '" y="' + (bandY2 + 3) + '" text-anchor="end" font-size="8" fill="#94a3b8">-' + Math.round(bandPct * 100) + '%</text>';
-        }
+        svg += '<rect x="' + padL + '" y="' + bandY1 + '" width="' + plotW + '" height="' + (bandY2 - bandY1) + '" fill="#dcfce7" rx="4"/>';
+        svg += '<line x1="' + padL + '" y1="' + anchorY + '" x2="' + (w - padR) + '" y2="' + anchorY + '" stroke="#16a34a" stroke-width="1" stroke-dasharray="4 3"/>';
+        svg += '<line x1="' + padL + '" y1="' + bandY1 + '" x2="' + (w - padR) + '" y2="' + bandY1 + '" stroke="#bbf7d0" stroke-width="1"/>';
+        svg += '<line x1="' + padL + '" y1="' + bandY2 + '" x2="' + (w - padR) + '" y2="' + bandY2 + '" stroke="#bbf7d0" stroke-width="1"/>';
+        svg += '<text x="' + (padL - 4) + '" y="' + (anchorY + 3) + '" text-anchor="end" font-size="9" fill="#16a34a">' + anchor + '</text>';
+        svg += '<text x="' + (padL - 4) + '" y="' + (bandY1 + 3) + '" text-anchor="end" font-size="8" fill="#94a3b8">+' + (state.maintenance_band_pct || 5) + '%</text>';
+        svg += '<text x="' + (padL - 4) + '" y="' + (bandY2 + 3) + '" text-anchor="end" font-size="8" fill="#94a3b8">-' + (state.maintenance_band_pct || 5) + '%</text>';
         var path = '';
-        weeks.forEach(function(v, i) { path += (i === 0 ? 'M' : 'L') + x(i).toFixed(1) + ',' + y(v).toFixed(1); });
-        svg += '<path d="' + path + '" fill="none" stroke="' + (isLosing ? '#d97706' : 'var(--accent)') + '" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>';
         weeks.forEach(function(v, i) {
-          var dotColor = isLosing ? (v <= goalWt * 1.03 ? '#16a34a' : '#d97706') : (v > upper ? '#dc2626' : 'var(--accent)');
+          path += (i === 0 ? 'M' : 'L') + x(i).toFixed(1) + ',' + y(v).toFixed(1);
+        });
+        svg += '<path d="' + path + '" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>';
+        weeks.forEach(function(v, i) {
+          var isAbove = v > upper;
+          var dotColor = isAbove ? '#dc2626' : 'var(--accent)';
           svg += '<circle cx="' + x(i).toFixed(1) + '" cy="' + y(v).toFixed(1) + '" r="3.5" fill="' + dotColor + '" stroke="#fff" stroke-width="1.5"/>';
         });
         [0, Math.floor(weeks.length / 2), weeks.length - 1].forEach(function(i) {
@@ -4439,24 +4494,6 @@
         });
         svg += '</svg>';
         var currentWeight = weeks[weeks.length - 1];
-
-        if (isLosing) {
-          var remaining = Math.max(0, +(currentWeight - goalWt).toFixed(1));
-          var totalLoss = anchor - goalWt;
-          var lost = Math.max(0, +(anchor - currentWeight).toFixed(1));
-          var lossPct = totalLoss > 0 ? Math.min(100, Math.round((lost / totalLoss) * 100)) : 0;
-          var reachedGoal = currentWeight <= goalWt * 1.03;
-          return '<div class="card" style="padding:16px;border-left:4px solid #d97706"><h3 style="margin:0 0 4px;font-size:1rem;font-weight:700;color:#92400e">Weight Loss Progress</h3>' +
-            '<p style="font-size:0.8125rem;color:var(--text-muted);margin:0 0 12px">You\u2019re still working toward your goal weight. Once you reach ' + goalWt + ' lbs, we\u2019ll switch to maintenance mode.</p>' +
-            '<div style="overflow:hidden;border-radius:8px;background:#f8fafc;padding:8px">' + svg + '</div>' +
-            '<div style="margin-top:12px;padding:10px 12px;border-radius:10px;background:' + (reachedGoal ? '#f0fdf4' : '#fffbeb') + '">' +
-            '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px"><span style="font-size:0.875rem;font-weight:600;color:' + (reachedGoal ? '#16a34a' : '#92400e') + '">' + (reachedGoal ? 'Goal reached! \u2014 ready for maintenance' : remaining + ' lbs to go') + '</span><span style="font-size:0.875rem;font-weight:700;color:' + (reachedGoal ? '#16a34a' : '#d97706') + '">' + lossPct + '%</span></div>' +
-            '<div style="height:6px;background:#e2e8f0;border-radius:3px;overflow:hidden"><div style="height:100%;width:' + lossPct + '%;background:' + (reachedGoal ? '#16a34a' : '#d97706') + ';border-radius:3px"></div></div>' +
-            '<div style="display:flex;justify-content:space-between;font-size:0.6875rem;color:var(--text-muted);margin-top:4px"><span>Start: ' + anchor + ' lbs</span><span>Now: ' + currentWeight + ' lbs</span><span>Goal: ' + goalWt + ' lbs</span></div></div>' +
-            (reachedGoal ? '<button type="button" class="btn btn-primary" id="switch-maintain" style="width:100%;margin-top:10px">Switch to maintenance mode</button>' : '') +
-            '</div>';
-        }
-
         var withinBand = currentWeight >= lower && currentWeight <= upper;
         var statusColor = withinBand ? '#16a34a' : '#dc2626';
         var statusText = withinBand ? 'Within maintenance band' : 'Above maintenance band';
@@ -4478,10 +4515,10 @@
 
       function buildSensorComparisonSVG() {
         var sensors = [
-          { label: 'CGM 1: Baseline', weeks: '1\u20132', color: '#94a3b8', avgGlucose: 118, tir: 72, spikes: 6.2, avgPost: 158, fasting: 96, variability: 24 },
-          { label: 'CGM 2: Satiety', weeks: '5–6', color: '#2563eb', avgGlucose: 108, tir: 81, spikes: 4.5, avgPost: 142, fasting: 92, variability: 19 },
-          { label: 'CGM 3: Movement', weeks: '8\u20139', color: '#7c3aed', avgGlucose: 102, tir: 87, spikes: 3.1, avgPost: 131, fasting: 89, variability: 15 },
-          { label: 'CGM 4: Graduation', weeks: '15\u201316', color: '#16a34a', avgGlucose: 98, tir: 91, spikes: 2.4, avgPost: 124, fasting: 87, variability: 12 }
+          { label: 'CGM 1 (Blk 1)', weeks: '1\u20132', color: '#94a3b8', avgGlucose: 118, tir: 72, spikes: 6.2, avgPost: 158, fasting: 96, variability: 24 },
+          { label: 'CGM 2 (Blk 3)', weeks: '5\u20136', color: '#2563eb', avgGlucose: 108, tir: 81, spikes: 4.5, avgPost: 142, fasting: 92, variability: 19 },
+          { label: 'CGM 3 (Blk 6)', weeks: '11\u201312', color: '#7c3aed', avgGlucose: 102, tir: 87, spikes: 3.1, avgPost: 131, fasting: 89, variability: 15 },
+          { label: 'CGM 4 (Blk 8)', weeks: '15\u201316', color: '#16a34a', avgGlucose: 98, tir: 91, spikes: 2.4, avgPost: 124, fasting: 87, variability: 12 }
         ];
         var gw = getGraduationWeek(state);
         var activeSensors = sensors.filter(function(s, i) { return CGM_PERIODS[i].weeks[0] <= gw; });
@@ -4937,11 +4974,6 @@
           render();
         },
         setWeeklyCheckin: function(val) { showWeeklyCheckin = val; },
-        setWeightMode: function(mode) { state.weightMode = mode; },
-        setGoalWeight: function(gw) { state.goalWeight = gw; },
-        setOnboardAnswers: function(a) { onboardAnswers = a; },
-        setOnboardProfile: function(p) { onboardProfile = p; },
-        setWeekChoice: function(wk, choice) { if (!state.weekChoices) state.weekChoices = {}; state.weekChoices[wk] = choice; },
         render: function() { render(); },
         getState: function() { return state; }
       };
